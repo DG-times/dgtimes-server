@@ -5,7 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Entity
@@ -26,4 +28,7 @@ public class News {
     // 컬럼 타입은 'TIMESTAMP'로 저장되는 기능?
     @Column(columnDefinition="TIMESTAMP")
     private Date date;
+
+    @OneToMany(mappedBy = "news", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Keyword_mapping> keyword_mappings = new ArrayList<>();
 }

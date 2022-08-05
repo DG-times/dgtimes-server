@@ -5,22 +5,22 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class Keyword {
+public class Keyword_mapping {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column
     private Long id;
 
-    @Column(nullable = false, unique = true)
-    private String keyword;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="News_id")
+    private News news;
 
-    @OneToMany(mappedBy = "keyword", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Keyword_mapping> keyword_mappings = new ArrayList<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="Keyword_id")
+    private Keyword keyword;
 }
