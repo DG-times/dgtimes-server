@@ -1,5 +1,13 @@
 # server
 
+### Commit 컨벤션
+```
+feat : 새로운 기능에 대한 커밋 
+fix : 수정에 대한 커밋 
+build : 빌드 관련 파일 수정에 대한 커밋
+```
+
+### Git flow
 ```
 #Branch naming rules
 main
