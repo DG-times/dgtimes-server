@@ -29,7 +29,17 @@ public class Bookmark {
     @JoinColumn(name = "User_id")
     private User user;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="Keyword_id")
+    private Keyword keyword;
 
+    // 연관 관계 설정 - Keyword
+    public void updateKeyword(Keyword keyword) {
+        this.keyword = keyword;
+        // 무한 루프에 빠지지 않기 위해 작성
+        if(!keyword.getBookmarks().contains(this))
+            keyword.addBookmark(this);
+    }
 
 
 
