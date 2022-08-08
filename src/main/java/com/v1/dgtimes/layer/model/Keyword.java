@@ -2,6 +2,7 @@ package com.v1.dgtimes.layer.model;
 
 /*
 설명 : Keyword Model 구현햇습니다.
+    > 22.08.08 - 더미데이터 생성을 위한 1회용 생성자 추가
 
 작성일 : 2022.08.06
 
@@ -10,6 +11,7 @@ package com.v1.dgtimes.layer.model;
 Todo -
 */
 
+import com.v1.dgtimes.layer.model.dto.request.KeywordRequestDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -51,5 +53,10 @@ public class Keyword {
         // 무한 후프에 빠지지 않기 위해서 작성
         if(bookmark.getKeyword()!=this)
             bookmark.updateKeyword(this);
+    }
+    
+    // 더미데이터 생성을 위한 1회성 생성자 작성
+    public Keyword(KeywordRequestDto keywordRequestDto) {
+        this.keyword = keywordRequestDto.getKeyword();
     }
 }
