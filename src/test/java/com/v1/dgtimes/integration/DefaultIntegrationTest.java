@@ -8,6 +8,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.test.context.ActiveProfiles;
 
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 public class DefaultIntegrationTest {
@@ -37,4 +40,18 @@ public class DefaultIntegrationTest {
     static class BookmarkRequestDto{
         private String keyword;
     }
+
+
+    // User DTO
+    @Getter
+    @Builder
+    static class SignupRequestDto {
+        private String id;
+        private String pw;
+        private String username;
+    }
+
+
+
+
 }
