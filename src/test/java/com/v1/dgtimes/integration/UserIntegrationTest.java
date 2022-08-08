@@ -10,9 +10,6 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.*;
 import org.springframework.test.context.ActiveProfiles;
-
-
-
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -70,11 +67,11 @@ public class UserIntegrationTest  extends DefaultIntegrationTest {
         HttpEntity<SignupRequestDto> signupRequest = new HttpEntity<>(signupRequestDto);
 
         // when
-        ResponseEntity<SignupRequestDto> response = testRestTemplate
+        ResponseEntity<DefaultResponseDto> response = testRestTemplate
                 .postForEntity(
                         "/users/signup",
                         signupRequest,
-                        SignupRequestDto.class
+                        DefaultResponseDto.class
                 );
 
         // then
@@ -95,11 +92,11 @@ public class UserIntegrationTest  extends DefaultIntegrationTest {
         HttpEntity<SignupRequestDto> signupRequest = new HttpEntity<>(signupRequestDto);
 
         // when
-        ResponseEntity<SignupRequestDto> response = testRestTemplate
+        ResponseEntity<DefaultResponseDto> response = testRestTemplate
                 .postForEntity(
                         "/users/signup",
                         signupRequest,
-                        SignupRequestDto.class
+                        DefaultResponseDto.class
                 );
 
         // then
@@ -122,11 +119,11 @@ public class UserIntegrationTest  extends DefaultIntegrationTest {
         HttpEntity<SignupRequestDto> signupRequest = new HttpEntity<>(signupRequestDto);
 
         // when
-        ResponseEntity<String> response = testRestTemplate
+        ResponseEntity<DefaultResponseDto> response = testRestTemplate
                 .postForEntity(
                         "/users/signup",
                         signupRequest,
-                        String.class
+                        DefaultResponseDto.class
                 );
 
         // then
