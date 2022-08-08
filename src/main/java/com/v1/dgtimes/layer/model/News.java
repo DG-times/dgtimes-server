@@ -1,6 +1,17 @@
 package com.v1.dgtimes.layer.model;
 
+/*
+설명 : News Model 구현햇습니다.
+
+작성일 : 2022.08.06
+
+마지막 수정한 사람 : 홍우석
+
+Todo -
+*/
+
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
