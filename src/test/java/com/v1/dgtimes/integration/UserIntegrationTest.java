@@ -1,17 +1,16 @@
-package com.v1.dgtimes;
+package com.v1.dgtimes.integration;
 
 
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import lombok.Builder;
-import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.*;
 import org.springframework.test.context.ActiveProfiles;
+
 
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -31,12 +30,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
-public class UserIntegrationTest {
+public class UserIntegrationTest  extends DefaultIntegrationTest {
 
     @Autowired
     TestRestTemplate testRestTemplate;
-
-
 
 
     @Test
@@ -44,7 +41,7 @@ public class UserIntegrationTest {
     public void case1()  {
 
         // given
-        SignupRequestDto signupRequestDto = new  SignupRequestDto("ksu", "123456", "공상욱");
+        SignupRequestDto signupRequestDto = new  SignupRequestDto("admin", "testtesttest!!", "공상욱");
         HttpEntity<SignupRequestDto> signupRequest = new HttpEntity<>(signupRequestDto);
 
         // when
@@ -57,9 +54,10 @@ public class UserIntegrationTest {
 
         // then
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("회원가입에 성공했습니다.", "200");
+        assertEquals(new DefaultResponseDto("회원가입에 성공했습니다.",200), response.getBody());
 
     }
+
 
 
 
@@ -68,26 +66,24 @@ public class UserIntegrationTest {
     public void case2() {
 
         // given
-        LoginRequestDto loginRequestDto = new LoginRequestDto("ksu","123456");
-        HttpEntity<LoginRequestDto> loginRequest = new HttpEntity<>(loginRequestDto);
+        SignupRequestDto signupRequestDto = new SignupRequestDto("admin", "testtesttest!!", "공상욱");
+        HttpEntity<SignupRequestDto> signupRequest = new HttpEntity<>(signupRequestDto);
 
         // when
-        ResponseEntity<LoginResponseDto> response = testRestTemplate
+        ResponseEntity<SignupRequestDto> response = testRestTemplate
                 .postForEntity(
-                        "/users/login",
-                        loginRequest,
-                        LoginResponseDto.class
+                        "/users/signup",
+                        signupRequest,
+                        SignupRequestDto.class
                 );
 
         // then
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals("회원가입에 실패했습니다. - 유효하지 않은 비밀번호 길이", "400");
-
-
-
-
+        assertEquals(new DefaultResponseDto("회원가입에 실패했습니다. - 유효하지 않은 비밀번호 길이",400), response.getBody());
 
     }
+
+
 
 
     @Test
@@ -95,20 +91,20 @@ public class UserIntegrationTest {
     public void case3() {
 
         // given
-        LoginRequestDto loginRequestDto = new LoginRequestDto("ksu","123456");
-        HttpEntity<LoginRequestDto> loginRequest = new HttpEntity<>(loginRequestDto);
+        SignupRequestDto signupRequestDto = new SignupRequestDto("admin", "testtesttest!!", "공상욱");
+        HttpEntity<SignupRequestDto> signupRequest = new HttpEntity<>(signupRequestDto);
 
         // when
-        ResponseEntity<LoginResponseDto> response = testRestTemplate
+        ResponseEntity<SignupRequestDto> response = testRestTemplate
                 .postForEntity(
-                        "/users/login",
-                        loginRequest,
-                        LoginResponseDto.class
+                        "/users/signup",
+                        signupRequest,
+                        SignupRequestDto.class
                 );
 
         // then
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals("회원가입에 실패했습니다. - 유효하지 않은 비밀번호 형식", "400");
+        assertEquals(new DefaultResponseDto("회원가입에 실패했습니다. - 유효하지 않은 비밀번호 형식",400), response.getBody());
 
 
     }
@@ -122,7 +118,7 @@ public class UserIntegrationTest {
 
 
         // given
-        SignupRequestDto signupRequestDto = new  SignupRequestDto("ksu", "123456", "공상욱");
+        SignupRequestDto signupRequestDto = new  SignupRequestDto("admin", "testtesttest!!", "공상욱");
         HttpEntity<SignupRequestDto> signupRequest = new HttpEntity<>(signupRequestDto);
 
         // when
@@ -135,47 +131,9 @@ public class UserIntegrationTest {
 
         // then
         assertEquals(HttpStatus.OK, response.getStatusCode());
-
-        String responseBody = response.getBody();
-        assertEquals("회원가입에 실패했습니다. - 중복된 아이디 입니다","200" );
+        assertEquals(new DefaultResponseDto("회원가입에 실패했습니다. - 중복된 아이디 입니다",400), response.getBody());
 
     }
-
-
-
-    // User DTO
-    @Getter
-    @Builder
-    static class SignupRequestDto {
-        private String id;
-        private String pw;
-        private String username;
-    }
-
-    @Getter
-    @Builder
-    static class LoginRequestDto {
-        private String id;
-        private String pw;
-    }
-
-    @Getter
-    @Builder
-    static class LoginResponseDto {
-        private int status;
-        private String msg;
-        private String token;
-    }
-
-//    @Getter
-//    @Builder
-//    static class SignUpPwRequestDto {
-//
-//        @Pattern(regexp = "(?=.*[a-zA-Z])(?=.*\\W)(?=\\S+$)", message = "비밀번호는 영문 대,소문자와 특수기호가 적어도 1개 ")
-//        @Size(min = 8, message = "pw 8~16자로 입력해주세요")
-//        private String pw;
-//    }
-
 
 }
 
