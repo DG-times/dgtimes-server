@@ -1,4 +1,4 @@
-package com.v1.dgtimes;
+package com.v1.dgtimes.integration;
 
 /*
 설명 : KeywordIntegrationTest 테스트 코드 구현
@@ -9,40 +9,29 @@ package com.v1.dgtimes;
 
 */
 
-import com.v1.dgtimes.layer.model.Keyword;
-import com.v1.dgtimes.layer.model.News;
-import lombok.Setter;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.ActiveProfiles;
-import lombok.Builder;
-import lombok.Getter;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ActiveProfiles("test")
-public class KeywordIntegrationTest {
-    @Autowired
-    TestRestTemplate testTemplate;
+
+public class KeywordIntegrationTest extends DefaultIntegrationTest{
 
     @Test
     @DisplayName("검색 성공 케이스")
     public void case1(){
         //given
         String keyword = "코딩교육";
+
         //when
         ResponseEntity<SearchResponseDto> response = testTemplate
                 .getForEntity(
                         "/api/news?keyword="+keyword,
                         SearchResponseDto.class
                 );
+        
         //then
         assertEquals(HttpStatus.OK, response.getStatusCode());
         SearchResponseDto responseBody = response.getBody();
@@ -62,6 +51,7 @@ public class KeywordIntegrationTest {
                 "https://thumb.mt.co.kr/06/2022/07/2022071316585964426_1.jpg/dims/optimize"
                 ,responseBody.getThumbnail());
     }
+
     // Keyword 테이블에서 해당 키워드가 없는 경우 실패 반환
     @Test
     @DisplayName("찾는 키워드의 뉴스가 없어서 실패하는 케이스")
@@ -69,15 +59,15 @@ public class KeywordIntegrationTest {
         //given
         String keyword = "coding Study";
         //when
-        ResponseEntity<FailSearchResponseDto> response = testTemplate
+        ResponseEntity<DefaultResponseDto> response = testTemplate
                 .getForEntity(
                         "/api/news?keyword="+keyword,
-                        FailSearchResponseDto.class
+                        DefaultResponseDto.class
                 );
         //then
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        FailSearchResponseDto responsebody = response.getBody();
-        assertEquals(new FailSearchResponseDto("찾는 키워드의 검색 결과가 없습니다.", 400), responsebody);
+        DefaultResponseDto responsebody = response.getBody();
+        assertEquals(new DefaultResponseDto("찾는 키워드의 검색 결과가 없습니다.", 400), responsebody);
     }
 
     // Service쪽에서 keyword의 값이 ""인 경우 실패 반환
@@ -87,16 +77,16 @@ public class KeywordIntegrationTest {
         //given
         String keyword = "";
         //when
-        ResponseEntity<FailSearchResponseDto> response = testTemplate
+        ResponseEntity<DefaultResponseDto> response = testTemplate
                 .getForEntity(
                         "/api/news?keyword="+keyword,
-                        FailSearchResponseDto.class
+                        DefaultResponseDto.class
                 );
 
         //then
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        FailSearchResponseDto responsebody = response.getBody();
-        assertEquals(new FailSearchResponseDto("키워드를 입력해주세요.",400), responsebody);
+        DefaultResponseDto responsebody = response.getBody();
+        assertEquals(new DefaultResponseDto("키워드를 입력해주세요.",400), responsebody);
     }
     
     // Service쪽에서 keyword의 값이 null인 경우 실패 반환
@@ -106,16 +96,16 @@ public class KeywordIntegrationTest {
         //given
         String keyword = null;
         //when
-        ResponseEntity<FailSearchResponseDto> response = testTemplate
+        ResponseEntity<DefaultResponseDto> response = testTemplate
                 .getForEntity(
                         "/api/news?keyword="+keyword,
-                        FailSearchResponseDto.class
+                        DefaultResponseDto.class
                 );
 
         //then
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        FailSearchResponseDto responsebody = response.getBody();
-        assertEquals(new FailSearchResponseDto("키워드를 입력해주세요.", 400), responsebody);
+        DefaultResponseDto responsebody = response.getBody();
+        assertEquals(new DefaultResponseDto("키워드를 입력해주세요.", 400), responsebody);
     }
     
     // Bookmark 테이블에서 금지어인지 확인 후, 금지어인경우 실패
@@ -125,32 +115,16 @@ public class KeywordIntegrationTest {
         //given
         String keyword = "야한단어";
         //when
-        ResponseEntity<FailSearchResponseDto> response = testTemplate
+        ResponseEntity<DefaultResponseDto> response = testTemplate
                 .getForEntity(
                         "/api/news?keyword="+keyword,
-                        FailSearchResponseDto.class
+                        DefaultResponseDto.class
                 );
 
         //then
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        FailSearchResponseDto responsebody = response.getBody();
-        assertEquals(new FailSearchResponseDto("검색한 키워드는 금지어입니다.",400), responsebody);
-    }
-    
-    @Getter
-    @Builder
-    static class SearchResponseDto {
-        private int status;
-        private String title;
-        private String content;
-        private String thumbnail;
-        private String main_url;
+        DefaultResponseDto responsebody = response.getBody();
+        assertEquals(new DefaultResponseDto("검색한 키워드는 금지어입니다.",400), responsebody);
     }
 
-    @Getter
-    @Builder
-    static class FailSearchResponseDto {
-        private String mag;
-        private int status;
-    }
 }

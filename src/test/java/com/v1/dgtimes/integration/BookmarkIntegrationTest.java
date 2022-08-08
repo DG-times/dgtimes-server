@@ -1,26 +1,22 @@
 package com.v1.dgtimes.integration;
 
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.ActiveProfiles;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@ActiveProfiles("test")
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class BookmarkIntegrationTest {
+/*
+설명 : BookmarkIntegrationTest 테스트 코드 구현
 
-    @Autowired
-    TestRestTemplate testTemplate;
+작성일 : 2022.08.08
 
+마지막 수정한 사람 : 김선진
+
+*/
+
+public class BookmarkIntegrationTest extends DefaultIntegrationTest{
     @Test
     @DisplayName("키워드 저장 성공")
     public void case1(){
@@ -118,20 +114,5 @@ public class BookmarkIntegrationTest {
         //then
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertEquals(new DefaultResponseDto("금지된 키워드 입니다.",400), response.getBody());
-    }
-
-
-    @Getter
-    @Builder
-    @EqualsAndHashCode
-    static class DefaultResponseDto {
-        private String msg;
-        private int code;
-    }
-
-    @Getter
-    @Builder
-    static class BookmarkRequestDto{
-        private String keyword;
     }
 }
