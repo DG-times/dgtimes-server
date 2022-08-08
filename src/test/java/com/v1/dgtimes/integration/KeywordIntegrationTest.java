@@ -9,6 +9,7 @@ package com.v1.dgtimes.integration;
 
 */
 
+import com.v1.dgtimes.layer.model.exception.RestApiException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -37,7 +38,6 @@ public class KeywordIntegrationTest extends DefaultIntegrationTest{
         SearchResponseDto responseBody = response.getBody();
         assertNotNull(responseBody);
 
-        assertEquals(200, responseBody.getStatus());
         assertEquals(
                 "코딩교육 팀스파르타, 상반기 매출 105억…’최대 실적 달성"
                 ,responseBody.getTitle());
@@ -59,15 +59,16 @@ public class KeywordIntegrationTest extends DefaultIntegrationTest{
         //given
         String keyword = "coding Study";
         //when
-        ResponseEntity<DefaultResponseDto> response = testTemplate
+        ResponseEntity<RestApiException> response = testTemplate
                 .getForEntity(
                         "/api/news?keyword="+keyword,
-                        DefaultResponseDto.class
+                        RestApiException.class
                 );
         //then
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        DefaultResponseDto responsebody = response.getBody();
-        assertEquals(new DefaultResponseDto("찾는 키워드의 검색 결과가 없습니다.", 400), responsebody);
+        RestApiException responsebody = response.getBody();
+        assertEquals(HttpStatus.BAD_REQUEST, responsebody.getHttpStatus());
+        assertEquals("찾는 키워드의 검색 결과가 없습니다.", responsebody.getErrorMessage());
     }
 
     // Service쪽에서 keyword의 값이 ""인 경우 실패 반환
@@ -77,54 +78,36 @@ public class KeywordIntegrationTest extends DefaultIntegrationTest{
         //given
         String keyword = "";
         //when
-        ResponseEntity<DefaultResponseDto> response = testTemplate
+        ResponseEntity<RestApiException> response = testTemplate
                 .getForEntity(
                         "/api/news?keyword="+keyword,
-                        DefaultResponseDto.class
+                        RestApiException.class
                 );
 
         //then
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        DefaultResponseDto responsebody = response.getBody();
-        assertEquals(new DefaultResponseDto("키워드를 입력해주세요.",400), responsebody);
+        RestApiException responsebody = response.getBody();
+        assertEquals(HttpStatus.BAD_REQUEST, responsebody.getHttpStatus());
+        assertEquals("키워드를 입력해주세요.", responsebody.getErrorMessage());
     }
-    
-    // Service쪽에서 keyword의 값이 null인 경우 실패 반환
-    @Test
-    @DisplayName("찾는 키워드가 공란(null)이여서 실패하는 케이스")
-    public void case4(){
-        //given
-        String keyword = null;
-        //when
-        ResponseEntity<DefaultResponseDto> response = testTemplate
-                .getForEntity(
-                        "/api/news?keyword="+keyword,
-                        DefaultResponseDto.class
-                );
-
-        //then
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        DefaultResponseDto responsebody = response.getBody();
-        assertEquals(new DefaultResponseDto("키워드를 입력해주세요.", 400), responsebody);
-    }
-    
     // Bookmark 테이블에서 금지어인지 확인 후, 금지어인경우 실패
     @Test
     @DisplayName("검색한 키워드가 금지어여서 실패하는 케이스")
-    public void case5(){
+    public void case4(){
         //given
         String keyword = "야한단어";
         //when
-        ResponseEntity<DefaultResponseDto> response = testTemplate
+        ResponseEntity<RestApiException> response = testTemplate
                 .getForEntity(
                         "/api/news?keyword="+keyword,
-                        DefaultResponseDto.class
+                        RestApiException.class
                 );
 
         //then
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        DefaultResponseDto responsebody = response.getBody();
-        assertEquals(new DefaultResponseDto("검색한 키워드는 금지어입니다.",400), responsebody);
+        RestApiException responsebody = response.getBody();
+        assertEquals(HttpStatus.BAD_REQUEST, responsebody.getHttpStatus());
+        assertEquals("검색한 키워드 금지어입니다.", responsebody.getErrorMessage());
     }
 
 }

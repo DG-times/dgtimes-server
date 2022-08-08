@@ -18,7 +18,6 @@ public class DefaultIntegrationTest {
     @Getter
     @Builder
     static class SearchResponseDto {
-        private int status;
         private String title;
         private String content;
         private String thumbnail;
