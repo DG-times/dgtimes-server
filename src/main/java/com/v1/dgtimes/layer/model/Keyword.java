@@ -11,7 +11,7 @@ package com.v1.dgtimes.layer.model;
 Todo -
 */
 
-import com.v1.dgtimes.layer.model.dto.request.KeywordRequestDto;
+import com.v1.dgtimes.layer.model.dto.request.BookmarkRequestDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -56,7 +56,7 @@ public class Keyword {
     }
     
     // 더미데이터 생성을 위한 1회성 생성자 작성
-    public Keyword(KeywordRequestDto keywordRequestDto) {
+    public Keyword(BookmarkRequestDto keywordRequestDto) {
         this.keyword = keywordRequestDto.getKeyword();
     }
 }

@@ -9,6 +9,7 @@ package com.v1.dgtimes.layer.controller;
 
 */
 
+import com.v1.dgtimes.layer.model.dto.request.BookmarkRequestDto;
 import com.v1.dgtimes.layer.model.dto.request.KeywordRequestDto;
 import com.v1.dgtimes.layer.model.dto.response.DefaultResponseDto;
 import com.v1.dgtimes.layer.service.BookmarkService;
@@ -31,8 +32,8 @@ public class BookmarkController {
 
     //즐겨찾기
     @PostMapping("/api/bookmarks")
-    public ResponseEntity<DefaultResponseDto> bookmarks (@RequestBody KeywordRequestDto keywordRequestDto) {
-        return new ResponseEntity<>(bookmarkService.pstBookmarkKeyword(keywordRequestDto), HttpStatus.OK);
+    public ResponseEntity<DefaultResponseDto> bookmarks (@RequestBody BookmarkRequestDto bookmarkRequestDto) {
+        return new ResponseEntity<>(bookmarkService.pstBookmarkKeyword(bookmarkRequestDto), HttpStatus.OK);
     }
 
 

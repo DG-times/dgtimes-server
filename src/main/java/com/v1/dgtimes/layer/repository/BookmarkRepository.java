@@ -1,7 +1,7 @@
 package com.v1.dgtimes.layer.repository;
 
 /*
-설명 : BookmarkRepository 구현햇습니다.
+설명 : BookmarkRepository 수정현햇습니다.
 
 작성일 : 2022.08.08
 
@@ -15,8 +15,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 
-public interface BookmarkRepository extends JpaRepository<Keyword, Long> {
+public interface BookmarkRepository extends JpaRepository<Keyword, String> {
 
-    Optional<Keyword> findByKeyword(String keyword);
+    Optional<Keyword> existsByKeyword(String keyword);
 
 }
