@@ -57,24 +57,24 @@ public class BookmarkIntegrationTest extends DefaultIntegrationTest{
         assertEquals(new DefaultResponseDto("키워드를 입력해주세요.",400), response.getBody());
     }
 
-    @Test
-    @DisplayName("키워드 저장 실패 - 로그인 되지 않음")
-    public void case3(){
-        //given
-        BookmarkRequestDto bookmarkRequestDto = new BookmarkRequestDto("코딩교육");
-
-        //when
-        ResponseEntity<DefaultResponseDto> response = testTemplate
-                .postForEntity(
-                        "/api/bookmarks",
-                        bookmarkRequestDto,
-                        DefaultResponseDto.class
-                );
-
-        //then
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals(new DefaultResponseDto("로그인이 필요합니다.",400), response.getBody());
-    }
+//    @Test
+//    @DisplayName("키워드 저장 실패 - 로그인 되지 않음")
+//    public void case3(){
+//        //given
+//        BookmarkRequestDto bookmarkRequestDto = new BookmarkRequestDto("코딩교육");
+//
+//        //when
+//        ResponseEntity<DefaultResponseDto> response = testTemplate
+//                .postForEntity(
+//                        "/api/bookmarks",
+//                        bookmarkRequestDto,
+//                        DefaultResponseDto.class
+//                );
+//
+//        //then
+//        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+//        assertEquals(new DefaultResponseDto("로그인이 필요합니다.",400), response.getBody());
+//    }
 
     @Test
     @DisplayName("키워드 저장 실패 - 기존에 등록한 키워드")

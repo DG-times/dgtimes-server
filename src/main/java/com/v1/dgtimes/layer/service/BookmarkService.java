@@ -34,7 +34,7 @@ public class BookmarkService {
         if ("".equals(keyword) || keyword == null) {
             throw new RuntimeException("키워드를 입력해주세요.");
         }
-        bookmarkRepository.save(keyword);
+       return new  SearchResponseDto();
 
     }
 
@@ -47,7 +47,7 @@ public class BookmarkService {
 
 
 
-    //Bookmark 실패(로그인 되지 않았음 | UserBookmark)
+    //Bookmark 실패(로그인 되지 않았음 | UserBookmark | 일단 제외)
 
 
 
