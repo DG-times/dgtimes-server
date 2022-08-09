@@ -13,7 +13,6 @@ Todo -
 
 import com.v1.dgtimes.layer.model.dto.request.NewsRequestDto;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -43,10 +42,10 @@ public class News {
     private Date date;
 
     @OneToMany(mappedBy = "news", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Keyword_mapping> keyword_mappings = new ArrayList<>();
+    private List<KeywordMapping> keyword_mappings = new ArrayList<>();
 
     // Keyword_mapping 연관관계 생성
-    public void addKeywordMapping(Keyword_mapping keyword_mapping) {
+    public void addKeywordMapping(KeywordMapping keyword_mapping) {
         this.keyword_mappings.add(keyword_mapping);
         // 무한 후프에 빠지지 않기 위해서 작성
         if(keyword_mapping.getNews()!=this)

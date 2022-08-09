@@ -11,9 +11,9 @@ package com.v1.dgtimes.layer.repository;
 Todo -
 */
 
-import com.v1.dgtimes.layer.model.Black_keyword;
+import com.v1.dgtimes.layer.model.BlackKeyword;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface BlackKeywordRepository extends JpaRepository<Black_keyword, Long> {
+public interface BlackKeywordRepository extends JpaRepository<BlackKeyword, Long> {
     Long countByBlackKeyword(String black_keyword);
 }

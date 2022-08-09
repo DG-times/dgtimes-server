@@ -14,15 +14,14 @@ package com.v1.dgtimes.layer.model;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
 
 @Getter
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor
-public class Black_keyword {
+@AllArgsConstructor // 이거도 더미데이터 용
+public class BlackKeyword {
 
     @Id
     @Column(nullable = false)
@@ -33,7 +32,7 @@ public class Black_keyword {
     private String blackKeyword;
 
     // 더미데이터 생성을 위한 생성자
-    public Black_keyword(String blackKeyword) {
+    public BlackKeyword(String blackKeyword) {
         this.blackKeyword = blackKeyword;
     }
 }

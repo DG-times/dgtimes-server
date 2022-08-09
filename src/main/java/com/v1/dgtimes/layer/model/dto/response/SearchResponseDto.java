@@ -18,7 +18,7 @@ import lombok.Setter;
 import java.util.Date;
 
 @Getter
-@Setter
+@Setter // 더미데이터 끝나구 삭제해주세요
 @NoArgsConstructor
 public class SearchResponseDto {
     private String title;

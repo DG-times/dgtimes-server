@@ -1,4 +1,4 @@
-package com.v1.dgtimes.layer.model.exception;
+package com.v1.dgtimes.config.exception;
 
 /*
 설명 : RestApiExceptionHandler 구현
