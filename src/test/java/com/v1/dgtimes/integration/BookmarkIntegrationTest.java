@@ -1,5 +1,6 @@
 package com.v1.dgtimes.integration;
 
+import com.v1.dgtimes.layer.model.dto.request.KeywordRequestDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpEntity;
@@ -30,7 +31,7 @@ public class BookmarkIntegrationTest extends DefaultIntegrationTest{
 //                .withBasicAuth("admin","testtest!!")
                 .postForEntity(
                         "/api/bookmarks",
-                        bookmarkRequestDto,
+                        keywordRequestDtoHttpEntity,
                         DefaultResponseDto.class
                 );
 
