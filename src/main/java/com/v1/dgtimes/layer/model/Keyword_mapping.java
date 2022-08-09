@@ -50,4 +50,14 @@ public class Keyword_mapping {
         if(!news.getKeyword_mappings().contains(this))
             news.addKeywordMapping(this);
     }
+
+    // Keyword, News 동시 등록을 위한 연관 관계 설정
+    public void updateKeywordNews(Keyword keyword, News news) {
+        this.keyword = keyword;
+        this.news = news;
+        if(!keyword.getKeyword_mappings().contains(this))
+            keyword.addKeywordMapping(this);
+        if(!news.getKeyword_mappings().contains(this))
+            news.addKeywordMapping(this);
+    }
 }
