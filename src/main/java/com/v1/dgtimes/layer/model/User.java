@@ -9,7 +9,9 @@ package com.v1.dgtimes.layer.model;
 
 */
 
+import com.v1.dgtimes.layer.model.dto.request.SignupRequestDto;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -19,6 +21,7 @@ import java.util.List;
 
 @Getter
 @Entity
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
