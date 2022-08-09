@@ -30,7 +30,7 @@ public class DefaultIntegrationTest {
     @Getter
     @Builder
     static class DefaultResponseDto {
-        private String mag;
+        private String msg;
         private int status;
     }
 
