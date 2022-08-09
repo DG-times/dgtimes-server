@@ -66,15 +66,11 @@ public class SearchService {
         return null;
     }
     
-    // 여러게의 뉴스 결과값 SearchResponseDto에 저장 및 반환
+    // 여러게의 뉴스 결과값 List<SearchResponseDto>에 저장 및 반환
     private List<SearchResponseDto> makeSearchResponseDto(List<News> news) {
         List<SearchResponseDto> searchResponseDtos = new ArrayList<>();
         for(News one_news : news) {
-            SearchResponseDto searchResponseDto = new SearchResponseDto();
-            searchResponseDto.setTitle(one_news.getTitle());
-            searchResponseDto.setContent(one_news.getContent());
-            searchResponseDto.setMain_url(one_news.getMain_url());
-            searchResponseDto.setThumbnail(one_news.getThumbnail_url());
+            SearchResponseDto searchResponseDto = new SearchResponseDto(one_news);
             searchResponseDtos.add(searchResponseDto);
         }
         return searchResponseDtos;
