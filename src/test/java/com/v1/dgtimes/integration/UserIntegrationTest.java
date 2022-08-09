@@ -2,6 +2,7 @@ package com.v1.dgtimes.integration;
 
 
 
+import com.v1.dgtimes.layer.model.exception.RestApiException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +17,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 /*
-설명 : UserIntegrationTest 작성 하였습니다.
+설명 : UserIntegrationTest 작성 하였습니다. 테스트 케이스 추가 작성했습니다.
 
-작성일 : 2022.08.08
+작성일 : 2022.08.09
 
-마지막 수정한 사람 : 공상욱
+마지막 수정한 사람 : 안상록
 
 */
 
@@ -42,16 +43,17 @@ public class UserIntegrationTest  extends DefaultIntegrationTest {
         HttpEntity<SignupRequestDto> signupRequest = new HttpEntity<>(signupRequestDto);
 
         // when
-        ResponseEntity<Object> response = testRestTemplate
+        ResponseEntity<RestApiException> response = testRestTemplate
                 .postForEntity(
                         "/users/signup",
                         signupRequest,
-                        Object.class
+                        RestApiException.class
                 );
 
         // then
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(new DefaultResponseDto("회원가입에 성공했습니다.",200), response.getBody());
+        assertEquals("회원가입에 성공했습니다.", response.getBody()); //responseEntity body 한글 인코딩 오류추정
+//        assertEquals(new DefaultResponseDto("회원가입에 성공했습니다.",200), new DefaultResponseDto(response.getBody(), response.getStatusCodeValue()));
 
     }
 
@@ -63,46 +65,49 @@ public class UserIntegrationTest  extends DefaultIntegrationTest {
     public void case2() {
 
         // given
-        SignupRequestDto signupRequestDto = new SignupRequestDto("admin", "testtesttest!!", "공상욱");
+        SignupRequestDto signupRequestDto = new SignupRequestDto("admin1", "!", "공상욱");
         HttpEntity<SignupRequestDto> signupRequest = new HttpEntity<>(signupRequestDto);
 
         // when
-        ResponseEntity<DefaultResponseDto> response = testRestTemplate
+        ResponseEntity<RestApiException> response = testRestTemplate
                 .postForEntity(
                         "/users/signup",
                         signupRequest,
-                        DefaultResponseDto.class
+                        RestApiException.class
                 );
 
         // then
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals(new DefaultResponseDto("회원가입에 실패했습니다. - 유효하지 않은 비밀번호 길이",400), response.getBody());
+        RestApiException responsebody = response.getBody();
+        assertEquals(HttpStatus.BAD_REQUEST, responsebody.getHttpStatus());
+        assertEquals("회원가입에 실패했습니다. - 유효하지 않은 비밀번호 길이", responsebody.getErrorMessage());
+//        assertEquals(new DefaultResponseDto("회원가입에 실패했습니다. - 유효하지 않은 비밀번호 길이",400), response.getBody());
 
     }
 
 
 
-
     @Test
-    @DisplayName("비밀번호 형식 유효 실패 케이스")
+    @DisplayName("아이디 형식 유효 실패 케이스")
     public void case3() {
 
         // given
-        SignupRequestDto signupRequestDto = new SignupRequestDto("admin", "testtesttest!!", "공상욱");
+        SignupRequestDto signupRequestDto = new SignupRequestDto("admin@#", "testtesttest!!", "공상욱");
         HttpEntity<SignupRequestDto> signupRequest = new HttpEntity<>(signupRequestDto);
 
         // when
-        ResponseEntity<DefaultResponseDto> response = testRestTemplate
+        ResponseEntity<RestApiException> response = testRestTemplate
                 .postForEntity(
                         "/users/signup",
                         signupRequest,
-                        DefaultResponseDto.class
+                        RestApiException.class
                 );
 
         // then
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals(new DefaultResponseDto("회원가입에 실패했습니다. - 유효하지 않은 비밀번호 형식",400), response.getBody());
-
+        RestApiException responsebody = response.getBody();
+        assertEquals(HttpStatus.BAD_REQUEST, responsebody.getHttpStatus());
+        assertEquals("회원가입에 실패했습니다. - 유효하지 않은 아이디 형식", responsebody.getErrorMessage());
 
     }
 
@@ -110,7 +115,7 @@ public class UserIntegrationTest  extends DefaultIntegrationTest {
 
 
     @Test
-    @DisplayName("아이디중복 회원가입 실패 케이스")
+    @DisplayName("아이디 중복 회원가입 실패 케이스")
     public void case4() {
 
 
@@ -118,19 +123,74 @@ public class UserIntegrationTest  extends DefaultIntegrationTest {
         SignupRequestDto signupRequestDto = new  SignupRequestDto("admin", "testtesttest!!", "공상욱");
         HttpEntity<SignupRequestDto> signupRequest = new HttpEntity<>(signupRequestDto);
 
+
         // when
-        ResponseEntity<DefaultResponseDto> response = testRestTemplate
+        ResponseEntity<RestApiException> response = testRestTemplate
                 .postForEntity(
                         "/users/signup",
                         signupRequest,
-                        DefaultResponseDto.class
+                        RestApiException.class
+                );
+
+
+        // then
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        RestApiException responsebody = response.getBody();
+        assertEquals(HttpStatus.BAD_REQUEST, responsebody.getHttpStatus());
+        assertEquals("회원가입에 실패했습니다. - 중복된 아이디 입니다", responsebody.getErrorMessage());
+    }
+
+    @Test
+    @DisplayName("아이디 길이 유효 실패 케이스")
+    public void case5() {
+
+        // given
+        SignupRequestDto signupRequestDto = new SignupRequestDto("ad", "testtesttest!!", "공상욱");
+        HttpEntity<SignupRequestDto> signupRequest = new HttpEntity<>(signupRequestDto);
+
+        // when
+        ResponseEntity<RestApiException> response = testRestTemplate
+                .postForEntity(
+                        "/users/signup",
+                        signupRequest,
+                        RestApiException.class
                 );
 
         // then
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(new DefaultResponseDto("회원가입에 실패했습니다. - 중복된 아이디 입니다",400), response.getBody());
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        RestApiException responsebody = response.getBody();
+        assertEquals(HttpStatus.BAD_REQUEST, responsebody.getHttpStatus());
+        assertEquals("회원가입에 실패했습니다. - 유효하지 않은 아이디 길이", responsebody.getErrorMessage());
+//        assertEquals(new DefaultResponseDto("회원가입에 실패했습니다. - 유효하지 않은 비밀번호 길이",400), response.getBody());
 
     }
+
+
+    @Test
+    @DisplayName("비밀번호에 아이디 포함 유효 실패 케이스")
+    public void case6() {
+
+        // given
+        SignupRequestDto signupRequestDto = new SignupRequestDto("admin2", "admin2testtest!!", "공상욱");
+        HttpEntity<SignupRequestDto> signupRequest = new HttpEntity<>(signupRequestDto);
+
+        // when
+        ResponseEntity<RestApiException> response = testRestTemplate
+                .postForEntity(
+                        "/users/signup",
+                        signupRequest,
+                        RestApiException.class
+                );
+
+        // then
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        RestApiException responsebody = response.getBody();
+        assertEquals(HttpStatus.BAD_REQUEST, responsebody.getHttpStatus());
+        assertEquals("회원가입에 실패했습니다. - 비밀번호에 아이디 포함", responsebody.getErrorMessage());
+//        assertEquals(new DefaultResponseDto("회원가입에 실패했습니다. - 유효하지 않은 비밀번호 길이",400), response.getBody());
+
+    }
+
 
 }
 
