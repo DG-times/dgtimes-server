@@ -1,5 +1,7 @@
 package com.v1.dgtimes.integration;
 
+import com.v1.dgtimes.config.exception.RestApiException;
+import com.v1.dgtimes.layer.model.dto.request.BookmarkRequestDto;
 import com.v1.dgtimes.layer.model.dto.request.KeywordRequestDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,19 +21,21 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 */
 
 public class BookmarkIntegrationTest extends DefaultIntegrationTest{
+
+    // 키워드 저장 성공(통과)
     @Test
     @DisplayName("키워드 저장 성공")
     public void case1(){
         //given
-        KeywordRequestDto keywordRequestDto = new KeywordRequestDto("코딩교육");
-        HttpEntity<KeywordRequestDto> keywordRequestDtoHttpEntity = new HttpEntity<>(keywordRequestDto);
+        BookmarkRequestDto bookmarkRequestDto = new BookmarkRequestDto("코딩교육");
+        HttpEntity<BookmarkRequestDto> bookmarkRequestDtoHttpEntity = new HttpEntity<>(bookmarkRequestDto);
 
         //when
         ResponseEntity<DefaultResponseDto> response = testTemplate
 //                .withBasicAuth("admin","testtest!!")
                 .postForEntity(
                         "/api/bookmarks",
-                        keywordRequestDtoHttpEntity,
+                        bookmarkRequestDtoHttpEntity,
                         DefaultResponseDto.class
                 );
 
@@ -41,25 +45,33 @@ public class BookmarkIntegrationTest extends DefaultIntegrationTest{
         assertEquals(200, response.getBody().getStatus());
     }
 
+
+    // 키워드 저장 실패 - 빈 키워드(통과)
     @Test
     @DisplayName("키워드 저장 실패 - 빈 키워드")
     public void case2(){
         //given
         BookmarkRequestDto bookmarkRequestDto = new BookmarkRequestDto("");
+        HttpEntity<BookmarkRequestDto> bookmarkRequestDtoHttpEntity = new HttpEntity<>(bookmarkRequestDto);
+
 
         //when
-        ResponseEntity<DefaultResponseDto> response = testTemplate
-                .withBasicAuth("admin","testtest!!")
+        ResponseEntity<RestApiException> response = testTemplate
+//                .withBasicAuth("admin","testtest!!")
                 .postForEntity(
                         "/api/bookmarks",
-                        bookmarkRequestDto,
-                        DefaultResponseDto.class
+                        bookmarkRequestDtoHttpEntity,
+                        RestApiException.class
                 );
 
         //then
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals(new DefaultResponseDto("키워드를 입력해주세요.",400), response.getBody());
+        assertEquals("키워드 저장 실패 - 빈 키워드", response.getBody().getErrorMessage());
+        assertEquals(HttpStatus.BAD_REQUEST, response.getBody().getHttpStatus());
+
+//        assertEquals(new DefaultResponseDto("키워드 저장 실패 - 빈 키워드",400), response.getBody());
     }
+
 
 //    @Test
 //    @DisplayName("키워드 저장 실패 - 로그인 되지 않음")
@@ -80,6 +92,8 @@ public class BookmarkIntegrationTest extends DefaultIntegrationTest{
 //        assertEquals(new DefaultResponseDto("로그인이 필요합니다.",400), response.getBody());
 //    }
 
+
+    // 키워드 저장 실패 - 기존에 등록한 키워드
     @Test
     @DisplayName("키워드 저장 실패 - 기존에 등록한 키워드")
     public void case4(){
@@ -87,36 +101,45 @@ public class BookmarkIntegrationTest extends DefaultIntegrationTest{
         BookmarkRequestDto bookmarkRequestDto = new BookmarkRequestDto("코딩교육");
 
         //when
-        ResponseEntity<DefaultResponseDto> response = testTemplate
-                .withBasicAuth("admin","testtest!!")
+        ResponseEntity<RestApiException> response = testTemplate
                 .postForEntity(
                         "/api/bookmarks",
                         bookmarkRequestDto,
-                        DefaultResponseDto.class
+                        RestApiException.class
                 );
 
         //then
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals(new DefaultResponseDto("기존에 등록한 키워드 입니다.",400), response.getBody());
+        assertEquals("키워드 저장 실패 - 기존에 등록한 키워드", response.getBody().getErrorMessage());
+        assertEquals(HttpStatus.BAD_REQUEST, response.getBody().getHttpStatus());
+
     }
 
+
+    // 키워드 저장 실패 - 금지된 키워드 (통과)
     @Test
     @DisplayName("키워드 저장 실패 - 금지된 키워드")
     public void case5(){
         //given
         BookmarkRequestDto bookmarkRequestDto = new BookmarkRequestDto("야한거");
+        HttpEntity<BookmarkRequestDto> bookmarkRequestDtoHttpEntity = new HttpEntity<>(bookmarkRequestDto);
+
 
         //when
-        ResponseEntity<DefaultResponseDto> response = testTemplate
-                .withBasicAuth("admin","testtest!!")
+        ResponseEntity<RestApiException> response = testTemplate
+//                .withBasicAuth("admin","testtest!!")
                 .postForEntity(
                         "/api/bookmarks",
-                        bookmarkRequestDto,
-                        DefaultResponseDto.class
+                        bookmarkRequestDtoHttpEntity,
+                        RestApiException.class
                 );
 
         //then
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals(new DefaultResponseDto("금지된 키워드 입니다.",400), response.getBody());
+        assertEquals("키워드 저장 실패 - 금지된 키워드", response.getBody().getErrorMessage());
+        assertEquals(HttpStatus.BAD_REQUEST, response.getBody().getHttpStatus());
+
+
+//        assertEquals(new DefaultResponseDto("키워드 저장 실패 - 금지된 키워드",400), response.getBody());
     }
 }
