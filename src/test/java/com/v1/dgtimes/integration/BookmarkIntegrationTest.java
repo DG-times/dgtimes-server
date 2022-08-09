@@ -2,6 +2,7 @@ package com.v1.dgtimes.integration;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -21,11 +22,12 @@ public class BookmarkIntegrationTest extends DefaultIntegrationTest{
     @DisplayName("키워드 저장 성공")
     public void case1(){
         //given
-        BookmarkRequestDto bookmarkRequestDto = new BookmarkRequestDto("코딩교육");
+        KeywordRequestDto keywordRequestDto = new KeywordRequestDto("코딩교육");
+        HttpEntity<KeywordRequestDto> keywordRequestDtoHttpEntity = new HttpEntity<>(keywordRequestDto);
 
         //when
         ResponseEntity<DefaultResponseDto> response = testTemplate
-                .withBasicAuth("admin","testtest!!")
+//                .withBasicAuth("admin","testtest!!")
                 .postForEntity(
                         "/api/bookmarks",
                         bookmarkRequestDto,
@@ -34,7 +36,8 @@ public class BookmarkIntegrationTest extends DefaultIntegrationTest{
 
         //then
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(new DefaultResponseDto("회원가입에 성공했습니다.",200), response.getBody());
+        assertEquals("키워드 저장에 성공했습니다.", response.getBody().getMsg());
+        assertEquals(200, response.getBody().getStatus());
     }
 
     @Test

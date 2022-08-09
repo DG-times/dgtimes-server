@@ -9,12 +9,14 @@ package com.v1.dgtimes.layer.model.dto.response;
 
 */
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 public class DefaultResponseDto {
-        private String mag;
+        private String msg;
         private int status;
 }

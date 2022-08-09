@@ -9,14 +9,16 @@ package com.v1.dgtimes.layer.controller;
 
 */
 
-import com.v1.dgtimes.layer.model.Keyword;
+import com.v1.dgtimes.layer.model.User;
 import com.v1.dgtimes.layer.model.dto.request.BookmarkRequestDto;
+import com.v1.dgtimes.layer.model.dto.request.KeywordRequestDto;
+import com.v1.dgtimes.layer.model.dto.response.DefaultResponseDto;
 import com.v1.dgtimes.layer.service.BookmarkService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -31,8 +33,8 @@ public class BookmarkController {
 
     //즐겨찾기
     @PostMapping("/api/bookmarks")
-    public ResponseEntity<BookmarkRequestDto> bookmarks (@RequestParam Keyword keyword) {
-        return new ResponseEntity(bookmarkService.pstBookmarkKeyword(new BookmarkRequestDto(keyword)), HttpStatus.OK);
+    public ResponseEntity<DefaultResponseDto> bookmarks (@RequestBody KeywordRequestDto keywordRequestDto) {
+        return new ResponseEntity<>(bookmarkService.pstBookmarkKeyword(keywordRequestDto), HttpStatus.OK);
     }
 
 
