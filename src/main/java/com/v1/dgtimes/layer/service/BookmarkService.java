@@ -30,7 +30,7 @@ public class BookmarkService {
         // Valid
         Keyword keyword = new Keyword(requestDto);
 
-        // 모델 변환
+        // 저장
         bookmarkRepository.save(keyword);
 
         // 모델 저장
@@ -54,20 +54,8 @@ public class BookmarkService {
     }
 
     private boolean isExistKeyword(BookmarkRequestDto requestDto){
-        return bookmarkRepository.existsByKeyword(requestDto.getKeyword()).isPresent();
+        return bookmarkRepository.existsByKeyword(requestDto.getKeyword());
     }
-
-
-//    //Bookmark 키워드 저장 성공
-//    @Transactional
-//    public DefaultResponseDto pstBookmarkKeyword(KeywordRequestDto keywordRequestDto) {
-//        Keyword keyword = new Keyword(keywordRequestDto);
-//
-//        keywordRepository.save(keyword);
-//
-//        return new DefaultResponseDto("키워드 저장에 성공했습니다.", HttpStatus.OK.value());
-//    }
-
 
 
 }
