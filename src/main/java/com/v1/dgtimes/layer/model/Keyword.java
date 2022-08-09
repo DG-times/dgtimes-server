@@ -12,6 +12,7 @@ Todo -
 */
 
 import com.v1.dgtimes.layer.model.dto.request.BookmarkRequestDto;
+import com.v1.dgtimes.layer.model.dto.request.KeywordRequestDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -55,8 +56,13 @@ public class Keyword {
             bookmark.updateKeyword(this);
     }
     
-    // 더미데이터 생성을 위한 1회성 생성자 작성
-    public Keyword(BookmarkRequestDto keywordRequestDto) {
+    // 더미데이터 생성을 위한 1회성 생성자 작성 - 수정하지 말아주세요.
+    public Keyword(KeywordRequestDto keywordRequestDto) {
         this.keyword = keywordRequestDto.getKeyword();
+    }
+
+    // 상욱님 BookmarkService에서 사용되는 생성자
+    public Keyword(BookmarkRequestDto bookmarkRequestDto) {
+        this.keyword = bookmarkRequestDto.getKeyword();
     }
 }

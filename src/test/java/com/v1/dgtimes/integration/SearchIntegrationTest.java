@@ -15,6 +15,9 @@ import com.v1.dgtimes.config.exception.RestApiException;
 import com.v1.dgtimes.integration.mockobject.mockModel.MockKeywordModel;
 import com.v1.dgtimes.integration.mockobject.mockRepository.MockKeywordRepository;
 import com.v1.dgtimes.integration.mockobject.mockService.MockSearchService;
+import com.v1.dgtimes.layer.model.Keyword;
+import com.v1.dgtimes.layer.model.KeywordMapping;
+import com.v1.dgtimes.layer.model.News;
 import com.v1.dgtimes.layer.repository.KeywordRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,6 +27,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -33,7 +37,13 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class SearchIntegrationTest extends DefaultIntegrationTest{
-
+    // 연관관계 매핑을 위한 참고 코드
+//    private void createKeywordNewsData(String title, String content, String main_url, String thumbnail_url, String keyword) throws IOException {
+//        Keyword keywordEntity = createKeywordData(keyword);
+//        News newsEntity = createNewsData(title, content, main_url, thumbnail_url);
+//        KeywordMapping keyword_mapping = new KeywordMapping();
+//        keyword_mapping.updateKeywordNews(keywordEntity,newsEntity);
+//    }
     // DB 접근 없이 진행 (mock 생성)
     @Test
     @DisplayName("검색 성공 케이스")

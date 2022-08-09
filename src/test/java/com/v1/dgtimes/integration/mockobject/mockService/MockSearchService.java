@@ -1,9 +1,18 @@
 package com.v1.dgtimes.integration.mockobject.mockService;
 
+/*
+설명 : MockSearchService 테스트 코드 구현
+   >
+
+작성일 : 2022.08.09
+
+마지막 수정한 사람 : 홍우석
+
+*/
+
 import com.v1.dgtimes.integration.DefaultIntegrationTest;
 import com.v1.dgtimes.integration.mockobject.mockModel.MockKeywordModel;
 import com.v1.dgtimes.integration.mockobject.mockRepository.MockKeywordRepository;
-import com.v1.dgtimes.layer.model.Keyword;
 
 import java.util.Optional;
 
