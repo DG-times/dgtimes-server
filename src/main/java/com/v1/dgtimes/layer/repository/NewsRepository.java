@@ -21,7 +21,11 @@ import java.util.List;
 public interface NewsRepository extends JpaRepository<News, Long> {
 
     // select * from news n left join keyword_mapping km on n.id = km.news_id
-    @Query("select n.id, n.title, n.content, n.main_url, n.thumbnail_url, n.date from News n left join KeywordMapping km where km.news.id = :id")
+//    @Query("select n.id, n.title, n.content, n.main_url, n.thumbnail_url, n.date from News n left join KeywordMapping km where km.news.id = :id")
+    @Query(value="select * "+
+            "from news n "+
+            "left join KEYWORD_MAPPING km on n.id = km.news_id "+
+            "where km.KEYWORD_ID = :id", nativeQuery = true)
     List<News> findAllId(@Param("id") Long id);
 }
 

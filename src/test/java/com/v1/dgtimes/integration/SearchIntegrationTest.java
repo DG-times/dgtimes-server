@@ -2,8 +2,10 @@ package com.v1.dgtimes.integration;
 
 /*
 설명 : KeywordIntegrationTest 테스트 코드 구현
+    > Class 이름 변경 - KeywordIntegrationTest -> SearchIntegrationTest
+    > 모든 테스트 통과 완료
 
-작성일 : 2022.08.08
+작성일 : 2022.08.09
 
 마지막 수정한 사람 : 홍우석
 
@@ -15,11 +17,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 
-public class KeywordIntegrationTest extends DefaultIntegrationTest{
-
+public class SearchIntegrationTest extends DefaultIntegrationTest{
     @Test
     @DisplayName("검색 성공 케이스")
     public void case1(){
@@ -27,30 +31,33 @@ public class KeywordIntegrationTest extends DefaultIntegrationTest{
         String keyword = "코딩교육";
 
         //when
-        ResponseEntity<SearchResponseDto> response = testTemplate
+        ResponseEntity<SearchResponseDto[]> response = testTemplate
                 .getForEntity(
                         "/api/news?keyword="+keyword,
-                        SearchResponseDto.class
+                        SearchResponseDto[].class
                 );
-        
+
         //then
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        SearchResponseDto responseBody = response.getBody();
+        List<SearchResponseDto> responseBody = Arrays.asList(response.getBody());
         assertNotNull(responseBody);
+
+        SearchResponseDto searchResponseDto = responseBody.get(0);
 
         assertEquals(
                 "코딩교육 팀스파르타, 상반기 매출 105억…’최대 실적 달성"
-                ,responseBody.getTitle());
+                ,searchResponseDto.getTitle());
         assertEquals(
                 "코딩 교육 스타트업 팀스파르타가 올해 상반기 매출 105억원, 영업이익 31억원을 기록하며 최대 실적을 달성했다고 13일 밝혔다."
-                ,responseBody.getContent());
+                ,searchResponseDto.getContent());
         assertEquals(
                 "https://news.mt.co.kr/mtview.php?no=2022071316585964426"
-                ,responseBody.getMain_url());
+                ,searchResponseDto.getMain_url());
         assertEquals(
                 "https://thumb.mt.co.kr/06/2022/07/2022071316585964426_1.jpg/dims/optimize"
-                ,responseBody.getThumbnail());
+                ,searchResponseDto.getThumbnail());
     }
+
 
     // Keyword 테이블에서 해당 키워드가 없는 경우 실패 반환
     @Test
