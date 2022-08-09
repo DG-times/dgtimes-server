@@ -11,6 +11,7 @@ package com.v1.dgtimes.layer.service;
 
 import com.v1.dgtimes.layer.model.Keyword;
 import com.v1.dgtimes.layer.model.dto.request.BookmarkRequestDto;
+import com.v1.dgtimes.layer.model.dto.response.DefaultResponseDto;
 import com.v1.dgtimes.layer.model.dto.response.SearchResponseDto;
 import com.v1.dgtimes.layer.repository.BookmarkRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,12 +30,12 @@ public class BookmarkService {
 
     //Bookmark 키워드 저장 성공
     @Transactional
-    public SearchResponseDto pstBookmarkKeyword(BookmarkRequestDto bookmarkRequestDto) {
+    public DefaultResponseDto pstBookmarkKeyword(BookmarkRequestDto bookmarkRequestDto) {
         Keyword keyword  = bookmarkRequestDto.getKeyword();
         if ("".equals(keyword) || keyword == null) {
             throw new RuntimeException("키워드를 입력해주세요.");
         }
-       return new  SearchResponseDto();
+       return new DefaultResponseDto();
 
     }
 
