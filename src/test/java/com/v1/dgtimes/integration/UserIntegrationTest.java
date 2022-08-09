@@ -43,16 +43,16 @@ public class UserIntegrationTest  extends DefaultIntegrationTest {
         HttpEntity<SignupRequestDto> signupRequest = new HttpEntity<>(signupRequestDto);
 
         // when
-        ResponseEntity<String> response = testRestTemplate
+        ResponseEntity<SignupResponseDto> response = testRestTemplate
                 .postForEntity(
                         "/users/signup",
                         signupRequest,
-                        String.class
+                        SignupResponseDto.class
                 );
 
         // then
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("회원가입에 성공했습니다.", response.getBody()); //responseEntity body 한글 인코딩 오류추정
+        assertEquals(new SignupResponseDto("회원가입에 성공했습니다.", 200), response.getBody()); //responseEntity body 한글 인코딩 오류추정
 //        assertEquals(new DefaultResponseDto("회원가입에 성공했습니다.",200), new DefaultResponseDto(response.getBody(), response.getStatusCodeValue()));
 
     }
@@ -85,8 +85,6 @@ public class UserIntegrationTest  extends DefaultIntegrationTest {
 
     }
 
-
-
     @Test
     @DisplayName("아이디 형식 유효 실패 케이스")
     public void case3() {
@@ -112,17 +110,13 @@ public class UserIntegrationTest  extends DefaultIntegrationTest {
     }
 
 
-
-
     @Test
     @DisplayName("아이디 중복 회원가입 실패 케이스")
     public void case4() {
 
-
         // given
         SignupRequestDto signupRequestDto = new  SignupRequestDto("admin", "testtesttest!!", "공상욱");
         HttpEntity<SignupRequestDto> signupRequest = new HttpEntity<>(signupRequestDto);
-
 
         // when
         ResponseEntity<RestApiException> response = testRestTemplate
@@ -131,7 +125,6 @@ public class UserIntegrationTest  extends DefaultIntegrationTest {
                         signupRequest,
                         RestApiException.class
                 );
-
 
         // then
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());

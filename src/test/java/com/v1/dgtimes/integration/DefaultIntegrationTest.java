@@ -10,6 +10,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.util.Objects;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
@@ -50,7 +51,19 @@ public class DefaultIntegrationTest {
         private String username;
     }
 
+    @Getter
+    @Builder
+    static class SignupResponseDto {
+        private String mag;
+        private int status;
 
-
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            SignupResponseDto that = (SignupResponseDto) o;
+            return status == that.status && Objects.equals(mag, that.mag);
+        }
+    }
 
 }

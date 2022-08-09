@@ -1,6 +1,8 @@
 package com.v1.dgtimes.layer.controller;
 
 import com.v1.dgtimes.layer.model.dto.request.SignupRequestDto;
+import com.v1.dgtimes.layer.model.dto.response.DefaultResponseDto;
+import com.v1.dgtimes.layer.model.dto.response.SignupResponseDto;
 import com.v1.dgtimes.layer.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,11 +27,8 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/users/signup")
-    public ResponseEntity<String> registerUser(@RequestBody SignupRequestDto requestDto) {
-        userService.signupUser(requestDto);
-//        RestApiException restApiException = new RestApiException();
-//        restApiException.setHttpStatus(HttpStatus.OK);
-//        restApiException.setErrorMessage("회원가입에 성공했습니다.");
-        return new ResponseEntity("회원가입에 성공했습니다.",HttpStatus.OK);
+    public ResponseEntity<SignupResponseDto> registerUser(@RequestBody SignupRequestDto requestDto) {
+        SignupResponseDto responseDto = userService.signupUser(requestDto);
+        return new ResponseEntity(responseDto,HttpStatus.OK);
     }
 }

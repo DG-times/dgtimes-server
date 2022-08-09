@@ -28,8 +28,3 @@ public interface NewsRepository extends JpaRepository<News, Long> {
             "where km.KEYWORD_ID = :id", nativeQuery = true)
     List<News> findAllId(@Param("id") Long id);
 }
-
-
-interface newInterface{
-
-}
