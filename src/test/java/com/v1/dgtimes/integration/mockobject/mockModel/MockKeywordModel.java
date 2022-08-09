@@ -1,9 +1,18 @@
 package com.v1.dgtimes.integration.mockobject.mockModel;
 
+/*
+설명 : MockKeywordModel 테스트 코드 구현
+   >
+
+작성일 : 2022.08.09
+
+마지막 수정한 사람 : 홍우석
+
+*/
+
 import com.v1.dgtimes.integration.DefaultIntegrationTest;
 import com.v1.dgtimes.layer.model.Bookmark;
 import com.v1.dgtimes.layer.model.KeywordMapping;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,20 +28,20 @@ public class MockKeywordModel  extends DefaultIntegrationTest {
         private Long id;
         private String keyword;
 
-        private List<KeywordMapping> keyword_mappings = new ArrayList<>();
-        private List<Bookmark> bookmarks = new ArrayList<>();
+        private List<MockKeywordMappingModel> mockKeywordMappingModels = new ArrayList<>();
+//        private List<Bookmark> bookmarks = new ArrayList<>();
 
         public MockKeywordModel(KeywordRequestDto keywordRequestDto) {
                 this.keyword = keywordRequestDto.getKeyword();
         }
 //
-//        // Keyword_mapping 연관관계 생성
-//        public void addKeywordMapping(KeywordMapping keyword_mapping) {
-//                this.keyword_mappings.add(keyword_mapping);
-//                // 무한 후프에 빠지지 않기 위해서 작성
-//                if(keyword_mapping.getKeyword()!=this)
-//                        keyword_mapping.updateKeyword(this);
-//        }
+        // Keyword_mapping 연관관계 생성
+        public void addKeywordMapping(MockKeywordMappingModel mockKeywordMappingModel) {
+                this.mockKeywordMappingModels.add(mockKeywordMappingModel);
+                // 무한 후프에 빠지지 않기 위해서 작성
+                if(mockKeywordMappingModel.getMockKeywordModel()!=this)
+                        mockKeywordMappingModel.updateKeyword(this);
+        }
 //
 //        // Bookmark 연관관계 생성
 //        public void addBookmark(Bookmark bookmark) {

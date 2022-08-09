@@ -3,6 +3,7 @@ package com.v1.dgtimes.layer.service;
 /*
 설명 : SearchService 구현
     > 키워드 검색을 통한 뉴스 구현 완료
+    > 코드 컨벤션 일부 적용 - 22.08.10
 
 작성일 : 2022.08.09
 
