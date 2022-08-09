@@ -21,7 +21,7 @@ public class DefaultIntegrationTest {
 
     @Getter
     @Builder
-    static class SearchResponseDto {
+    public static class SearchResponseDto {
         private String title;
         private String content;
         private String thumbnail;
@@ -38,6 +38,13 @@ public class DefaultIntegrationTest {
     @Getter
     @Builder
     static class BookmarkRequestDto{
+        private String keyword;
+    }
+
+    // Keyword DTO
+    @Getter
+    @Builder
+    public static class KeywordRequestDto{
         private String keyword;
     }
 

@@ -12,21 +12,50 @@ package com.v1.dgtimes.integration;
 */
 
 import com.v1.dgtimes.config.exception.RestApiException;
+import com.v1.dgtimes.integration.mockobject.mockModel.MockKeywordModel;
+import com.v1.dgtimes.integration.mockobject.mockRepository.MockKeywordRepository;
+import com.v1.dgtimes.integration.mockobject.mockService.MockSearchService;
+import com.v1.dgtimes.layer.repository.KeywordRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
 
-
+@ExtendWith(MockitoExtension.class)
 public class SearchIntegrationTest extends DefaultIntegrationTest{
+
+    // DB 접근 없이 진행 (mock 생성)
+    @Test
+    @DisplayName("검색 성공 케이스")
+    public void case0() {
+        // given
+        String keyword = "코딩교육";
+        KeywordRequestDto keywordRequestDto = new KeywordRequestDto(keyword);
+
+        MockKeywordRepository mockKeywordRepository = new MockKeywordRepository();
+        MockSearchService mockSearchService = new MockSearchService(mockKeywordRepository);
+        MockKeywordModel mockKeywordModel = mockSearchService.createKeyword(keywordRequestDto);
+        //when
+        Optional<MockKeywordModel> result = mockSearchService.searchKeyword(keywordRequestDto);
+        //then
+//        assertEquals(keyword,mockKeywordModel.getKeyword());
+        assertEquals(keyword,result.get().getKeyword());
+    }
+
     @Test
     @DisplayName("검색 성공 케이스")
     public void case1(){
+
         //given
         String keyword = "코딩교육";
 

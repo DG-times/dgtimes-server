@@ -11,14 +11,14 @@ package com.v1.dgtimes.layer.model.dto.response;
 Todo -
 */
 
+import com.v1.dgtimes.layer.model.News;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.util.Date;
 
 @Getter
-@Setter // 더미데이터 끝나구 삭제해주세요
 @NoArgsConstructor
 public class SearchResponseDto {
     private String title;
@@ -26,4 +26,13 @@ public class SearchResponseDto {
     private String thumbnail;
     private String main_url;
     private Date date;
+
+    // Service 뉴스데이터 관련 생성자
+    public SearchResponseDto(News news) {
+        this.title = news.getTitle();
+        this.content = news.getContent();
+        this.thumbnail = news.getThumbnail_url();
+        this.main_url = news.getMain_url();
+        this.date = news.getDate();
+    }
 }
