@@ -9,11 +9,13 @@ package com.v1.dgtimes.layer.service;
 
 */
 
+import com.v1.dgtimes.layer.model.Bookmark;
 import com.v1.dgtimes.layer.model.Keyword;
 import com.v1.dgtimes.layer.model.dto.request.BookmarkRequestDto;
 import com.v1.dgtimes.layer.model.dto.request.KeywordRequestDto;
 import com.v1.dgtimes.layer.model.dto.response.DefaultResponseDto;
 import com.v1.dgtimes.layer.repository.BookmarkRepository;
+import com.v1.dgtimes.layer.repository.KeywordRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class BookmarkService {
 
     private final BookmarkRepository bookmarkRepository;
+    private final KeywordRepository keywordRepository;
 
 
     //Bookmark 키워드 저장 성공
