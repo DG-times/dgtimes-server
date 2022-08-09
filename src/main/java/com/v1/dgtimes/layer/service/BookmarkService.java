@@ -35,7 +35,7 @@ public class BookmarkService {
             throw new RuntimeException("키워드를 입력해주세요.");
         }
         bookmarkRepository.save(keyword);
-
+        return null;
     }
 
 

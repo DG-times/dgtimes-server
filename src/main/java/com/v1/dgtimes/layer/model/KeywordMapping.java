@@ -13,7 +13,6 @@ Todo -
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.apache.catalina.Store;
 
 import javax.persistence.*;
 
@@ -21,7 +20,7 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class Keyword_mapping {
+public class KeywordMapping {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column

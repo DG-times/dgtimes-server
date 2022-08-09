@@ -9,7 +9,7 @@ package com.v1.dgtimes.integration;
 
 */
 
-import com.v1.dgtimes.layer.model.exception.RestApiException;
+import com.v1.dgtimes.config.exception.RestApiException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;

@@ -2,7 +2,7 @@ package com.v1.dgtimes.integration;
 
 
 
-import com.v1.dgtimes.layer.model.exception.RestApiException;
+import com.v1.dgtimes.config.exception.RestApiException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,15 +39,15 @@ public class UserIntegrationTest  extends DefaultIntegrationTest {
     public void case1()  {
 
         // given
-        SignupRequestDto signupRequestDto = new  SignupRequestDto("admin", "testtesttest!!", "공상욱");
+        SignupRequestDto signupRequestDto = new  SignupRequestDto("admin", "testtest!!", "공상욱");
         HttpEntity<SignupRequestDto> signupRequest = new HttpEntity<>(signupRequestDto);
 
         // when
-        ResponseEntity<RestApiException> response = testRestTemplate
+        ResponseEntity<String> response = testRestTemplate
                 .postForEntity(
                         "/users/signup",
                         signupRequest,
-                        RestApiException.class
+                        String.class
                 );
 
         // then

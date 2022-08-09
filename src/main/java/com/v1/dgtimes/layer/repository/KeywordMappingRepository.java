@@ -1,11 +1,10 @@
 package com.v1.dgtimes.layer.repository;
 
-import com.v1.dgtimes.layer.model.Keyword_mapping;
+import com.v1.dgtimes.layer.model.KeywordMapping;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
-import java.util.Optional;
 
-public interface KeywordMappingRepository extends JpaRepository<Keyword_mapping, Long> {
-    List<Keyword_mapping> findAllByKeywordId(Long keywordId);
+public interface KeywordMappingRepository extends JpaRepository<KeywordMapping, Long> {
+    List<KeywordMapping> findAllByKeywordId(Long keywordId);
 }
