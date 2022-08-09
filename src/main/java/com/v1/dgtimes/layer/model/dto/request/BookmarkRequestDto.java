@@ -21,5 +21,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class BookmarkRequestDto {
 
-    private Keyword keyword;
+    private String keyword;
 }

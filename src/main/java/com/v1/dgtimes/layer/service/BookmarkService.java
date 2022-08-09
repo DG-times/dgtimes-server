@@ -9,10 +9,13 @@ package com.v1.dgtimes.layer.service;
 
 */
 
+import com.v1.dgtimes.layer.model.Bookmark;
 import com.v1.dgtimes.layer.model.Keyword;
 import com.v1.dgtimes.layer.model.dto.request.BookmarkRequestDto;
-import com.v1.dgtimes.layer.model.dto.response.SearchResponseDto;
+import com.v1.dgtimes.layer.model.dto.request.KeywordRequestDto;
+import com.v1.dgtimes.layer.model.dto.response.DefaultResponseDto;
 import com.v1.dgtimes.layer.repository.BookmarkRepository;
+import com.v1.dgtimes.layer.repository.KeywordRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,17 +28,17 @@ import org.springframework.transaction.annotation.Transactional;
 public class BookmarkService {
 
     private final BookmarkRepository bookmarkRepository;
+    private final KeywordRepository keywordRepository;
 
 
     //Bookmark 키워드 저장 성공
     @Transactional
-    public SearchResponseDto pstBookmarkKeyword(BookmarkRequestDto bookmarkRequestDto) {
-        Keyword keyword  = bookmarkRequestDto.getKeyword();
-        if ("".equals(keyword) || keyword == null) {
-            throw new RuntimeException("키워드를 입력해주세요.");
-        }
-        bookmarkRepository.save(keyword);
-        return null;
+    public DefaultResponseDto pstBookmarkKeyword(KeywordRequestDto keywordRequestDto) {
+        Keyword keyword = new Keyword(keywordRequestDto);
+
+        keywordRepository.save(keyword);
+
+        return new DefaultResponseDto("키워드 저장에 성공했습니다.", HttpStatus.OK.value());
     }
 
 
