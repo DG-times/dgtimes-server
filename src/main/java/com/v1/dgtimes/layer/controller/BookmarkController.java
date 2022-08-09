@@ -9,8 +9,6 @@ package com.v1.dgtimes.layer.controller;
 
 */
 
-import com.v1.dgtimes.layer.model.User;
-import com.v1.dgtimes.layer.model.dto.request.BookmarkRequestDto;
 import com.v1.dgtimes.layer.model.dto.request.KeywordRequestDto;
 import com.v1.dgtimes.layer.model.dto.response.DefaultResponseDto;
 import com.v1.dgtimes.layer.service.BookmarkService;
