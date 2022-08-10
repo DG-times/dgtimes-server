@@ -1,10 +1,10 @@
 package com.v1.dgtimes.integration;
 
-import com.v1.dgtimes.layer.model.User;
-import com.v1.dgtimes.layer.repository.BookmarkRepository;
+
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -48,6 +48,7 @@ public class DefaultIntegrationTest {
 
     // Keyword DTO
     @Getter
+    @Setter
     @Builder
     public static class KeywordRequestDto{
         private String keyword;
@@ -62,13 +63,6 @@ public class DefaultIntegrationTest {
         private String pw;
         private String username;
 
-        public User toUser(){
-            return User.builder()
-                    .id(this.id)
-                    .pw(this.pw)
-                    .username(this.username)
-                    .build();
-        }
     }
 
     @Getter
