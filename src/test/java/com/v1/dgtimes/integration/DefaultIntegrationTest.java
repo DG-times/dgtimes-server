@@ -1,5 +1,6 @@
 package com.v1.dgtimes.integration;
 
+import com.v1.dgtimes.layer.model.User;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -56,6 +57,14 @@ public class DefaultIntegrationTest {
         private String id;
         private String pw;
         private String username;
+
+        public User toUser(){
+            return User.builder()
+                    .id(this.id)
+                    .pw(this.pw)
+                    .username(this.username)
+                    .build();
+        }
     }
 
     @Getter
