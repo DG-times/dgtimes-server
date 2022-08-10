@@ -1,10 +1,14 @@
 package com.v1.dgtimes.integration;
 
 import com.v1.dgtimes.config.exception.RestApiException;
+import com.v1.dgtimes.layer.model.Keyword;
 import com.v1.dgtimes.layer.model.dto.request.BookmarkRequestDto;
-import com.v1.dgtimes.layer.model.dto.request.KeywordRequestDto;
+import com.v1.dgtimes.layer.repository.BookmarkRepository;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +24,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 */
 
+
+
 public class BookmarkIntegrationTest extends DefaultIntegrationTest{
+
+    @Autowired
+    private BookmarkRepository bookmarkRepository;
+
+    @BeforeEach
+    public void setupDB(){
+        bookmarkRepository.save(new Keyword(new com.v1.dgtimes.layer.model.dto.request.BookmarkRequestDto("코당교육")));
+    }
 
     // 키워드 저장 성공(통과)
     @Test
@@ -44,6 +58,13 @@ public class BookmarkIntegrationTest extends DefaultIntegrationTest{
         assertEquals("키워드 저장에 성공했습니다.", response.getBody().getMsg());
         assertEquals(200, response.getBody().getStatus());
     }
+
+    @AfterEach
+    public void resetDB(){
+        bookmarkRepository.deleteAll();
+    }
+
+
 
 
     // 키워드 저장 실패 - 빈 키워드(통과)
@@ -69,8 +90,8 @@ public class BookmarkIntegrationTest extends DefaultIntegrationTest{
         assertEquals("키워드 저장 실패 - 빈 키워드", response.getBody().getErrorMessage());
         assertEquals(HttpStatus.BAD_REQUEST, response.getBody().getHttpStatus());
 
-//        assertEquals(new DefaultResponseDto("키워드 저장 실패 - 빈 키워드",400), response.getBody());
     }
+
 
 
 //    @Test
@@ -91,6 +112,7 @@ public class BookmarkIntegrationTest extends DefaultIntegrationTest{
 //        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
 //        assertEquals(new DefaultResponseDto("로그인이 필요합니다.",400), response.getBody());
 //    }
+
 
 
     // 키워드 저장 실패 - 기존에 등록한 키워드
@@ -116,6 +138,7 @@ public class BookmarkIntegrationTest extends DefaultIntegrationTest{
     }
 
 
+
     // 키워드 저장 실패 - 금지된 키워드 (통과)
     @Test
     @DisplayName("키워드 저장 실패 - 금지된 키워드")
@@ -139,7 +162,5 @@ public class BookmarkIntegrationTest extends DefaultIntegrationTest{
         assertEquals("키워드 저장 실패 - 금지된 키워드", response.getBody().getErrorMessage());
         assertEquals(HttpStatus.BAD_REQUEST, response.getBody().getHttpStatus());
 
-
-//        assertEquals(new DefaultResponseDto("키워드 저장 실패 - 금지된 키워드",400), response.getBody());
     }
 }
