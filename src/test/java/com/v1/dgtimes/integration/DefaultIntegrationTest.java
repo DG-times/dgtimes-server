@@ -4,6 +4,8 @@ import com.v1.dgtimes.layer.repository.BlackKeywordRepository;
 import com.v1.dgtimes.layer.repository.KeywordMappingRepository;
 import com.v1.dgtimes.layer.repository.KeywordRepository;
 import com.v1.dgtimes.layer.repository.NewsRepository;
+import com.v1.dgtimes.layer.repository.BookmarkRepository;
+import com.v1.dgtimes.layer.repository.UserRepository;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -32,6 +34,13 @@ public class DefaultIntegrationTest {
 
     @Autowired
     TestRestTemplate testTemplate;
+
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    BookmarkRepository bookmarkRepository;
+
 
     @Getter
     @Builder
