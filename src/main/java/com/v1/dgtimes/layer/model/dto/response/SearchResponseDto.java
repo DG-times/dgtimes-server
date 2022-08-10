@@ -23,16 +23,16 @@ import java.util.Date;
 public class SearchResponseDto {
     private String title;
     private String content;
-    private String thumbnail;
-    private String main_url;
+    private String thumbnailUrl;
+    private String mainUrl;
     private Date date;
 
     // Service 뉴스데이터 관련 생성자
     public SearchResponseDto(News news) {
         this.title = news.getTitle();
         this.content = news.getContent();
-        this.thumbnail = news.getThumbnail_url();
-        this.main_url = news.getMain_url();
+        this.thumbnailUrl = news.getThumbnailUrl();
+        this.mainUrl = news.getMainUrl();
         this.date = news.getDate();
     }
 }

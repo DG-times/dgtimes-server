@@ -2,7 +2,7 @@ package com.v1.dgtimes.layer.model.dto.request;
 
 /*
 설명 : KeywordRequestDto 구현
-    >
+    > setter 삭제
 
 작성일 : 2022.08.08
 
@@ -11,17 +11,13 @@ package com.v1.dgtimes.layer.model.dto.request;
 Todo -
 */
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
-@Setter
+@AllArgsConstructor
 @NoArgsConstructor
 public class KeywordRequestDto {
     private String keyword;
-
-    public KeywordRequestDto(String keyword) {
-        this.keyword = keyword;
-    }
 }
