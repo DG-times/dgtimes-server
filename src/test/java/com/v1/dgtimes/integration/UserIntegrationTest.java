@@ -3,6 +3,10 @@ package com.v1.dgtimes.integration;
 
 
 import com.v1.dgtimes.config.exception.RestApiException;
+import com.v1.dgtimes.layer.model.User;
+import com.v1.dgtimes.layer.repository.UserRepository;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,17 +18,14 @@ import org.springframework.test.context.ActiveProfiles;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-
-
 /*
-설명 : UserIntegrationTest 작성 하였습니다. 테스트 케이스 추가 작성했습니다.
+설명 : UserIntegrationTest 작성 하였습니다. case4 - BeforeEach, AfterEach 추가.
 
-작성일 : 2022.08.09
+작성일 : 2022.08.10
 
 마지막 수정한 사람 : 안상록
 
 */
-
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
@@ -33,6 +34,8 @@ public class UserIntegrationTest  extends DefaultIntegrationTest {
     @Autowired
     TestRestTemplate testRestTemplate;
 
+    @Autowired
+    private UserRepository userRepository;
 
     @Test
     @DisplayName("회원가입 성공 케이스")
@@ -52,12 +55,9 @@ public class UserIntegrationTest  extends DefaultIntegrationTest {
 
         // then
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(new SignupResponseDto("회원가입에 성공했습니다.", 200), response.getBody()); //responseEntity body 한글 인코딩 오류추정
-//        assertEquals(new DefaultResponseDto("회원가입에 성공했습니다.",200), new DefaultResponseDto(response.getBody(), response.getStatusCodeValue()));
+        assertEquals(new SignupResponseDto("회원가입에 성공했습니다.", 200), response.getBody());
 
     }
-
-
 
 
     @Test
@@ -81,7 +81,6 @@ public class UserIntegrationTest  extends DefaultIntegrationTest {
         RestApiException responsebody = response.getBody();
         assertEquals(HttpStatus.BAD_REQUEST, responsebody.getHttpStatus());
         assertEquals("회원가입에 실패했습니다. - 유효하지 않은 비밀번호 길이", responsebody.getErrorMessage());
-//        assertEquals(new DefaultResponseDto("회원가입에 실패했습니다. - 유효하지 않은 비밀번호 길이",400), response.getBody());
 
     }
 
@@ -109,13 +108,16 @@ public class UserIntegrationTest  extends DefaultIntegrationTest {
 
     }
 
-
+    @BeforeEach
+    public void setupDB(){
+        userRepository.save(new User("admin4", "test!text", "독고민수", null));
+    }
     @Test
     @DisplayName("아이디 중복 회원가입 실패 케이스")
     public void case4() {
 
         // given
-        SignupRequestDto signupRequestDto = new  SignupRequestDto("admin", "testtesttest!!", "공상욱");
+        SignupRequestDto signupRequestDto = new  SignupRequestDto("admin4", "testtesttest!!", "공상욱");
         HttpEntity<SignupRequestDto> signupRequest = new HttpEntity<>(signupRequestDto);
 
         // when
@@ -125,12 +127,16 @@ public class UserIntegrationTest  extends DefaultIntegrationTest {
                         signupRequest,
                         RestApiException.class
                 );
-
         // then
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         RestApiException responsebody = response.getBody();
         assertEquals(HttpStatus.BAD_REQUEST, responsebody.getHttpStatus());
         assertEquals("회원가입에 실패했습니다. - 중복된 아이디 입니다", responsebody.getErrorMessage());
+
+    }
+    @AfterEach
+    public void resetDB(){
+        userRepository.deleteAll();
     }
 
     @Test
@@ -154,7 +160,6 @@ public class UserIntegrationTest  extends DefaultIntegrationTest {
         RestApiException responsebody = response.getBody();
         assertEquals(HttpStatus.BAD_REQUEST, responsebody.getHttpStatus());
         assertEquals("회원가입에 실패했습니다. - 유효하지 않은 아이디 길이", responsebody.getErrorMessage());
-//        assertEquals(new DefaultResponseDto("회원가입에 실패했습니다. - 유효하지 않은 비밀번호 길이",400), response.getBody());
 
     }
 
@@ -180,10 +185,8 @@ public class UserIntegrationTest  extends DefaultIntegrationTest {
         RestApiException responsebody = response.getBody();
         assertEquals(HttpStatus.BAD_REQUEST, responsebody.getHttpStatus());
         assertEquals("회원가입에 실패했습니다. - 비밀번호에 아이디 포함", responsebody.getErrorMessage());
-//        assertEquals(new DefaultResponseDto("회원가입에 실패했습니다. - 유효하지 않은 비밀번호 길이",400), response.getBody());
 
     }
-
 
 }
 
