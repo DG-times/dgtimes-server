@@ -48,13 +48,12 @@
 <body class="text-center">
 
 <main class="form-signup">
-  <form>
     <img class="mb-4" src="../assets/img/logo_transparent.png" alt="" width="100" height="100">
     <h1 class="h3 mb-3 fw-normal">Please sign up</h1>
 
     <div class="form-floating">
-      <input type="email" class="form-control" id="floatingId" placeholder="name@example.com">
-      <label for="floatingId">Email address</label>
+      <input type="text" class="form-control" id="floatingId" placeholder="User Id">
+      <label for="floatingId">User ID</label>
     </div>
 
     <div class="form-floating">
@@ -67,12 +66,42 @@
       <label for="floatingPassword">Password</label>
     </div>
 
-    <button class="w-100 btn btn-lg btn-primary" type="submit">Sign up</button>
-  </form>
+    <button class="w-100 btn btn-lg btn-primary" onclick="signup()">Sign up</button>
 </main>
 
 
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+  function signup() {
+
+    let id = $('#floatingId').val()
+    let username = $('#floatingName').val()
+    let pw = $('#floatingPassword').val()
+
+      $.ajax({
+          type: "POST" ,
+          url: "/users/signup",
+          timeout: 3000,
+          data: JSON.stringify(
+              {
+                  id: id,
+                  username: username,
+                  pw: pw
+              }
+          ),
+          contentType: "application/json",
+
+          error: function (response, status, error) {
+              console.log(response["responseJSON"])
+          },
+
+          success: function (response, status, request) {
+              console.log(response)
+          }
+  })
+  }
+</script>
 </body>
 </html>
