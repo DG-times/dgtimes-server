@@ -34,8 +34,15 @@ public class UserIntegrationTest  extends DefaultIntegrationTest {
     @Autowired
     TestRestTemplate testRestTemplate;
 
-    @Autowired
-    private UserRepository userRepository;
+    @BeforeEach
+    public void setupDB(){
+        userRepository.save(new User("admin4", "test!text", "독고민수", null));
+    }
+
+    @AfterEach
+    public void resetDB(){
+        userRepository.deleteAll();
+    }
 
     @Test
     @DisplayName("회원가입 성공 케이스")
@@ -83,7 +90,6 @@ public class UserIntegrationTest  extends DefaultIntegrationTest {
         assertEquals("회원가입에 실패했습니다. - 유효하지 않은 비밀번호 길이", responsebody.getErrorMessage());
 
     }
-
     @Test
     @DisplayName("아이디 형식 유효 실패 케이스")
     public void case3() {
@@ -107,11 +113,6 @@ public class UserIntegrationTest  extends DefaultIntegrationTest {
         assertEquals("회원가입에 실패했습니다. - 유효하지 않은 아이디 형식", responsebody.getErrorMessage());
 
     }
-
-    @BeforeEach
-    public void setupDB(){
-        userRepository.save(new User("admin4", "test!text", "독고민수", null));
-    }
     @Test
     @DisplayName("아이디 중복 회원가입 실패 케이스")
     public void case4() {
@@ -133,10 +134,6 @@ public class UserIntegrationTest  extends DefaultIntegrationTest {
         assertEquals(HttpStatus.BAD_REQUEST, responsebody.getHttpStatus());
         assertEquals("회원가입에 실패했습니다. - 중복된 아이디 입니다", responsebody.getErrorMessage());
 
-    }
-    @AfterEach
-    public void resetDB(){
-        userRepository.deleteAll();
     }
 
     @Test
