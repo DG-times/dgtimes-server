@@ -11,19 +11,35 @@ package com.v1.dgtimes.layer.model.dto.request;
 Todo -
 */
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.v1.dgtimes.layer.model.News;
+import lombok.*;
 
 import java.util.Date;
 
 @Getter
-@Setter
+@AllArgsConstructor
 @NoArgsConstructor
 public class NewsRequestDto {
     private String title;
     private String content;
-    private String main_url;
-    private String thumbnail_url;
+    private String mainUrl;
+    private String thumbnailUrl;
     private Date date;
+
+    public NewsRequestDto(String title, String content, String mainUrl, String thumbnailUrl) {
+        this.title = title;
+        this.content = content;
+        this.mainUrl = mainUrl;
+        this.thumbnailUrl = thumbnailUrl;
+    }
+
+    public News toNews(){
+        return News.builder()
+                .title(this.title)
+                .content(this.content)
+                .mainUrl(this.mainUrl)
+                .thumbnailUrl(this.thumbnailUrl)
+                .date(this.date)
+                .build();
+    }
 }

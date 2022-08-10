@@ -11,6 +11,7 @@ Todo -
 */
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -18,6 +19,7 @@ import javax.persistence.*;
 
 @Getter
 @Entity
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class KeywordMapping {
@@ -38,7 +40,7 @@ public class KeywordMapping {
     public void updateKeyword(Keyword keyword) {
         this.keyword = keyword;
         // 무한 루프에 빠지지 않기 위해 작성
-        if(!keyword.getKeyword_mappings().contains(this))
+        if(!keyword.getKeywordMappings().contains(this))
             keyword.addKeywordMapping(this);
     }
 
@@ -46,7 +48,7 @@ public class KeywordMapping {
     public void updateNews(News news) {
         this.news = news;
         // 무한 루프에 빠지지 않기 위해 작성
-        if(!news.getKeyword_mappings().contains(this))
+        if(!news.getKeywordMappings().contains(this))
             news.addKeywordMapping(this);
     }
 
@@ -54,9 +56,9 @@ public class KeywordMapping {
     public void updateKeywordNews(Keyword keyword, News news) {
         this.keyword = keyword;
         this.news = news;
-        if(!keyword.getKeyword_mappings().contains(this))
+        if(!keyword.getKeywordMappings().contains(this))
             keyword.addKeywordMapping(this);
-        if(!news.getKeyword_mappings().contains(this))
+        if(!news.getKeywordMappings().contains(this))
             news.addKeywordMapping(this);
     }
 }
