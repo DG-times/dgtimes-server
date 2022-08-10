@@ -1,5 +1,6 @@
 package com.v1.dgtimes.integration;
 
+
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -19,6 +20,9 @@ public class DefaultIntegrationTest {
 
     @Autowired
     TestRestTemplate testTemplate;
+
+    @Autowired
+    BookmarkRepository bookmarkRepository;
 
     @Getter
     @Builder
