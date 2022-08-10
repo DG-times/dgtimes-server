@@ -3,6 +3,7 @@ package com.v1.dgtimes.integration;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -43,6 +44,7 @@ public class DefaultIntegrationTest {
 
     // Keyword DTO
     @Getter
+    @Setter
     @Builder
     public static class KeywordRequestDto{
         private String keyword;
