@@ -1,7 +1,10 @@
 package com.v1.dgtimes.integration;
 
+import com.v1.dgtimes.layer.repository.BlackKeywordRepository;
+import com.v1.dgtimes.layer.repository.KeywordMappingRepository;
+import com.v1.dgtimes.layer.repository.KeywordRepository;
+import com.v1.dgtimes.layer.repository.NewsRepository;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,13 +12,23 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.test.context.ActiveProfiles;
 
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import java.util.Date;
 import java.util.Objects;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 public class DefaultIntegrationTest {
+    @Autowired
+    KeywordRepository keywordRepository;
+
+    @Autowired
+    BlackKeywordRepository blackKeywordRepository;
+
+    @Autowired
+    NewsRepository newsRepository;
+
+    @Autowired
+    KeywordMappingRepository keywordMappingRepository;
 
     @Autowired
     TestRestTemplate testTemplate;
@@ -25,8 +38,9 @@ public class DefaultIntegrationTest {
     public static class SearchResponseDto {
         private String title;
         private String content;
-        private String thumbnail;
-        private String main_url;
+        private String thumbnailUrl;
+        private String mainUrl;
+        private Date date;
     }
 
     @Getter
@@ -46,7 +60,7 @@ public class DefaultIntegrationTest {
     @Getter
     @Setter
     @Builder
-    public static class KeywordRequestDto{
+    static class KeywordRequestDto{
         private String keyword;
     }
 
