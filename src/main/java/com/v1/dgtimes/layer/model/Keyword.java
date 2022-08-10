@@ -29,7 +29,7 @@ import java.util.List;
 @AllArgsConstructor
 public class Keyword {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private Long id;
 
@@ -67,4 +67,6 @@ public class Keyword {
     public Keyword(BookmarkRequestDto bookmarkRequestDto) {
         this.keyword = bookmarkRequestDto.getKeyword();
     }
+
+
 }

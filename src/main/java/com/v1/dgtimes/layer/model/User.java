@@ -28,6 +28,7 @@ public class User {
 
     @Id
     @Column(name = "User_id",nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
 
     @Column(nullable = false)

@@ -23,6 +23,7 @@ public class Bookmark {
 
     @Id
     @Column(nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
 
     @ManyToOne(fetch = FetchType.LAZY)

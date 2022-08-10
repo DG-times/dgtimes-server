@@ -16,21 +16,14 @@ import com.v1.dgtimes.layer.model.BlackKeyword;
 import com.v1.dgtimes.layer.model.Keyword;
 import com.v1.dgtimes.layer.model.KeywordMapping;
 import com.v1.dgtimes.layer.model.News;
-import com.v1.dgtimes.layer.model.dto.request.KeywordRequestDto;
 import com.v1.dgtimes.layer.model.dto.request.NewsRequestDto;
-import com.v1.dgtimes.layer.repository.BlackKeywordRepository;
-import com.v1.dgtimes.layer.repository.KeywordMappingRepository;
-import com.v1.dgtimes.layer.repository.KeywordRepository;
-import com.v1.dgtimes.layer.repository.NewsRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -38,17 +31,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class SearchIntegrationTest extends DefaultIntegrationTest{
-    @Autowired
-    KeywordRepository keywordRepository;
-
-    @Autowired
-    BlackKeywordRepository blackKeywordRepository;
-    
-    @Autowired
-    NewsRepository newsRepository;
-
-    @Autowired
-    KeywordMappingRepository keywordMappingRepository;
 
     private void createBlackKeywordData(String blackKeyword) throws IOException {
         // 블랙키워드 등록
@@ -79,20 +61,30 @@ public class SearchIntegrationTest extends DefaultIntegrationTest{
         News newsEntity = createNewsData(title, content, mainUrl, thumbnailUrl);
         KeywordMapping keywordMapping = new KeywordMapping();
         keywordMapping.updateKeywordNews(keywordEntity,newsEntity);
+        keywordMappingRepository.save(keywordMapping);
     }
 
     @BeforeEach
-    @Transactional
-    public void setUp1() throws IOException {
+    public void setUp() throws IOException {
         createKeywordNewsData("코딩교육 팀스파르타, 상반기 매출 105억…’최대 실적 달성"
                 ,"코딩 교육 스타트업 팀스파르타가 올해 상반기 매출 105억원, 영업이익 31억원을 기록하며 최대 실적을 달성했다고 13일 밝혔다."
                 ,"https://news.mt.co.kr/mtview.php?no=2022071316585964426"
                 ,"https://thumb.mt.co.kr/06/2022/07/2022071316585964426_1.jpg/dims/optimize",
                 "코딩교육");
+        createBlackKeywordData("야한단어"); // 얘가 안들어가네요??
     }
+
+    @AfterEach
+    public void reset() {
+        keywordRepository.deleteAll();
+        newsRepository.deleteAll();
+        keywordMappingRepository.deleteAll();
+        blackKeywordRepository.deleteAll();
+    }
+
     @Test
     @DisplayName("검색 성공 케이스")
-    public void case1(){
+    public void case1() {
         //given
         String keyword = "코딩교육";
 
@@ -118,16 +110,11 @@ public class SearchIntegrationTest extends DefaultIntegrationTest{
                 ,searchResponseDto.getContent());
         assertEquals(
                 "https://news.mt.co.kr/mtview.php?no=2022071316585964426"
-                ,searchResponseDto.getMain_url());
+                ,searchResponseDto.getMainUrl());
         assertEquals(
                 "https://thumb.mt.co.kr/06/2022/07/2022071316585964426_1.jpg/dims/optimize"
-                ,searchResponseDto.getThumbnail());
-    }
-    @AfterEach
-    public void reset1() {
-        keywordRepository.deleteAll();
-        newsRepository.deleteAll();
-        keywordMappingRepository.deleteAll();
+                ,searchResponseDto.getThumbnailUrl());
+
     }
 
 
@@ -170,10 +157,6 @@ public class SearchIntegrationTest extends DefaultIntegrationTest{
         assertEquals("키워드를 입력해주세요.", responsebody.getErrorMessage());
     }
 
-    @BeforeEach
-    public void setUp4() throws IOException {
-        createBlackKeywordData("야한단어");
-    }
     // Bookmark 테이블에서 금지어인지 확인 후, 금지어인경우 실패
     @Test
     @DisplayName("검색한 키워드가 금지어여서 실패하는 케이스")
@@ -192,9 +175,5 @@ public class SearchIntegrationTest extends DefaultIntegrationTest{
         RestApiException responsebody = response.getBody();
         assertEquals(HttpStatus.BAD_REQUEST, responsebody.getHttpStatus());
         assertEquals("검색한 키워드 금지어입니다.", responsebody.getErrorMessage());
-    }
-    @AfterEach
-    public void reset4() {
-        blackKeywordRepository.deleteAll();
     }
 }
