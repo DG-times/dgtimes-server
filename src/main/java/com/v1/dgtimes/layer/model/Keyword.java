@@ -14,6 +14,7 @@ Todo -
 import com.v1.dgtimes.layer.model.dto.request.BookmarkRequestDto;
 import com.v1.dgtimes.layer.model.dto.request.KeywordRequestDto;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -23,6 +24,7 @@ import java.util.List;
 
 @Getter
 @Entity
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Keyword {
@@ -35,17 +37,17 @@ public class Keyword {
     private String keyword;
 
     @OneToMany(mappedBy = "keyword", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<KeywordMapping> keyword_mappings = new ArrayList<>();
+    private List<KeywordMapping> keywordMappings = new ArrayList<>();
 
     @OneToMany(mappedBy = "keyword", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Bookmark> bookmarks = new ArrayList<>();
 
     // Keyword_mapping 연관관계 생성
-    public void addKeywordMapping(KeywordMapping keyword_mapping) {
-        this.keyword_mappings.add(keyword_mapping);
+    public void addKeywordMapping(KeywordMapping keywordMapping) {
+        this.keywordMappings.add(keywordMapping);
         // 무한 후프에 빠지지 않기 위해서 작성
-        if(keyword_mapping.getKeyword()!=this)
-            keyword_mapping.updateKeyword(this);
+        if(keywordMapping.getKeyword()!=this)
+            keywordMapping.updateKeyword(this);
     }
 
     // Bookmark 연관관계 생성
@@ -57,8 +59,8 @@ public class Keyword {
     }
     
     // 더미데이터 생성을 위한 1회성 생성자 작성 - 수정하지 말아주세요.
-    public Keyword(KeywordRequestDto keywordRequestDto) {
-        this.keyword = keywordRequestDto.getKeyword();
+    public Keyword(String keyword) {
+        this.keyword = keyword;
     }
 
     // 상욱님 BookmarkService에서 사용되는 생성자
