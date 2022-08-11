@@ -10,7 +10,6 @@ package com.v1.dgtimes.layer.repository;
 */
 
 import com.v1.dgtimes.layer.model.Bookmark;
-import com.v1.dgtimes.layer.model.Keyword;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 

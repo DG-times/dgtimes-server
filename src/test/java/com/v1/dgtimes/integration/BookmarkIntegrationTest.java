@@ -1,9 +1,7 @@
 package com.v1.dgtimes.integration;
 
 import com.v1.dgtimes.config.exception.RestApiException;
-import com.v1.dgtimes.layer.model.Keyword;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import com.v1.dgtimes.layer.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpEntity;
