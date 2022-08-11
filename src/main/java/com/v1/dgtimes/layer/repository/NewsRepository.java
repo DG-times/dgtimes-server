@@ -25,7 +25,7 @@ public interface NewsRepository extends JpaRepository<News, Long> {
     //select 안에 km.news_id와 같이 특정값을 불러올려고 할때, news 엔티티 안에 없으므로, interface를 통해 매핑시켜줘야한다.
     @Query(value="select * "+
             "from news n "+
-            "left join KEYWORD_MAPPING km on n.id = km.news_id "+
+            "left join keyword_mapping km on n.id = km.news_id "+
             "where km.KEYWORD_ID = :id", nativeQuery = true)
     List<News> findAllId(@Param("id") Long id);
 }
