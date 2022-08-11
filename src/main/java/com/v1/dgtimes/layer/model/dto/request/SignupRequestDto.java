@@ -1,5 +1,6 @@
 package com.v1.dgtimes.layer.model.dto.request;
 
+import com.v1.dgtimes.config.security.PasswordEncoder;
 import com.v1.dgtimes.layer.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -52,8 +53,8 @@ public class SignupRequestDto {
                 .username(this.username)
                 .build();
     }
-    public void passwordEncoding(String password){
-        this.pw = password;
+    public void passwordEncoding(PasswordEncoder passwordEncoder){
+        this.pw = passwordEncoder.encode(this.pw);
     }
 
 }

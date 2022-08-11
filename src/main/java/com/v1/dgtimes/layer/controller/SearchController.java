@@ -29,7 +29,6 @@ public class SearchController {
     // 뉴스 키워드 검색
     @GetMapping("/api/news")
     public ResponseEntity<SearchResponseDto[]> searchNews(@RequestParam String keyword) {
-        System.out.println(keyword);
-        return new ResponseEntity(searchService.getSeartchKeyword(new KeywordRequestDto(keyword)), HttpStatus.OK);
+        return new ResponseEntity(searchService.getSearchKeyword(new KeywordRequestDto(keyword)), HttpStatus.OK);
     }
 }

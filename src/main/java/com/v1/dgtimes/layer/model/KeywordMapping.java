@@ -29,11 +29,11 @@ public class KeywordMapping {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="News_id")
+    @JoinColumn(name="news_id")
     private News news;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="Keyword_id")
+    @JoinColumn(name="keyword_id")
     private Keyword keyword;
 
     // 연관 관계 설정 - Keyword

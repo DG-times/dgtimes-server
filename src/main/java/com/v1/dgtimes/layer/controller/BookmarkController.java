@@ -33,7 +33,7 @@ public class BookmarkController {
     //즐겨찾기
     @PostMapping("/api/bookmarks")
     public ResponseEntity<DefaultResponseDto> bookmarks (@RequestBody BookmarkRequestDto bookmarkRequestDto) {
-        return new ResponseEntity<>(bookmarkService.pstBookmarkKeyword(bookmarkRequestDto), HttpStatus.OK);
+        return new ResponseEntity<>(bookmarkService.postBookmarkKeyword(bookmarkRequestDto), HttpStatus.OK);
     }
 
 

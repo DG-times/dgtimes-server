@@ -20,4 +20,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class KeywordRequestDto {
     private String keyword;
+
+    public boolean isNone(){
+        if("".equals(keyword) || keyword == null) {
+            return true;
+        }
+        return false;
+    }
+
+
 }

@@ -35,8 +35,11 @@ public class News {
 
     @Column(nullable = false)
     private String title;
+    @Column(nullable = false)
     private String content;
+    @Column(nullable = false)
     private String mainUrl;
+    @Column(nullable = false)
     private String thumbnailUrl;
 
     // 컬럼 타입은 'TIMESTAMP'로 저장되는 기능?
