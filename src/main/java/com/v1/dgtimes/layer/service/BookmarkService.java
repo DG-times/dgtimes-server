@@ -24,8 +24,9 @@ public class BookmarkService {
     private final BookmarkRepository bookmarkRepository;
 
 
-    public DefaultResponseDto pstBookmarkKeyword(BookmarkRequestDto requestDto){
+    public DefaultResponseDto pstBookmarkKeyword(BookmarkRequestDto requestDto) {
         KeywordDtoValid(requestDto);
+
 
         // Valid
         Keyword keyword = new Keyword(requestDto);
@@ -52,6 +53,8 @@ public class BookmarkService {
             throw new RuntimeException("키워드 저장 실패 - 기존에 등록한 키워드");
         }
     }
+
+
 
     private boolean isExistKeyword(BookmarkRequestDto requestDto){
         return bookmarkRepository.existsByKeyword(requestDto.getKeyword());

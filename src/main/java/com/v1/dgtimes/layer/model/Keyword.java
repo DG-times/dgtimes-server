@@ -30,7 +30,6 @@ import java.util.List;
 public class Keyword {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
     private Long id;
 
     @Column(nullable = false, unique = true)

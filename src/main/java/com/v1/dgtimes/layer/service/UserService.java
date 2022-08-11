@@ -2,16 +2,13 @@ package com.v1.dgtimes.layer.service;
 
 import com.v1.dgtimes.layer.model.User;
 import com.v1.dgtimes.layer.model.dto.request.SignupRequestDto;
-import com.v1.dgtimes.layer.model.dto.response.DefaultResponseDto;
 import com.v1.dgtimes.layer.model.dto.response.SignupResponseDto;
 import com.v1.dgtimes.layer.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-import java.util.regex.Pattern;
 /*
-설명 : 유저의 회원가입을 위한 서비스 입니다
+설명 : 유저의 회원가입을 위한 서비스 입니다.
 
 작성일 : 2022.08.09
 

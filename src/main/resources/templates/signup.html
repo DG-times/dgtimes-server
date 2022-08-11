@@ -94,7 +94,7 @@
           contentType: "application/json",
 
           error: function (response, status, error) {
-              console.log(response["responseJSON"])
+              alert(response["responseJSON"]["msg"])
           },
 
           success: function (response, status, request) {

@@ -11406,3 +11406,6 @@ footer.footer {
   margin-left: 10vw;
 }
 
+#news-body{
+ min-height: 200px;
+}
