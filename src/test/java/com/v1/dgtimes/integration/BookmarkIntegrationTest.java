@@ -50,7 +50,7 @@ public class BookmarkIntegrationTest extends DefaultIntegrationTest{
 
         //when
         ResponseEntity<DefaultResponseDto> response = testTemplate
-//                .withBasicAuth("admin","testtest!!")
+                .withBasicAuth("admin","testtest!!")
                 .postForEntity(
                         "/api/bookmarks",
                         bookmarkRequestDtoHttpEntity,
@@ -77,7 +77,7 @@ public class BookmarkIntegrationTest extends DefaultIntegrationTest{
 
         //when
         ResponseEntity<RestApiException> response = testTemplate
-//                .withBasicAuth("admin","testtest!!")
+                .withBasicAuth("admin","testtest!!")
                 .postForEntity(
                         "/api/bookmarks",
                         bookmarkRequestDtoHttpEntity,
@@ -94,24 +94,28 @@ public class BookmarkIntegrationTest extends DefaultIntegrationTest{
 
 
 
-//    @Test
-//    @DisplayName("키워드 저장 실패 - 로그인 되지 않음")
-//    public void case3(){
-//        //given
-//        BookmarkRequestDto bookmarkRequestDto = new BookmarkRequestDto("코딩교육");
-//
-//        //when
-//        ResponseEntity<DefaultResponseDto> response = testTemplate
-//                .postForEntity(
-//                        "/api/bookmarks",
-//                        bookmarkRequestDto,
-//                        DefaultResponseDto.class
-//                );
-//
-//        //then
-//        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-//        assertEquals(new DefaultResponseDto("로그인이 필요합니다.",400), response.getBody());
-//    }
+    @Test
+    @DisplayName("키워드 저장 실패 - 로그인 되지 않음")
+    public void case3(){
+        //given
+        BookmarkRequestDto bookmarkRequestDto = new BookmarkRequestDto("코딩교육");
+        HttpEntity<BookmarkRequestDto> bookmarkRequestDtoHttpEntity = new HttpEntity<>(bookmarkRequestDto);
+
+
+        //when
+        ResponseEntity<DefaultResponseDto> response = testTemplate
+                .postForEntity(
+                        "/api/bookmarks",
+                        bookmarkRequestDtoHttpEntity,
+                        DefaultResponseDto.class
+                );
+
+        //then
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+//        assertEquals("로그인이 필요합니다.", response.getBody().getErrorMessage());
+//        assertEquals(HttpStatus.BAD_REQUEST, response.getBody().getHttpStatus());
+        assertEquals(new DefaultResponseDto("로그인이 필요합니다.",400), response.getBody());
+    }
 
 
 
@@ -152,7 +156,7 @@ public class BookmarkIntegrationTest extends DefaultIntegrationTest{
 
         //when
         ResponseEntity<RestApiException> response = testTemplate
-//                .withBasicAuth("admin","testtest!!")
+                .withBasicAuth("admin","testtest!!")
                 .postForEntity(
                         "/api/bookmarks",
                         bookmarkRequestDtoHttpEntity,
