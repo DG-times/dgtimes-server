@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 
 /*
@@ -62,6 +63,7 @@ public class UserIntegrationTest  extends DefaultIntegrationTest {
 
         // then
         assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("회원가입에 성공했습니다.", response.getBody().getMag());
         assertEquals(new SignupResponseDto("회원가입에 성공했습니다.", 200), response.getBody());
 
     }
@@ -184,6 +186,27 @@ public class UserIntegrationTest  extends DefaultIntegrationTest {
         assertEquals("회원가입에 실패했습니다. - 비밀번호에 아이디 포함", responsebody.getMsg());
 
     }
+    @Test
+    @DisplayName("비밀번호에 암호화")
+    public void case7() {
+
+        // given
+        SignupRequestDto signupRequestDto = new  SignupRequestDto("admin", "testtest!!", "공상욱");
+        HttpEntity<SignupRequestDto> signupRequest = new HttpEntity<>(signupRequestDto);
+
+        // when
+        ResponseEntity<SignupResponseDto> response = testRestTemplate
+                .postForEntity(
+                        "/users/signup",
+                        signupRequest,
+                        SignupResponseDto.class
+                );
+        User user = userRepository.findOneById(signupRequestDto.getId());
+        // then
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(new SignupResponseDto("회원가입에 성공했습니다.", 200), response.getBody());
+        assertNotEquals(user.getPw(), signupRequestDto.getPw());
+
+    }
 
 }
-
