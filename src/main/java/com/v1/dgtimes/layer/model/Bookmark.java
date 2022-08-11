@@ -24,14 +24,14 @@ public class Bookmark {
     @Id
     @Column(nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "User_id")
+    @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="Keyword_id")
+    @JoinColumn(name= "keyword_id")
     private Keyword keyword;
 
     // 연관 관계 설정 - Keyword

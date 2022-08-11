@@ -1,11 +1,11 @@
 package com.v1.dgtimes.layer.service;
 
+import com.v1.dgtimes.config.security.PasswordEncoder;
 import com.v1.dgtimes.layer.model.User;
 import com.v1.dgtimes.layer.model.dto.request.SignupRequestDto;
 import com.v1.dgtimes.layer.model.dto.response.SignupResponseDto;
 import com.v1.dgtimes.layer.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /*
@@ -27,11 +27,13 @@ public class UserService {
     public SignupResponseDto signupUser(SignupRequestDto requestDto) {
         // Valid
         signupDtoValid(requestDto);
+
         //pw 인코딩
-        String password = passwordEncoder.encode(requestDto.getPw());
-        requestDto.passwordEncoding(password);
+        requestDto.passwordEncoding(passwordEncoder);
+
         // 모델 변환
         User user = requestDto.toUser();
+
         // 모델 저장
         userRepository.save(user);
 

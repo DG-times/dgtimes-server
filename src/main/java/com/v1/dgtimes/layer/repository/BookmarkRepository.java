@@ -9,11 +9,12 @@ package com.v1.dgtimes.layer.repository;
 
 */
 
+import com.v1.dgtimes.layer.model.Bookmark;
 import com.v1.dgtimes.layer.model.Keyword;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 
-public interface BookmarkRepository extends JpaRepository<Keyword, String> {
+public interface BookmarkRepository extends JpaRepository<Bookmark, String> {
 
    boolean existsByKeyword(String keyword);
 

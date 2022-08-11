@@ -34,40 +34,30 @@ public class SearchService {
     private final NewsRepository newsRepository;
 
     // 키워드 검색
-    public List<SearchResponseDto> getSeartchKeyword(KeywordRequestDto keywordRequestDto) {
-        String keyword = keywordRequestDto.getKeyword();
-        if("".equals(keyword) || keyword == null) {
-            throw new RuntimeException("키워드를 입력해주세요.");
-        }
-        searchBlackKeyword(keyword);
-        return searchKeywordMapping(searchKeyword(keyword).getId());
-    }
-    
-    // 서브 메소드
-    // Black_Keyword 테이블에서 금기어가 있는지만 확인 (반환값 필요없음)
-    // findByBlackKeyword로 했을경우, value값이 null로 반환되어, cannot invoke 에러가 계속 발생하여, count로 일단 변경
-    private void searchBlackKeyword(String keyword) {
-        if(blackKeywordRepository.countByBlackKeyword(keyword) != 0)
-            throw new RuntimeException("검색한 키워드 금지어입니다.");
+    public List<SearchResponseDto> getSearchKeyword(KeywordRequestDto keywordRequestDto) {
+        validKeyword(keywordRequestDto);
+        Keyword keyword = searchKeyword(keywordRequestDto);
+        return searchKeywordMapping(keyword);
     }
 
+
     // Keyword 테이블에서 Keyword값 찾아 결과 반환
-    private Keyword searchKeyword(String keyword) {
-        return keywordRepository.findByKeyword(keyword).orElseThrow(
+    private Keyword searchKeyword(KeywordRequestDto keywordRequestDto) {
+        return keywordRepository.findByKeyword(keywordRequestDto.getKeyword()).orElseThrow(
                 () -> new RuntimeException("찾는 키워드의 검색 결과가 없습니다.")
         );
     }
 
     // KeywordId를 사용한 매핑 테이블 조회
-    private List<SearchResponseDto> searchKeywordMapping(Long keywordId) {
-        List<News> news = newsRepository.findAllId(keywordId);
+    private List<SearchResponseDto> searchKeywordMapping(Keyword keyword) {
+        List<News> news = newsRepository.findAllId(keyword.getId());
         if (news.size() > 0) {
            return makeSearchResponseDto(news);
         }
         return null;
     }
     
-    // 여러게의 뉴스 결과값 List<SearchResponseDto>에 저장 및 반환
+    // 여러 개의 뉴스 결과값 List<SearchResponseDto>에 저장 및 반환
     private List<SearchResponseDto> makeSearchResponseDto(List<News> news) {
         List<SearchResponseDto> searchResponseDtos = new ArrayList<>();
         for(News one_news : news) {
@@ -76,4 +66,15 @@ public class SearchService {
         }
         return searchResponseDtos;
     }
+
+
+    // Keyword 검증 메소드 입니다.
+    private void validKeyword(KeywordRequestDto keywordRequestDto){
+        if(keywordRequestDto.isNone())
+            throw new RuntimeException("키워드를 입력해주세요.");
+
+        if(blackKeywordRepository.countByBlackKeyword(keywordRequestDto.getKeyword()) != 0)
+            throw new RuntimeException("검색한 키워드 금지어입니다.");
+    }
+
 }

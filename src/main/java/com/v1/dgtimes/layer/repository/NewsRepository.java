@@ -28,4 +28,6 @@ public interface NewsRepository extends JpaRepository<News, Long> {
             "left join keyword_mapping km on n.id = km.news_id "+
             "where km.KEYWORD_ID = :id", nativeQuery = true)
     List<News> findAllId(@Param("id") Long id);
+
+    // news WHERE LIKE %keyword% IN TITLE, CONTENT
 }

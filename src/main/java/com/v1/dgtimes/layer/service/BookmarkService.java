@@ -24,15 +24,14 @@ public class BookmarkService {
     private final BookmarkRepository bookmarkRepository;
 
 
-    public DefaultResponseDto pstBookmarkKeyword(BookmarkRequestDto requestDto) {
+    public DefaultResponseDto postBookmarkKeyword(BookmarkRequestDto requestDto) {
         KeywordDtoValid(requestDto);
-
 
         // Valid
         Keyword keyword = new Keyword(requestDto);
 
         // 저장
-        bookmarkRepository.save(keyword);
+        //bookmarkRepository.save(keyword);
 
         // 모델 저장
         return DefaultResponseDto.builder()
