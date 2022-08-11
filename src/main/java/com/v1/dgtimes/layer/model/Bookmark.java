@@ -34,6 +34,13 @@ public class Bookmark {
     @JoinColumn(name= "keyword_id")
     private Keyword keyword;
 
+
+    public Bookmark(User user, Keyword keyword) {
+        this.user = user;
+        this.keyword = keyword;
+    }
+
+
     // 연관 관계 설정 - Keyword
     public void updateKeyword(Keyword keyword) {
         this.keyword = keyword;

@@ -1,11 +1,10 @@
 package com.v1.dgtimes.integration;
 
 import com.v1.dgtimes.config.exception.RestApiException;
-import com.v1.dgtimes.layer.model.Keyword;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import com.v1.dgtimes.layer.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,11 +24,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class BookmarkIntegrationTest extends DefaultIntegrationTest{
 
+    @Autowired
+    private UserRepository userRepository;
+
 
 
 //    @BeforeEach
 //    public void setupDB(){
-//        bookmarkRepository.save(new Keyword(new com.v1.dgtimes.layer.model.dto.request.BookmarkRequestDto("코당교육")));
+//        bookmarkRepository.save(new Keyword(new com.v1.dgtimes.layer.model.dto.request.BookmarkRequestDto("코딩교육")));
 //    }
 //
 //    @AfterEach
@@ -37,7 +39,6 @@ public class BookmarkIntegrationTest extends DefaultIntegrationTest{
 //        bookmarkRepository.deleteAll();
 //        userRepository.deleteAll();
 //    }
-
 
 
 
@@ -104,17 +105,17 @@ public class BookmarkIntegrationTest extends DefaultIntegrationTest{
 
 
         //when
-        ResponseEntity<DefaultResponseDto> response = testTemplate
+        ResponseEntity<RestApiException> response = testTemplate
                 .postForEntity(
                         "/api/bookmarks",
                         bookmarkRequestDtoHttpEntity,
-                        DefaultResponseDto.class
+                        RestApiException.class
                 );
 
         //then
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertEquals("키워드 저장 실패 - 로그인 되지 않음", response.getBody().getMsg());
-        assertEquals(HttpStatus.BAD_REQUEST, response.getBody().hashCode());
+        assertEquals(HttpStatus.BAD_REQUEST, response.getBody().getCode());
     }
 
 

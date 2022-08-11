@@ -20,6 +20,7 @@ import lombok.NoArgsConstructor;
 public class BookmarkRequestDto {
 
     private String keyword;
+//    private String user;
 
 
     // 공란
@@ -29,6 +30,6 @@ public class BookmarkRequestDto {
     public boolean isValidKeywordBan(){return this.keyword.equals("야한거");}
 
     // 로그인 되지 않음
-    public boolean isValidUserLogin(){return this.keyword.isEmpty();}
+//    public boolean isValidUserNotLogin(){return this.user.isEmpty();}
 
 }
