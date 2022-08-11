@@ -28,5 +28,7 @@ public class BookmarkRequestDto {
     // 금지된 키워드
     public boolean isValidKeywordBan(){return this.keyword.equals("야한거");}
 
+    // 로그인
+
 
 }
