@@ -49,6 +49,9 @@ public class BookmarkService {
         if (requestDto.isValidKeywordBan()) {
             throw new RuntimeException("키워드 저장 실패 - 금지된 키워드");
         }
+        if (requestDto.isValidUserLogin()) {
+            throw new RuntimeException("키워드 저장 실패 - 로그인 되지 않음");
+        }
         if(isExistKeyword(requestDto)){
             throw new RuntimeException("키워드 저장 실패 - 기존에 등록한 키워드");
         }
