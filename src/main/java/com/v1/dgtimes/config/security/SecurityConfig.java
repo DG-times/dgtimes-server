@@ -48,7 +48,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .headers().frameOptions().disable().addHeaderWriter(
                         new XFrameOptionsHeaderWriter(new StaticAllowFromStrategy(URI.create("*"))
                 ));
-
     }
 
     @Override
