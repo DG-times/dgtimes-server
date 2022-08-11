@@ -44,13 +44,12 @@
                             <!-- To make this form functional, sign up at-->
                             <!-- https://startbootstrap.com/solution/contact-forms-->
                             <!-- to get an API token!-->
-                            <form class="form-subscribe" id="contactForm" data-sb-form-api-token="API_TOKEN">
                                 <div class="row">
                                     <div class="col">
-                                        <input class="form-control form-control-lg" id="search" type="text" placeholder="검색어를 입력하세요"/>
+                                        <input class="form-control form-control-lg" id="keyword" type="text" placeholder="검색어를 입력하세요"/>
                                     </div>
                                     <div class="col-auto">
-                                        <button class="btn btn-primary btn-lg disabled" id="submitButton" type="submit">
+                                        <button class="btn btn-primary btn-lg" id="submitButton" onclick="search()">
                                             <img class="search-icon" src="../assets/img/search-icon.png">
                                         </button>
                                     </div>
@@ -59,7 +58,6 @@
                                 <!---->
                                 <!-- This is what your users will see when the form-->
                                 <!-- has successfully submitted-->
-                            </form>
                         </div>
                     </div>
                 </div>
@@ -67,73 +65,7 @@
         </header>
 
         <section class="showcase">
-            <div class="container-fluid p-0">
-                <div class="main-container gx-4 gx-lg-5 align-items-center my-5">
-                    <div class="col-lg-5">
-                        <img class="img-fluid rounded mb-4 mb-lg-0" src="https://thumb.mt.co.kr/06/2022/07/2022071316585964426_1.jpg/dims/optimize" alt="..." />
-                    </div>
-                    <div class="col-lg-6">
-                        <h1 class="font-weight-light">코딩교육 팀스파르타, 상반기 매출 105억…"최대 실적 달성"</h1>
-                        <pre>
-
-코딩 교육 스타트업 팀스파르타가 올해 상반기 매출 105억원, 영업이익 31억원을 기록하며 최대 실적을 달성했다고 13일 밝혔다.
-
-전년동기 대비 매출은 243%, 영업이익은 362.7% 증가했다. 신규 회원수는 3만8297명에서 10만8803명으로 184% 늘었다. 팀스파르타는 상반기 실적 견인의 핵심으로 개발자 양성 부트캠프 '항해99'를 꼽았다.
-
-항해99 수료생은 지난해 상반기 246명에서 올해 1002명으로 4배 이상 급증했다. 항해99는 코딩 지식이 없는 사람도 99일간 커리큘럼을 마치면 주니어 개발자로서 현업에 바로 투입될 수 있도록 실제 업무 환경과 유사하게 설계됐다.
-
-전체 수강생 중 비전공자 비중은 약 77.4%로 절반 이상을 차지한다. 팀스파르타는 B2C 영역뿐만 아니라 디지털 인재 역량을 강화하고자 하는 기업들을 대상으로 B2B까지 사업을 확장해나가고 있다.
-
-이범규 팀스파르타 대표는 "전 산업군에서 디지털 인재 양성에 대한 수요가 높아지고 있다"며 "누구나 코딩을 통해 원하는 바를 이뤄낼 수 있도록 최적화된 커리큘럼을 제공하겠다"고 말했다.
-
-[머니투데이 스타트업 액셀러레이팅 미디어 플랫폼 '유니콘팩토리']
-                        </pre>
-                    </div>
-                </div>
-                <div class="main-container gx-4 gx-lg-5 align-items-center my-5">
-                    <div class="col-lg-5">
-                        <img class="img-fluid rounded mb-4 mb-lg-0" src="https://thumb.mt.co.kr/06/2022/07/2022071316585964426_1.jpg/dims/optimize" alt="..." />
-                    </div>
-                    <div class="col-lg-6">
-                        <h1 class="font-weight-light">코딩교육 팀스파르타, 상반기 매출 105억…"최대 실적 달성"</h1>
-                        <pre>
-
-코딩 교육 스타트업 팀스파르타가 올해 상반기 매출 105억원, 영업이익 31억원을 기록하며 최대 실적을 달성했다고 13일 밝혔다.
-
-전년동기 대비 매출은 243%, 영업이익은 362.7% 증가했다. 신규 회원수는 3만8297명에서 10만8803명으로 184% 늘었다. 팀스파르타는 상반기 실적 견인의 핵심으로 개발자 양성 부트캠프 '항해99'를 꼽았다.
-
-항해99 수료생은 지난해 상반기 246명에서 올해 1002명으로 4배 이상 급증했다. 항해99는 코딩 지식이 없는 사람도 99일간 커리큘럼을 마치면 주니어 개발자로서 현업에 바로 투입될 수 있도록 실제 업무 환경과 유사하게 설계됐다.
-
-전체 수강생 중 비전공자 비중은 약 77.4%로 절반 이상을 차지한다. 팀스파르타는 B2C 영역뿐만 아니라 디지털 인재 역량을 강화하고자 하는 기업들을 대상으로 B2B까지 사업을 확장해나가고 있다.
-
-이범규 팀스파르타 대표는 "전 산업군에서 디지털 인재 양성에 대한 수요가 높아지고 있다"며 "누구나 코딩을 통해 원하는 바를 이뤄낼 수 있도록 최적화된 커리큘럼을 제공하겠다"고 말했다.
-
-[머니투데이 스타트업 액셀러레이팅 미디어 플랫폼 '유니콘팩토리']
-                        </pre>
-                    </div>
-                </div>
-                <div class="main-container gx-4 gx-lg-5 align-items-center my-5">
-                    <div class="col-lg-5">
-                        <img class="img-fluid rounded mb-4 mb-lg-0" src="https://thumb.mt.co.kr/06/2022/07/2022071316585964426_1.jpg/dims/optimize" alt="..." />
-                    </div>
-                    <div class="col-lg-6">
-                        <h1 class="font-weight-light">코딩교육 팀스파르타, 상반기 매출 105억…"최대 실적 달성"</h1>
-                        <pre>
-
-코딩 교육 스타트업 팀스파르타가 올해 상반기 매출 105억원, 영업이익 31억원을 기록하며 최대 실적을 달성했다고 13일 밝혔다.
-
-전년동기 대비 매출은 243%, 영업이익은 362.7% 증가했다. 신규 회원수는 3만8297명에서 10만8803명으로 184% 늘었다. 팀스파르타는 상반기 실적 견인의 핵심으로 개발자 양성 부트캠프 '항해99'를 꼽았다.
-
-항해99 수료생은 지난해 상반기 246명에서 올해 1002명으로 4배 이상 급증했다. 항해99는 코딩 지식이 없는 사람도 99일간 커리큘럼을 마치면 주니어 개발자로서 현업에 바로 투입될 수 있도록 실제 업무 환경과 유사하게 설계됐다.
-
-전체 수강생 중 비전공자 비중은 약 77.4%로 절반 이상을 차지한다. 팀스파르타는 B2C 영역뿐만 아니라 디지털 인재 역량을 강화하고자 하는 기업들을 대상으로 B2B까지 사업을 확장해나가고 있다.
-
-이범규 팀스파르타 대표는 "전 산업군에서 디지털 인재 양성에 대한 수요가 높아지고 있다"며 "누구나 코딩을 통해 원하는 바를 이뤄낼 수 있도록 최적화된 커리큘럼을 제공하겠다"고 말했다.
-
-[머니투데이 스타트업 액셀러레이팅 미디어 플랫폼 '유니콘팩토리']
-                        </pre>
-                    </div>
-                </div>
+            <div class="container-fluid p-0" id = "news-body-container">
             </div>
         </section>
 
@@ -146,5 +78,48 @@
         <!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
         <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
         <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        function search() {
+
+            let keyword = $('#keyword').val()
+
+            $.ajax({
+                type: "GET" ,
+                url: "/api/news?keyword="+keyword,
+                timeout: 3000,
+                contentType: "application/json",
+
+                error: function (response, status, error) {
+                    alert(response["responseJSON"]["msg"])
+                },
+
+                success: function (response, status, request) {
+                    let rows = response
+                    for (let i = 0; i < rows.length; i++) {
+                        let content = rows[i]['content']
+                        let date = rows[i]['date']
+                        let mainUrl = rows[i]['mainUrl']
+                        let thumbnailUrl = rows[i]['thumbnailUrl']
+                        let title = rows[i]['title']
+
+                        let temp_html = `<div class="main-container gx-4 gx-lg-5 align-items-center my-5" href="${mainUrl}">
+                                            <div class="col-lg-5">
+                                                <img class="img-fluid rounded mb-4 mb-lg-0" src="${thumbnailUrl}" alt="..." />
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <h1 class="font-weight-light">${title}</h1>
+                                                <pre>
+                                                    ${content}
+                                                </pre>
+                                            </div>
+                                        </div>`
+
+                        $('#news-body-container').append(temp_html)
+                    }
+                }
+            })
+        }
+    </script>
     </body>
 </html>
