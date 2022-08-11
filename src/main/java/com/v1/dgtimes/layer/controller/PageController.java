@@ -24,6 +24,11 @@ public class PageController {
         return new ModelAndView("signin");
     }
 
+    @GetMapping("/login-error")
+    public ModelAndView signInError(){
+        return new ModelAndView("login-error");
+    }
+
     @GetMapping("/signup")
     public ModelAndView signup(){
         return new ModelAndView("signup");

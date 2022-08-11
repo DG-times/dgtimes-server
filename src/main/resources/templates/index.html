@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -24,7 +24,8 @@
                     <a class="navbar-brand" href="/">DG times</a>
                 </div>
                 <div class="container-right">
-                    <a class="btn btn-primary" href="/signin">Sign in</a>
+                    <a class="btn btn-primary" href="/signin" sec:authorize="!authenticated">Sign in</a>
+                    <a class="btn btn-primary" href="/signout" sec:authorize="authenticated">Sign out</a>
                 </div>
             </div>
         </nav>
