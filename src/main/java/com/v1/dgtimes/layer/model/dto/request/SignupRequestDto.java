@@ -4,13 +4,15 @@ import com.v1.dgtimes.layer.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.regex.Pattern;
 
-/*
-설명 : 유저의 회원가입을 위한 요청된 정보입니다.
 
-작성일 : 2022.08.08
+/*
+설명 : 유저의 회원가입을 위한 요청된 정보입니다. pw 인코딩 추가
+
+작성일 : 2022.08.11
 
 마지막 수정한 사람 : 안상록
 
@@ -20,6 +22,8 @@ Todo -
 @AllArgsConstructor
 @NoArgsConstructor
 public class SignupRequestDto {
+
+    private PasswordEncoder passwordEncoder;
     private String id;
     private String pw;
     private String username;
@@ -46,8 +50,9 @@ public class SignupRequestDto {
     public User toUser(){
         return User.builder()
                 .id(this.id)
-                .pw(this.pw)
+                .pw(passwordEncoder.encode(this.pw))
                 .username(this.username)
                 .build();
     }
+
 }
