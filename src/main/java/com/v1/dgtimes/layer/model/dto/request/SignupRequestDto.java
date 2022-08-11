@@ -4,7 +4,6 @@ import com.v1.dgtimes.layer.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.regex.Pattern;
 
@@ -23,7 +22,6 @@ Todo -
 @NoArgsConstructor
 public class SignupRequestDto {
 
-    private PasswordEncoder passwordEncoder;
     private String id;
     private String pw;
     private String username;
@@ -50,9 +48,12 @@ public class SignupRequestDto {
     public User toUser(){
         return User.builder()
                 .id(this.id)
-                .pw(passwordEncoder.encode(this.pw))
+                .pw(this.pw)
                 .username(this.username)
                 .build();
+    }
+    public void passwordEncoding(String password){
+        this.pw = password;
     }
 
 }
