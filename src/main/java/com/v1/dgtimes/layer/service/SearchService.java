@@ -40,7 +40,7 @@ public class SearchService {
         return searchKeywordMapping(keyword);
     }
 
-
+    // 서브메소드
     // Keyword 테이블에서 Keyword값 찾아 결과 반환
     private Keyword searchKeyword(KeywordRequestDto keywordRequestDto) {
         return keywordRepository.findByKeyword(keywordRequestDto.getKeyword()).orElseThrow(

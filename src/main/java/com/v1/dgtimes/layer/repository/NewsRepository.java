@@ -29,5 +29,10 @@ public interface NewsRepository extends JpaRepository<News, Long> {
             "where km.KEYWORD_ID = :id", nativeQuery = true)
     List<News> findAllId(@Param("id") Long id);
 
+    @Query(value = "select * "+
+            "from news n news "+
+            "where like %:keyword% "+
+            "in TITLE, CONTEN", nativeQuery = true)
+    List<News> findAllByTitleAndContent(@Param("keyword") String keyword);
     // news WHERE LIKE %keyword% IN TITLE, CONTENT
 }
