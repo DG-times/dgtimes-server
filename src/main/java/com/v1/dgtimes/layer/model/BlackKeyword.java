@@ -12,6 +12,7 @@ package com.v1.dgtimes.layer.model;
 */
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -19,6 +20,7 @@ import javax.persistence.*;
 
 @Getter
 @Entity
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor // 이거도 더미데이터 용
 public class BlackKeyword {

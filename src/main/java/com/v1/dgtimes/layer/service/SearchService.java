@@ -100,11 +100,19 @@ public class SearchService {
 
     // 뉴스 엔티티에서 keyword 검색
     private List<News> searchNews(KeywordRequestDto keywordRequestDto) {
-        return newsRepository.findAllByTitleAndContent(keywordRequestDto.getKeyword());
+        List<News> news = newsRepository.findAllByTitleAndContent(keywordRequestDto.getKeyword());
+        if (news.size() == 0) {
+            throw new RuntimeException("검색된 뉴스가 없습니다.");
+        }
+        return news;
     }
 
     // inner Join을 사용한 Keyword 조회
     private List<News> newSearchKeyword(KeywordRequestDto keywordRequestDto) {
-        return newsRepository.findAllByKeyword(keywordRequestDto.getKeyword());
+        List<News> news = newsRepository.findAllByKeyword(keywordRequestDto.getKeyword());
+        if (news.size() == 0) {
+            throw new RuntimeException("검색된 뉴스가 없습니다.");
+        }
+        return news;
     }
 }
