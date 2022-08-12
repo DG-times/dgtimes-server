@@ -1,5 +1,14 @@
 package com.v1.dgtimes.layer.service;
 
+/*
+설명 : SearchServiceTest 코드 구현
+
+작성일 : 2022.08.12
+
+마지막 수정한 사람 : 홍우석
+
+*/
+
 import com.v1.dgtimes.layer.model.Keyword;
 import com.v1.dgtimes.layer.model.News;
 import com.v1.dgtimes.layer.model.dto.request.KeywordRequestDto;
@@ -19,7 +28,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class SearchServiceTest {
@@ -37,8 +46,8 @@ class SearchServiceTest {
     private SearchService searchService;
 
     @Test
-    @DisplayName("Search Keyword 메소드 검증 - DB 키워드 찾기")
-    public void test1(){
+    @DisplayName("getSearchKeyword 메소드 검증 - DB 키워드 찾기 성공")
+    public void SuccessTest1(){
         // Given
         Keyword find_keyword = new Keyword();
         when(keywordRepository.findByKeyword("코딩교육")).thenReturn(Optional.of(find_keyword));
@@ -52,8 +61,8 @@ class SearchServiceTest {
     }
 
     @Test
-    @DisplayName("Search Keyword 메소드 검증 - DB에 찾는 키워드 없음")
-    public void test2(){
+    @DisplayName("getSearchKeyword 메소드 검증 - DB 키워드 찾기 실패")
+    public void failTest1(){
         // Given
         when(keywordRepository.findByKeyword("코딩")).thenThrow(new RuntimeException("찾는 키워드의 검색 결과가 없습니다."));
 
@@ -68,8 +77,8 @@ class SearchServiceTest {
     }
 
     @Test
-    @DisplayName("Search Keyword 메소드 검증 - 금기어 필터")
-    public void test3(){
+    @DisplayName("getSearchKeyword 메소드 검증 - 금기어 있는경우")
+    public void SuccessTest2(){
         // Given
         boolean _return = true;
         when(blackKeywordRepository.existsByBlackKeyword("야한단어")).thenReturn(_return);
@@ -83,10 +92,25 @@ class SearchServiceTest {
         assertEquals("검색한 키워드 금지어입니다.", exception.getMessage());
     }
 
+    @Test
+    @DisplayName("getSearchKeyword 메소드 검증 - 금기어 없는경우")
+    public void failTest2(){
+        // Given
+        boolean _return = false;
+        when(blackKeywordRepository.existsByBlackKeyword("키워드단어")).thenReturn(_return);
+
+        // When
+        KeywordRequestDto keywordRequestDto = new KeywordRequestDto("키워드단어");
+        ReflectionTestUtils.invokeMethod(searchService, "validBlackKeyword", keywordRequestDto);
+        // Then
+        // return 값이 없으므로, 단 한번이라도 실행이 되었는지 검사
+        verify(blackKeywordRepository, atLeastOnce()).existsByBlackKeyword("키워드단어");
+    }
+
 
     @Test
-    @DisplayName("Search Keyword 메소드 검증 - Keyword Id를 이용한 뉴스 찾기")
-    public void test4(){
+    @DisplayName("getSearchKeyword 메소드 검증 - KeywordId를 이용한 뉴스 찾기 성공")
+    public void SuccessTest3(){
         // Given
         Keyword find_keyword = new Keyword();
         News found_news = new News();
@@ -102,12 +126,33 @@ class SearchServiceTest {
         assertEquals(result_news, result_news);
     }
 
+    @Test
+    @DisplayName("getSearchKeyword 메소드 검증 - KeywordId를 이용한 뉴스 찾기 실패")
+    public void failTest3(){
+        // Given
+        Keyword find_keyword = new Keyword();
+        when(newsRepository.findAllId(find_keyword.getId())).thenThrow(new NullPointerException());
+
+        // When
+        Keyword keyword = new Keyword();
+        NullPointerException exception = assertThrows(NullPointerException.class, () -> {
+            ReflectionTestUtils.invokeMethod(searchService, "searchNewsForMapping", keyword);
+        });
+        // Then
+        assertEquals(null, exception.getMessage());
+    }
+
     // 뉴스 엔티티에서 바로 keyword 검색 - Like이용
     @Test
-    @DisplayName("getSearchNews 메소드 검증")
-    public void test5() {
+    @DisplayName("getSearchNews 메소드 검증 - 뉴스 검색 성공")
+    public void SuccessTest4() {
         // Given
+        News found_news = News.builder()
+                .title("코딩교육")
+                .content("코딩교육")
+                .build();
         List<News> news = new ArrayList<>();
+        news.add(found_news);
         when(newsRepository.findAllByTitleAndContent("코딩교육")).thenReturn(news);
 
         // When
@@ -118,12 +163,33 @@ class SearchServiceTest {
         assertEquals(news, result_news);
     }
 
+    @Test
+    @DisplayName("getSearchNews 메소드 검증 - 뉴스 검색 실패")
+    public void failTest4() {
+        // Given
+        when(newsRepository.findAllByTitleAndContent("코딩교육")).thenThrow(new RuntimeException("검색된 뉴스가 없습니다."));
+
+        // When
+        KeywordRequestDto keywordRequestDto = new KeywordRequestDto("코딩교육");
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            ReflectionTestUtils.invokeMethod(searchService, "searchNews", keywordRequestDto);
+        });
+
+        // Then
+        assertEquals("검색된 뉴스가 없습니다.", exception.getMessage());
+    }
+
     // inner Join을 사용한 Keyword 조회
     @Test
-    @DisplayName("getNewSearchKeyword 메소드 검증")
-    public void test6(){
+    @DisplayName("getNewSearchKeyword 메소드 검증 - 키워드를 통한 뉴스 검색 성공")
+    public void SuccessTest5(){
         // Given
+        News found_news = News.builder()
+                .title("코딩교육")
+                .content("코딩교육")
+                .build();
         List<News> news = new ArrayList<>();
+        news.add(found_news);
         when(newsRepository.findAllByKeyword("코딩교육")).thenReturn(news);
 
         // When
@@ -132,5 +198,19 @@ class SearchServiceTest {
 
         // Then
         assertEquals(news, result_news);
+    }
+    @Test
+    @DisplayName("getNewSearchKeyword 메소드 검증 - 키워드를 통한 뉴스 검색  실패")
+    public void failTest5() {
+        // Given
+        when(newsRepository.findAllByKeyword("코딩교육")).thenThrow(new RuntimeException("검색된 뉴스가 없습니다."));
+
+        // When
+        KeywordRequestDto keywordRequestDto = new KeywordRequestDto("코딩교육");
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            ReflectionTestUtils.invokeMethod(searchService, "newSearchKeyword", keywordRequestDto);
+        });
+        // Then
+        assertEquals("검색된 뉴스가 없습니다.", exception.getMessage());
     }
 }

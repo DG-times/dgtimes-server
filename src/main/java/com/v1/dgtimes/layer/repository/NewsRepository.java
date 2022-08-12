@@ -46,6 +46,7 @@ public interface NewsRepository extends JpaRepository<News, Long> {
 //                    (select id from keyword where keyword like '%코딩%')
 //)
       // 이 방법은 select문을 여러번 사용하는거 같아 위의 코드보다 속도가 안나올꺼 같다는 생각
+      // Where in (서브쿼리) 보다는 join을 활용할것 - 참고 : https://jojoldu.tistory.com/520
 //    @Query(value = "select * from news n where n.id in " +
 //            "(select news_id from keyword_mapping km where km.keyword_id in" +
 //            "(select id from keyword where keyword like %:keyword%)" +
