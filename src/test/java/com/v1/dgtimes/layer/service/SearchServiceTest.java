@@ -3,7 +3,6 @@ package com.v1.dgtimes.layer.service;
 import com.v1.dgtimes.layer.model.Keyword;
 import com.v1.dgtimes.layer.model.News;
 import com.v1.dgtimes.layer.model.dto.request.KeywordRequestDto;
-import com.v1.dgtimes.layer.model.dto.request.NewsRequestDto;
 import com.v1.dgtimes.layer.repository.BlackKeywordRepository;
 import com.v1.dgtimes.layer.repository.KeywordRepository;
 import com.v1.dgtimes.layer.repository.NewsRepository;
@@ -56,8 +55,7 @@ class SearchServiceTest {
     @DisplayName("Search Keyword 메소드 검증 - DB에 찾는 키워드 없음")
     public void test2(){
         // Given
-        Keyword find_keyword = new Keyword();
-        when(keywordRepository.findByKeyword("코딩교육")).thenReturn(Optional.of(find_keyword));
+        when(keywordRepository.findByKeyword("코딩")).thenThrow(new RuntimeException("찾는 키워드의 검색 결과가 없습니다."));
 
         // When
         KeywordRequestDto keywordRequestDto = new KeywordRequestDto("코딩");
@@ -79,13 +77,13 @@ class SearchServiceTest {
         // When
         KeywordRequestDto keywordRequestDto = new KeywordRequestDto("야한단어");
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
-            ReflectionTestUtils.invokeMethod(searchService, "validKeyword", keywordRequestDto);
+            ReflectionTestUtils.invokeMethod(searchService, "validBlackKeyword", keywordRequestDto);
         });
         // Then
         assertEquals("검색한 키워드 금지어입니다.", exception.getMessage());
     }
 
-    // 테스트는 우연히 통과되었지만, 반환값 차이가 있으므로, 수정이 필요
+
     @Test
     @DisplayName("Search Keyword 메소드 검증 - Keyword Id를 이용한 뉴스 찾기")
     public void test4(){
@@ -98,9 +96,41 @@ class SearchServiceTest {
 
         // When
         Keyword keyword = new Keyword();
-        List<News> result_news = ReflectionTestUtils.invokeMethod(searchService, "searchKeywordMapping", keyword);
+        List<News> result_news = ReflectionTestUtils.invokeMethod(searchService, "searchNewsForMapping", keyword);
 
         // Then
         assertEquals(result_news, result_news);
+    }
+
+    // 뉴스 엔티티에서 바로 keyword 검색 - Like이용
+    @Test
+    @DisplayName("getSearchNews 메소드 검증")
+    public void test5() {
+        // Given
+        List<News> news = new ArrayList<>();
+        when(newsRepository.findAllByTitleAndContent("코딩교육")).thenReturn(news);
+
+        // When
+        KeywordRequestDto keywordRequestDto = new KeywordRequestDto("코딩교육");
+        List<News> result_news = ReflectionTestUtils.invokeMethod(searchService, "searchNews", keywordRequestDto);
+
+        // Then
+        assertEquals(news, result_news);
+    }
+
+    // inner Join을 사용한 Keyword 조회
+    @Test
+    @DisplayName("getNewSearchKeyword 메소드 검증")
+    public void test6(){
+        // Given
+        List<News> news = new ArrayList<>();
+        when(newsRepository.findAllByKeyword("코딩교육")).thenReturn(news);
+
+        // When
+        KeywordRequestDto keywordRequestDto = new KeywordRequestDto("코딩교육");
+        List<News> result_news = ReflectionTestUtils.invokeMethod(searchService, "newSearchKeyword", keywordRequestDto);
+
+        // Then
+        assertEquals(news, result_news);
     }
 }
