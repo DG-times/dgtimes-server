@@ -40,6 +40,20 @@ public class SearchService {
         return searchKeywordMapping(keyword);
     }
 
+    // inner join을 사용한 키워드 검색
+    public List<SearchResponseDto> getNewSearchKeyword(KeywordRequestDto keywordRequestDto) {
+        validKeyword(keywordRequestDto);
+        List<News> news = newSearchKeyword(keywordRequestDto);
+        return makeSearchResponseDto(news);
+    }
+
+    // 뉴스 엔티티에서 바로 검색
+    public List<SearchResponseDto> getSearchNews(KeywordRequestDto keywordRequestDto) {
+        validKeyword(keywordRequestDto);
+        List<News> news = searchNews(keywordRequestDto);
+        return makeSearchResponseDto(news);
+    }
+
     // 서브메소드
     // Keyword 테이블에서 Keyword값 찾아 결과 반환
     private Keyword searchKeyword(KeywordRequestDto keywordRequestDto) {
@@ -69,12 +83,21 @@ public class SearchService {
 
 
     // Keyword 검증 메소드 입니다.
-    private void validKeyword(KeywordRequestDto keywordRequestDto){
-        if(keywordRequestDto.isNone())
+    private void validKeyword(KeywordRequestDto keywordRequestDto) {
+        if (keywordRequestDto.isNone())
             throw new RuntimeException("키워드를 입력해주세요.");
 
-        if(blackKeywordRepository.countByBlackKeyword(keywordRequestDto.getKeyword()) != 0)
+        if (blackKeywordRepository.existsByBlackKeyword(keywordRequestDto.getKeyword()))
             throw new RuntimeException("검색한 키워드 금지어입니다.");
     }
 
+    // 뉴스 엔티티에서 keyword 검색
+    private List<News> searchNews(KeywordRequestDto keywordRequestDto) {
+        return newsRepository.findAllByTitleAndContent(keywordRequestDto.getKeyword());
+    }
+
+    // inner Join을 사용한 Keyword 조회
+    private List<News> newSearchKeyword(KeywordRequestDto keywordRequestDto) {
+        return newsRepository.findAllByKeyword(keywordRequestDto.getKeyword());
+    }
 }
