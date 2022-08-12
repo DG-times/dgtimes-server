@@ -33,16 +33,19 @@ public class SearchService {
     private final KeywordRepository keywordRepository;
     private final NewsRepository newsRepository;
 
-    // 키워드 검색
+    // 키워드 검색 - 기존
     public List<SearchResponseDto> getSearchKeyword(KeywordRequestDto keywordRequestDto) {
         validKeyword(keywordRequestDto);
+        validBlackKeyword(keywordRequestDto);
         Keyword keyword = searchKeyword(keywordRequestDto);
-        return searchKeywordMapping(keyword);
+        List<News> news = searchNewsForMapping(keyword);
+        return makeSearchResponseDto(news);
     }
 
     // inner join을 사용한 키워드 검색
     public List<SearchResponseDto> getNewSearchKeyword(KeywordRequestDto keywordRequestDto) {
         validKeyword(keywordRequestDto);
+        validBlackKeyword(keywordRequestDto);
         List<News> news = newSearchKeyword(keywordRequestDto);
         return makeSearchResponseDto(news);
     }
@@ -50,6 +53,7 @@ public class SearchService {
     // 뉴스 엔티티에서 바로 검색
     public List<SearchResponseDto> getSearchNews(KeywordRequestDto keywordRequestDto) {
         validKeyword(keywordRequestDto);
+        validBlackKeyword(keywordRequestDto);
         List<News> news = searchNews(keywordRequestDto);
         return makeSearchResponseDto(news);
     }
@@ -63,10 +67,10 @@ public class SearchService {
     }
 
     // KeywordId를 사용한 매핑 테이블 조회
-    private List<SearchResponseDto> searchKeywordMapping(Keyword keyword) {
+    private List<News> searchNewsForMapping(Keyword keyword) {
         List<News> news = newsRepository.findAllId(keyword.getId());
         if (news.size() > 0) {
-           return makeSearchResponseDto(news);
+            return news;
         }
         return null;
     }
@@ -82,11 +86,14 @@ public class SearchService {
     }
 
 
-    // Keyword 검증 메소드 입니다.
+    // Keyword 검증 메소드 - 키워드 검색
     private void validKeyword(KeywordRequestDto keywordRequestDto) {
         if (keywordRequestDto.isNone())
             throw new RuntimeException("키워드를 입력해주세요.");
+    }
 
+    // Keyword 검증 메소드 - 블랙키워드 검색
+    private void validBlackKeyword(KeywordRequestDto keywordRequestDto) {
         if (blackKeywordRepository.existsByBlackKeyword(keywordRequestDto.getKeyword()))
             throw new RuntimeException("검색한 키워드 금지어입니다.");
     }
