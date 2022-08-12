@@ -26,9 +26,21 @@ public class SearchController {
 
     private final SearchService searchService;
     
-    // 뉴스 키워드 검색
+    // 뉴스 키워드 검색 - 기존 작성했던 코드 방법
     @GetMapping("/api/news")
     public ResponseEntity<SearchResponseDto[]> searchNews(@RequestParam String keyword) {
         return new ResponseEntity(searchService.getSearchKeyword(new KeywordRequestDto(keyword)), HttpStatus.OK);
+    }
+
+    // 새로운 방법 - 네이티브 쿼리문 수정후 Keyword로 조회
+    @GetMapping("/api/innerNews")
+    public ResponseEntity<SearchResponseDto[]> innerSearchNews(@RequestParam String keyword) {
+        return new ResponseEntity(searchService.getNewSearchKeyword(new KeywordRequestDto(keyword)),HttpStatus.OK);
+    }
+
+    // 뉴스 엔티티로 바로 검색 - 속도 비교용
+    @GetMapping("/api/directNews")
+    public ResponseEntity<SearchResponseDto[]> directSearchNews(@RequestParam String keyword) {
+        return new ResponseEntity(searchService.getSearchNews(new KeywordRequestDto(keyword)),HttpStatus.OK);
     }
 }

@@ -73,8 +73,8 @@ class SearchServiceTest {
     @DisplayName("Search Keyword 메소드 검증 - 금기어 필터")
     public void test3(){
         // Given
-        Long count = 1L;
-        when(blackKeywordRepository.countByBlackKeyword("야한단어")).thenReturn(count);
+        boolean _return = true;
+        when(blackKeywordRepository.existsByBlackKeyword("야한단어")).thenReturn(_return);
 
         // When
         KeywordRequestDto keywordRequestDto = new KeywordRequestDto("야한단어");
