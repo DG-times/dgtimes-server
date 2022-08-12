@@ -52,6 +52,7 @@ public interface NewsRepository extends JpaRepository<News, Long> {
 //            ")", nativeQuery = true)
 //    List<News> findAllByKeyword(@Param("keyword") String keyword);
 
+    // 뉴스 엔티티에서 바로 검색 기능
     @Query(value = "select * "+
             "from news "+
             "where title like %:keyword% "+

@@ -32,7 +32,7 @@ public class SearchController {
         return new ResponseEntity(searchService.getSearchKeyword(new KeywordRequestDto(keyword)), HttpStatus.OK);
     }
 
-    // 새로운 방법 - 네이티브 쿼리문 수정후 Keyword로 조회
+    // 새로운 방법 - 네이티브 쿼리문 3개의 테이블 innerJoin으로 수정후 Keyword로 조회
     @GetMapping("/api/innerNews")
     public ResponseEntity<SearchResponseDto[]> innerSearchNews(@RequestParam String keyword) {
         return new ResponseEntity(searchService.getNewSearchKeyword(new KeywordRequestDto(keyword)),HttpStatus.OK);
