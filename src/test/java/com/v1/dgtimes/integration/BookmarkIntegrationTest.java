@@ -14,10 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
-import javax.transaction.Transactional;
-import java.util.ArrayList;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /*
@@ -28,7 +24,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 마지막 수정한 사람 : 김선진
 
 */
-
 
 
 public class BookmarkIntegrationTest extends DefaultIntegrationTest{
@@ -80,7 +75,6 @@ public class BookmarkIntegrationTest extends DefaultIntegrationTest{
 
 
 
-
     // 키워드 저장 실패 - 빈 키워드(통과)
     @Test
     @DisplayName("키워드 저장 실패 - 빈 키워드")
@@ -108,7 +102,6 @@ public class BookmarkIntegrationTest extends DefaultIntegrationTest{
 
 
 
-
     @Test
     @DisplayName("키워드 저장 실패 - 로그인 되지 않음")
     public void case3(){
@@ -130,7 +123,6 @@ public class BookmarkIntegrationTest extends DefaultIntegrationTest{
         assertEquals("키워드 저장 실패 - 로그인 되지 않음", response.getBody().getMsg());
         assertEquals(HttpStatus.BAD_REQUEST, response.getBody().getCode());
     }
-
 
 
 
@@ -163,7 +155,6 @@ public class BookmarkIntegrationTest extends DefaultIntegrationTest{
         assertEquals(HttpStatus.BAD_REQUEST, response.getBody().getCode());
 
     }
-
 
 
 

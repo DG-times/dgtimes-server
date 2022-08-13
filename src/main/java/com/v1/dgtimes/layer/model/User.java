@@ -9,7 +9,6 @@ package com.v1.dgtimes.layer.model;
 
 */
 
-import com.v1.dgtimes.layer.model.dto.request.SignupRequestDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -39,4 +38,10 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Bookmark> bookmarks = new ArrayList<>();
 
+
+    public User(String admin, String encode, String kimseonjin) {
+        this.id = admin;
+        this.pw = encode;
+        this.username = kimseonjin;
+    }
 }

@@ -42,6 +42,4 @@ public class BookmarkController {
         return new ResponseEntity<>(bookmarkService.postBookmarkKeyword(bookmarkRequestDto, userDetail), HttpStatus.OK);
     }
 
-
-
 }
