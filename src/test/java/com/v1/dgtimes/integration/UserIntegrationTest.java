@@ -37,7 +37,7 @@ public class UserIntegrationTest  extends DefaultIntegrationTest {
 
     @BeforeEach
     public void setupDB(){
-        userRepository.save(new User("admin4", "test!text", "독고민수", null));
+        userRepository.save(new User("admin4", "test!text", "독고민수"));
     }
 
     @AfterEach
