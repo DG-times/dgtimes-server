@@ -20,9 +20,9 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 
 /*
-설명 : UserIntegrationTest 작성 하였습니다. case4 - BeforeEach, AfterEach 추가.
+설명 : UserIntegrationTest 작성 하였습니다. case7 - user pw 인코딩 테스트 추가.
 
-작성일 : 2022.08.10
+작성일 : 2022.08.11
 
 마지막 수정한 사람 : 안상록
 
