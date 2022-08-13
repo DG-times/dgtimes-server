@@ -15,12 +15,13 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 /*
 설명 : 유저의 회원가입을 위한 Unit Test 입니다.
 
-작성일 : 2022.08.12
+작성일 : 2022.08.13
 
 마지막 수정한 사람 : 안상록
 
@@ -43,11 +44,11 @@ public class UserServiceTest {
     @DisplayName("유저 회원가입 성공")
     public void test1() {
         //Given
-        User find_user = new User();
         SignupResponseDto signupResponseDto = SignupResponseDto.builder()
                 .mag("회원가입에 성공했습니다.")
                 .status(200)
                 .build();
+        User find_user = new User();
         when(passwordEncoder.encode("testtesttest!!")).thenReturn(find_user.getPw());
 
         //when
@@ -62,98 +63,99 @@ public class UserServiceTest {
     @DisplayName("signupDtoValid - 유효하지 않은 아이디 길이")
     public void test2() {
         //Given
-
-
-        //when
         SignupRequestDto signupRequestDto = new SignupRequestDto("ad", "testtesttest!!","스파르타");
 
-        try {
-            ReflectionTestUtils.invokeMethod(userService, "signupDtoValid", signupRequestDto);
-        } catch (RuntimeException e) {
-            System.out.println(e.getMessage());
-            Assertions.assertEquals("회원가입에 실패했습니다. - 유효하지 않은 아이디 길이", e.getMessage());
-        }
+        //when
+        RuntimeException restApiException = assertThrows(RuntimeException.class, () ->  ReflectionTestUtils.invokeMethod(userService, "signupDtoValid", signupRequestDto));
+
+        //then
+        Assertions.assertEquals("회원가입에 실패했습니다. - 유효하지 않은 아이디 길이", restApiException.getMessage());
 
     }
 
+
+
     @Test
-    @DisplayName("회원가입 실패. - 유효하지 않은 아이디 형식")
+    @DisplayName("signupDtoValid - 유효하지 않은 아이디 형식")
     public void test3() {
         //Given
-
-
-        //when
         SignupRequestDto signupRequestDto = new SignupRequestDto("ad!@", "testtesttest!!","스파르타");
 
-        try {
-            ReflectionTestUtils.invokeMethod(userService, "signupDtoValid", signupRequestDto);
-        } catch (RuntimeException e) {
-            System.out.println(e.getMessage());
-            Assertions.assertEquals("회원가입에 실패했습니다. - 유효하지 않은 아이디 형식", e.getMessage());
-        }
+        //when
+        RuntimeException restApiException = assertThrows(RuntimeException.class, () ->  ReflectionTestUtils.invokeMethod(userService, "signupDtoValid", signupRequestDto));
+
+        //then
+        Assertions.assertEquals("회원가입에 실패했습니다. - 유효하지 않은 아이디 형식", restApiException.getMessage());
 
     }
 
     @Test
-    @DisplayName("회원가입 실패 - 유효하지 않은 비밀번호 길이")
-    public void test4() {
+    @DisplayName("signupDtoValid - 유효하지 않은 비밀번호 길이")
+    public void test4(){
         //Given
-
-
-        //when
         SignupRequestDto signupRequestDto = new SignupRequestDto("admin", "!!","스파르타");
 
-        try {
-            ReflectionTestUtils.invokeMethod(userService, "signupDtoValid", signupRequestDto);
-        } catch (RuntimeException e) {
-            System.out.println(e.getMessage());
-            Assertions.assertEquals("회원가입에 실패했습니다. - 유효하지 않은 비밀번호 길이", e.getMessage());
-        }
+        //when
+        RuntimeException restApiException = assertThrows(RuntimeException.class, () ->  ReflectionTestUtils.invokeMethod(userService, "signupDtoValid", signupRequestDto));
+
+        //then
+        Assertions.assertEquals("회원가입에 실패했습니다. - 유효하지 않은 비밀번호 길이", restApiException.getMessage());
+
 
     }
 
     @Test
-    @DisplayName("회원가입 실패 - 비밀번호에 아이디 포함")
+    @DisplayName("signupDtoValid - 비밀번호에 아이디 포함")
     public void test5() {
         //Given
-
-
-        //when
         SignupRequestDto signupRequestDto = new SignupRequestDto("admin", "admin!!","스파르타");
 
-        try {
-            ReflectionTestUtils.invokeMethod(userService, "signupDtoValid", signupRequestDto);
-        } catch (RuntimeException e) {
-            System.out.println(e.getMessage());
-            Assertions.assertEquals("회원가입에 실패했습니다. - 비밀번호에 아이디 포함", e.getMessage());
-        }
+        //when
+        RuntimeException restApiException = assertThrows(RuntimeException.class, () ->  ReflectionTestUtils.invokeMethod(userService, "signupDtoValid", signupRequestDto));
+
+        //then
+        Assertions.assertEquals("회원가입에 실패했습니다. - 비밀번호에 아이디 포함", restApiException.getMessage());
+
+
+    }
+
+    @Test
+    @DisplayName("signupDtoValid - 성공")
+    public void test6() {
+        //Given
+        SignupRequestDto signupRequestDto = new SignupRequestDto("admin", "testtest!!","스파르타");
+
+        //when
+        ReflectionTestUtils.invokeMethod(userService, "signupDtoValid", signupRequestDto);
+
+        //then
 
     }
 
     @Test
     @DisplayName("isExistUser - 실패")
-    public void test6() {
-        //Given
-        SignupRequestDto signupRequestDto = new SignupRequestDto("admin", "testtesttest!!","스파르타");
-        when(userRepository.existsById(signupRequestDto.getId())).thenReturn(true);
-
-        //when
-
-        ReflectionTestUtils.invokeMethod(userService, "signupDtoValid", signupRequestDto);
-//        Assertions.assertEquals("회원가입에 실패했습니다. - 중복된 아이디 입니다", e.getMessage());
-
-
-    }
-    @Test
-    @DisplayName("isExistUser - 성공")
     public void test7() {
         //Given
         SignupRequestDto signupRequestDto = new SignupRequestDto("admin", "testtesttest!!","스파르타");
         when(userRepository.existsById(signupRequestDto.getId())).thenReturn(true);
 
         //when
+        RuntimeException restApiException = assertThrows(RuntimeException.class, () ->  ReflectionTestUtils.invokeMethod(userService, "signupDtoValid", signupRequestDto));
+
+        //then
+        Assertions.assertEquals("회원가입에 실패했습니다. - 중복된 아이디 입니다", restApiException.getMessage());
+
+    }
+    @Test
+    @DisplayName("isExistUser - 성공")
+    public void test8() {
+        //Given
+        SignupRequestDto signupRequestDto = new SignupRequestDto("admin", "testtesttest!!","스파르타");
+        when(userRepository.existsById(signupRequestDto.getId())).thenReturn(false);
+
+        //when
         ReflectionTestUtils.invokeMethod(userService, "signupDtoValid", signupRequestDto);
 
-
+        //then
     }
 }
