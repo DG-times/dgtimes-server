@@ -28,7 +28,6 @@ public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatcher("/api/**")
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/bookmark").authenticated()
                 .anyRequest().permitAll()
                 .and()
                 .httpBasic()
