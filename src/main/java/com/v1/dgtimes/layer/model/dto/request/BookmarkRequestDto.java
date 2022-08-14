@@ -24,10 +24,10 @@ public class BookmarkRequestDto {
 
 
     // 공란
-    public boolean isValidKeywordBlank(){return this.keyword.isEmpty();}
+//    public boolean isValidKeywordBlank(){return this.keyword.equals("");}
 
     // 금지된 키워드
-    public boolean isValidKeywordBan(){return this.keyword.equals("야한거");}
+//    public boolean isValidKeywordBan(){return this.keyword.equals("야한거");}
 
     // 로그인 되지 않음
 //    public boolean isValidUserNotLogin(){return this.user.isEmpty();}

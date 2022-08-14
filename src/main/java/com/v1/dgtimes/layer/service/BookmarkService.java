@@ -38,7 +38,7 @@ public class BookmarkService {
 
 
         //빈 키워드인지 검사
-        if (requestDto.getKeyword().equals("")) {
+        if (requestDto.getKeyword() == null || requestDto.getKeyword().equals("")) {
             throw new RuntimeException("키워드 저장 실패 - 빈 키워드");
         }
 
