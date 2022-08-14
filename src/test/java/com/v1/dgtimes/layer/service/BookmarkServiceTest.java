@@ -1,9 +1,16 @@
 package com.v1.dgtimes.layer.service;
 
 
+import com.v1.dgtimes.config.security.userdetail.UserDetailImpl;
+import com.v1.dgtimes.layer.model.Bookmark;
 import com.v1.dgtimes.layer.model.Keyword;
+import com.v1.dgtimes.layer.model.dto.request.BookmarkRequestDto;
 import com.v1.dgtimes.layer.model.dto.request.KeywordRequestDto;
+import com.v1.dgtimes.layer.model.dto.response.DefaultResponseDto;
 import com.v1.dgtimes.layer.repository.BookmarkRepository;
+import com.v1.dgtimes.layer.repository.KeywordRepository;
+import com.v1.dgtimes.layer.repository.UserRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,6 +21,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 /*
@@ -31,6 +39,12 @@ public class BookmarkServiceTest {
     @Mock
     public BookmarkRepository bookmarkRepository;
 
+    @Mock
+    public KeywordRepository keywordRepository;
+
+    @Mock
+    public UserRepository userRepository;
+
     @InjectMocks
     private BookmarkService bookmarkService;
 
@@ -40,11 +54,15 @@ public class BookmarkServiceTest {
     public void test1() {
 
         // Given
-
+        BookmarkRequestDto bookmarkRequestDto = new BookmarkRequestDto();
 
         // When
+        RuntimeException runtimeException = assertThrows(RuntimeException.class,
+                () -> ReflectionTestUtils.invokeMethod(bookmarkService,"postBookmarkKeyword", bookmarkRequestDto, null));
 
         // Then
+        Assertions.assertEquals("키워드 저장 실패 - 빈 키워드", runtimeException.getMessage());
+
     }
 
 
@@ -52,6 +70,7 @@ public class BookmarkServiceTest {
     @DisplayName("키워드 저장 실패 - 로그인 되지 않음")
     public void test2() {
         // Given
+
 
         // When
 
@@ -75,10 +94,15 @@ public class BookmarkServiceTest {
     @DisplayName("키워드 저장 실패 - 금지된 키워드")
     public void test4() {
         // Given
+        BookmarkRequestDto bookmarkRequestDto = new BookmarkRequestDto("야한거");
 
         // When
+        RuntimeException runtimeException = assertThrows(RuntimeException.class,
+                () -> ReflectionTestUtils.invokeMethod(bookmarkService,"postBookmarkKeyword", bookmarkRequestDto, null));
 
         // Then
+        Assertions.assertEquals("키워드 저장 실패 - 금지된 키워드", runtimeException.getMessage());
+
     }
 
 
