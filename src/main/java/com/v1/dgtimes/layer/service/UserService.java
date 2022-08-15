@@ -1,5 +1,7 @@
 package com.v1.dgtimes.layer.service;
 
+import com.v1.dgtimes.config.exception.CustomException;
+import com.v1.dgtimes.config.exception.ErrorCode;
 import com.v1.dgtimes.config.security.PasswordEncoder;
 import com.v1.dgtimes.layer.model.User;
 import com.v1.dgtimes.layer.model.dto.request.SignupRequestDto;
@@ -11,11 +13,10 @@ import org.springframework.stereotype.Service;
 /*
 설명 : 유저의 회원가입을 위한 서비스 입니다.
 
-작성일 : 2022.08.09
+작성일 : 2022.08.15
 
 마지막 수정한 사람 : 안상록
 
-Todo -
 */
 @Service
 @RequiredArgsConstructor
@@ -45,19 +46,19 @@ public class UserService {
 
     private void signupDtoValid(SignupRequestDto requestDto){
         if(requestDto.isValidIdLength()){
-            throw new RuntimeException("회원가입에 실패했습니다. - 유효하지 않은 아이디 길이");
+            throw new CustomException(ErrorCode.ID_VALID_LENGTH_CODE);
         }
         if(!requestDto.isValidIdPatternMatches()){
-            throw new RuntimeException("회원가입에 실패했습니다. - 유효하지 않은 아이디 형식");
+            throw new CustomException(ErrorCode.ID_VALID_PATTERN_MATCHES_CODE);
         }
         if(requestDto.isValidPasswordLength()){
-            throw new RuntimeException("회원가입에 실패했습니다. - 유효하지 않은 비밀번호 길이");
+            throw new CustomException(ErrorCode.PASSWORD_VALID_LENGTH_CODE);
         }
         if(requestDto.isPasswordContainsId()){
-            throw new RuntimeException("회원가입에 실패했습니다. - 비밀번호에 아이디 포함");
+            throw new CustomException(ErrorCode.PASSWORD_CONTAIN_ID_CODE);
         }
         if(isExistUser(requestDto)){
-            throw new RuntimeException("회원가입에 실패했습니다. - 중복된 아이디 입니다");
+            throw new CustomException(ErrorCode.ID_EXIST_USER_CODE);
         }
     }
 

@@ -1,5 +1,6 @@
 package com.v1.dgtimes.layer.service;
 
+import com.v1.dgtimes.config.exception.CustomException;
 import com.v1.dgtimes.config.security.PasswordEncoder;
 import com.v1.dgtimes.layer.model.User;
 import com.v1.dgtimes.layer.model.dto.request.SignupRequestDto;
@@ -21,7 +22,7 @@ import static org.mockito.Mockito.when;
 /*
 설명 : 유저의 회원가입을 위한 Unit Test 입니다.
 
-작성일 : 2022.08.13
+작성일 : 2022.08.15
 
 마지막 수정한 사람 : 안상록
 
@@ -66,11 +67,13 @@ public class UserServiceTest {
         SignupRequestDto signupRequestDto = new SignupRequestDto("ad", "testtesttest!!","스파르타");
 
         //when
-        RuntimeException restApiException = assertThrows(RuntimeException.class, () ->  ReflectionTestUtils.invokeMethod(userService, "signupDtoValid", signupRequestDto));
+        CustomException customException = assertThrows(CustomException.class, () ->  ReflectionTestUtils.invokeMethod(userService, "signupDtoValid", signupRequestDto));
 
         //then
-        Assertions.assertEquals("회원가입에 실패했습니다. - 유효하지 않은 아이디 길이", restApiException.getMessage());
-
+        Assertions.assertEquals("회원가입에 실패했습니다. - 유효하지 않은 아이디 길이", customException.getErrorCode().getMessage());
+        System.out.println(customException.getErrorCode().getStatus());
+        System.out.println(customException.getErrorCode().getCode());
+        System.out.println(customException.getErrorCode().getMessage());
     }
 
 
@@ -82,10 +85,10 @@ public class UserServiceTest {
         SignupRequestDto signupRequestDto = new SignupRequestDto("ad!@", "testtesttest!!","스파르타");
 
         //when
-        RuntimeException restApiException = assertThrows(RuntimeException.class, () ->  ReflectionTestUtils.invokeMethod(userService, "signupDtoValid", signupRequestDto));
+        CustomException customException = assertThrows(CustomException.class, () ->  ReflectionTestUtils.invokeMethod(userService, "signupDtoValid", signupRequestDto));
 
         //then
-        Assertions.assertEquals("회원가입에 실패했습니다. - 유효하지 않은 아이디 형식", restApiException.getMessage());
+        Assertions.assertEquals("회원가입에 실패했습니다. - 유효하지 않은 아이디 형식", customException.getMessage());
 
     }
 
@@ -96,10 +99,10 @@ public class UserServiceTest {
         SignupRequestDto signupRequestDto = new SignupRequestDto("admin", "!!","스파르타");
 
         //when
-        RuntimeException restApiException = assertThrows(RuntimeException.class, () ->  ReflectionTestUtils.invokeMethod(userService, "signupDtoValid", signupRequestDto));
+        CustomException customException = assertThrows(CustomException.class, () ->  ReflectionTestUtils.invokeMethod(userService, "signupDtoValid", signupRequestDto));
 
         //then
-        Assertions.assertEquals("회원가입에 실패했습니다. - 유효하지 않은 비밀번호 길이", restApiException.getMessage());
+        Assertions.assertEquals("회원가입에 실패했습니다. - 유효하지 않은 비밀번호 길이", customException.getMessage());
 
 
     }
@@ -111,10 +114,10 @@ public class UserServiceTest {
         SignupRequestDto signupRequestDto = new SignupRequestDto("admin", "admin!!","스파르타");
 
         //when
-        RuntimeException restApiException = assertThrows(RuntimeException.class, () ->  ReflectionTestUtils.invokeMethod(userService, "signupDtoValid", signupRequestDto));
+        CustomException customException = assertThrows(CustomException.class, () ->  ReflectionTestUtils.invokeMethod(userService, "signupDtoValid", signupRequestDto));
 
         //then
-        Assertions.assertEquals("회원가입에 실패했습니다. - 비밀번호에 아이디 포함", restApiException.getMessage());
+        Assertions.assertEquals("회원가입에 실패했습니다. - 비밀번호에 아이디 포함", customException.getMessage());
 
 
     }
@@ -140,10 +143,10 @@ public class UserServiceTest {
         when(userRepository.existsById(signupRequestDto.getId())).thenReturn(true);
 
         //when
-        RuntimeException restApiException = assertThrows(RuntimeException.class, () ->  ReflectionTestUtils.invokeMethod(userService, "signupDtoValid", signupRequestDto));
+        CustomException customException = assertThrows(CustomException.class, () ->  ReflectionTestUtils.invokeMethod(userService, "signupDtoValid", signupRequestDto));
 
         //then
-        Assertions.assertEquals("회원가입에 실패했습니다. - 중복된 아이디 입니다", restApiException.getMessage());
+        Assertions.assertEquals("회원가입에 실패했습니다. - 중복된 아이디 입니다", customException.getMessage());
 
     }
     @Test
