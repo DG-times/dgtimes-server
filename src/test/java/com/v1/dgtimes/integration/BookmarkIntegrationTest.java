@@ -14,6 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /*
@@ -67,7 +70,6 @@ public class BookmarkIntegrationTest extends DefaultIntegrationTest{
                 );
 
         //then
-        System.out.println(response.getBody().getMsg());
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("키워드 저장에 성공했습니다.", response.getBody().getMsg());
         assertEquals(200, response.getBody().getStatus());
@@ -182,4 +184,5 @@ public class BookmarkIntegrationTest extends DefaultIntegrationTest{
         assertEquals(HttpStatus.BAD_REQUEST, response.getBody().getCode());
 
     }
+
 }

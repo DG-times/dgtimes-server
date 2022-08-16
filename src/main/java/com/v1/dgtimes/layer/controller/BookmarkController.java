@@ -9,8 +9,10 @@ package com.v1.dgtimes.layer.controller;
 
 */
 
+import com.v1.dgtimes.config.security.PasswordEncoder;
 import com.v1.dgtimes.config.security.userdetail.UserDetailImpl;
 import com.v1.dgtimes.config.security.userdetail.UserDetailServiceImpl;
+import com.v1.dgtimes.layer.model.Bookmark;
 import com.v1.dgtimes.layer.model.User;
 import com.v1.dgtimes.layer.model.dto.request.BookmarkRequestDto;
 import com.v1.dgtimes.layer.model.dto.request.KeywordRequestDto;
@@ -20,11 +22,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-
+import java.util.List;
 
 
 @RestController
@@ -37,9 +37,17 @@ public class BookmarkController {
     //즐겨찾기
     @PostMapping("/api/bookmarks")
     public ResponseEntity<DefaultResponseDto> bookmarks (
-            @RequestBody BookmarkRequestDto bookmarkRequestDto, @AuthenticationPrincipal UserDetailImpl userDetail
-    ) {
+            @RequestBody BookmarkRequestDto bookmarkRequestDto,
+            @AuthenticationPrincipal UserDetailImpl userDetail) {
         return new ResponseEntity<>(bookmarkService.postBookmarkKeyword(bookmarkRequestDto, userDetail), HttpStatus.OK);
+    }
+
+    // 즐겨찾기 가져오기
+    @GetMapping("/api/user/{bookmarks}")
+    public List<Bookmark> getBookmarks(
+            @PathVariable String bookmarks,
+            @AuthenticationPrincipal UserDetailImpl userDetail) {
+        return bookmarkService.getBookmarks(bookmarks, userDetail);
     }
 
 }
