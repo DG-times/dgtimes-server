@@ -11,23 +11,20 @@ package com.v1.dgtimes.config.exception;
 Todo -
 */
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class RestApiExceptionHandler {
 
-    @ExceptionHandler(value = {RuntimeException.class})
-    public ResponseEntity<Object> handleApiRequestException(RuntimeException ex) {
-        RestApiException restApiException = new RestApiException();
-        restApiException.setCode(HttpStatus.BAD_REQUEST);
-        restApiException.setMsg(ex.getMessage());
-
-        return new ResponseEntity(
-                restApiException,
-                HttpStatus.BAD_REQUEST
-        );
-    }
+//    @ExceptionHandler(value = {RuntimeException.class})
+//    public ResponseEntity<Object> handleApiRequestException(RuntimeException ex) {
+//        RestApiException restApiException = new RestApiException();
+//        restApiException.setCode(HttpStatus.BAD_REQUEST);
+//        restApiException.setMsg(ex.getMessage());
+//
+//        return new ResponseEntity(
+//                restApiException,
+//                HttpStatus.BAD_REQUEST
+//        );
+//    }
 }

@@ -133,8 +133,8 @@ public class SearchIntegrationTest extends DefaultIntegrationTest{
         //then
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         RestApiException responsebody = response.getBody();
-        assertEquals(HttpStatus.BAD_REQUEST, responsebody.getCode());
-        assertEquals("찾는 키워드의 검색 결과가 없습니다.", responsebody.getMsg());
+        assertEquals("S004", responsebody.getCode());
+        assertEquals("키워드 검색에 실패했습니다. - 찾는 키워드의 검색 결과가 없습니다.", responsebody.getMsg());
     }
 
     // Service쪽에서 keyword의 값이 ""인 경우 실패 반환
@@ -153,8 +153,8 @@ public class SearchIntegrationTest extends DefaultIntegrationTest{
         //then
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         RestApiException responsebody = response.getBody();
-        assertEquals(HttpStatus.BAD_REQUEST, responsebody.getCode());
-        assertEquals("키워드를 입력해주세요.", responsebody.getMsg());
+        assertEquals("S001", responsebody.getCode());
+        assertEquals("키워드 검색에 실패했습니다. - 키워드를 입력해주세요.", responsebody.getMsg());
     }
 
     // Bookmark 테이블에서 금지어인지 확인 후, 금지어인경우 실패
@@ -173,7 +173,7 @@ public class SearchIntegrationTest extends DefaultIntegrationTest{
         //then
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         RestApiException responsebody = response.getBody();
-        assertEquals(HttpStatus.BAD_REQUEST, responsebody.getCode());
-        assertEquals("검색한 키워드 금지어입니다.", responsebody.getMsg());
+        assertEquals("S002", responsebody.getCode());
+        assertEquals("키워드 검색에 실패했습니다. - 금지된 키워드 입니다.", responsebody.getMsg());
     }
 }

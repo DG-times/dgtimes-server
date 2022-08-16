@@ -2,22 +2,31 @@ package com.v1.dgtimes.config.exception;
 
 /*
 설명 : RestApiException 구현
-    > 변수명 수정
 
-작성일 : 2022.08.11
+작성일 : 2022.08.16
 
-마지막 수정한 사람 : 홍우석
+마지막 수정한 사람 : 안상록
 
 Todo -
 */
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.http.HttpStatus;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class RestApiException {
     private String msg;
-    private HttpStatus code;
+    private String code;
+
+    public RestApiException(ErrorCode errorCode){
+        this.msg = errorCode.getMessage();
+        this.code = errorCode.getCode();
+    }
+
+    public static RestApiException of(ErrorCode errorCode){
+        return new RestApiException(errorCode);
+    }
 }
