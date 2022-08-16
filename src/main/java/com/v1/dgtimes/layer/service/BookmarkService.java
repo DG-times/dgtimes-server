@@ -22,6 +22,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 
 @Service
 @RequiredArgsConstructor
@@ -85,5 +87,15 @@ public class BookmarkService {
                 .build();
 
     }
+
+    @Transactional
+    public List<Bookmark> getBookmarks(String bookmarks, UserDetailImpl userDetail) {
+        Long keywordId = keywordRepository.findIdByKeyword(bookmarks);
+
+        User user = userRepository.findById(userDetail.getUser().getId()).get();
+
+        return bookmarkRepository.findByKeywordIdAndUserId(keywordId, user.getId());
+    }
+
 
 }

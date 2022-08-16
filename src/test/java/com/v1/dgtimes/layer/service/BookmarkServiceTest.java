@@ -70,11 +70,15 @@ public class BookmarkServiceTest {
     @DisplayName("키워드 저장 실패 - 로그인 되지 않음")
     public void test2() {
         // Given
+        BookmarkRequestDto bookmarkRequestDto = new BookmarkRequestDto();
 
 
         // When
+        RuntimeException runtimeException = assertThrows(RuntimeException.class,
+        ()-> ReflectionTestUtils.invokeMethod(userRepository, "postBookmarkKeyword", bookmarkRequestDto, null));
 
         // Then
+        Assertions.assertEquals("키워드 저장 실패 - 로그인 되지 않음", runtimeException.getMessage());
     }
 
 
@@ -82,11 +86,15 @@ public class BookmarkServiceTest {
     @DisplayName("키워드 저장 실패 - 기존에 등록한 키워드")
     public void test3() {
         // Given
+        BookmarkRequestDto bookmarkRequestDto = new BookmarkRequestDto("안녕");
+
 
         // When
-
+        RuntimeException runtimeException = assertThrows(RuntimeException.class,
+                ()-> ReflectionTestUtils.invokeMethod(userRepository, "postBookmarkKeyword", bookmarkRequestDto.equals("안녕")));
 
         // Then
+        Assertions.assertEquals("키워드 저장 실패 - 기존에 등록한 키워드", runtimeException.getMessage());
     }
 
 
