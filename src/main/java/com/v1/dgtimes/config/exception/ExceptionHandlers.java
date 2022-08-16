@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 /*
 설명 : ExceptionHandlers 구현
 
-작성일 : 2022.08.15
+작성일 : 2022.08.16
 
 마지막 수정한 사람 : 안상록
 
@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class ExceptionHandlers {
 
     @ExceptionHandler(CustomException.class)
-    public ResponseEntity<ErrorResponse> handleCustomException(CustomException e){
-        ErrorResponse response = ErrorResponse.of(e.getErrorCode());
+    public ResponseEntity<RestApiException> handleCustomException(CustomException e){
+        RestApiException restApiException = RestApiException.of(e.getErrorCode());
 
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(restApiException, HttpStatus.BAD_REQUEST);
     }
 }

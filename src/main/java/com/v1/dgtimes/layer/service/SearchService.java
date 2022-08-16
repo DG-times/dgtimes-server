@@ -12,6 +12,8 @@ package com.v1.dgtimes.layer.service;
 Todo -
 */
 
+import com.v1.dgtimes.config.exception.CustomException;
+import com.v1.dgtimes.config.exception.ErrorCode;
 import com.v1.dgtimes.layer.model.Keyword;
 import com.v1.dgtimes.layer.model.News;
 import com.v1.dgtimes.layer.model.dto.request.KeywordRequestDto;
@@ -62,7 +64,7 @@ public class SearchService {
     // Keyword 테이블에서 Keyword값 찾아 결과 반환
     private Keyword searchKeyword(KeywordRequestDto keywordRequestDto) {
         return keywordRepository.findByKeyword(keywordRequestDto.getKeyword()).orElseThrow(
-                () -> new RuntimeException("찾는 키워드의 검색 결과가 없습니다.")
+                () -> new CustomException(ErrorCode.SEARCH_KEYWORD_NOT_FOUND_CODE)
         );
     }
 
@@ -89,20 +91,20 @@ public class SearchService {
     // Keyword 검증 메소드 - 키워드 검색
     private void validKeyword(KeywordRequestDto keywordRequestDto) {
         if (keywordRequestDto.isNone())
-            throw new RuntimeException("키워드를 입력해주세요.");
+            throw new CustomException(ErrorCode.SEARCH_KEYWORD_EMPTY_CODE);
     }
 
     // Keyword 검증 메소드 - 블랙키워드 검색
     private void validBlackKeyword(KeywordRequestDto keywordRequestDto) {
         if (blackKeywordRepository.existsByBlackKeyword(keywordRequestDto.getKeyword()))
-            throw new RuntimeException("검색한 키워드 금지어입니다.");
+            throw new CustomException(ErrorCode.SEARCH_KEYWORD_FORBIDDEN_CODE);
     }
 
     // 뉴스 엔티티에서 keyword 검색
     private List<News> searchNews(KeywordRequestDto keywordRequestDto) {
         List<News> news = newsRepository.findAllByTitleAndContent(keywordRequestDto.getKeyword());
         if (news.size() == 0) {
-            throw new RuntimeException("검색된 뉴스가 없습니다.");
+            throw new CustomException(ErrorCode.SEARCH_NEWS_NOT_FOUND_CODE);
         }
         return news;
     }
@@ -111,7 +113,7 @@ public class SearchService {
     private List<News> newSearchKeyword(KeywordRequestDto keywordRequestDto) {
         List<News> news = newsRepository.findAllByKeyword(keywordRequestDto.getKeyword());
         if (news.size() == 0) {
-            throw new RuntimeException("검색된 뉴스가 없습니다.");
+            throw new CustomException(ErrorCode.SEARCH_NEWS_NOT_FOUND_CODE);
         }
         return news;
     }

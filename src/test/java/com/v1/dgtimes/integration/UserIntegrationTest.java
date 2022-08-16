@@ -88,7 +88,7 @@ public class UserIntegrationTest  extends DefaultIntegrationTest {
         // then
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         RestApiException responsebody = response.getBody();
-        assertEquals(HttpStatus.BAD_REQUEST, responsebody.getCode());
+        assertEquals("U003", responsebody.getCode());
         assertEquals("회원가입에 실패했습니다. - 유효하지 않은 비밀번호 길이", responsebody.getMsg());
 
     }
@@ -111,7 +111,7 @@ public class UserIntegrationTest  extends DefaultIntegrationTest {
         // then
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         RestApiException responsebody = response.getBody();
-        assertEquals(HttpStatus.BAD_REQUEST, responsebody.getCode());
+        assertEquals("U002", responsebody.getCode());
         assertEquals("회원가입에 실패했습니다. - 유효하지 않은 아이디 형식", responsebody.getMsg());
 
     }
@@ -133,7 +133,7 @@ public class UserIntegrationTest  extends DefaultIntegrationTest {
         // then
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         RestApiException responsebody = response.getBody();
-        assertEquals(HttpStatus.BAD_REQUEST, responsebody.getCode());
+        assertEquals("U005", responsebody.getCode());
         assertEquals("회원가입에 실패했습니다. - 중복된 아이디 입니다", responsebody.getMsg());
 
     }
@@ -157,7 +157,7 @@ public class UserIntegrationTest  extends DefaultIntegrationTest {
         // then
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         RestApiException responsebody = response.getBody();
-        assertEquals(HttpStatus.BAD_REQUEST, responsebody.getCode());
+        assertEquals("U001", responsebody.getCode());
         assertEquals("회원가입에 실패했습니다. - 유효하지 않은 아이디 길이", responsebody.getMsg());
 
     }
@@ -182,7 +182,7 @@ public class UserIntegrationTest  extends DefaultIntegrationTest {
         // then
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         RestApiException responsebody = response.getBody();
-        assertEquals(HttpStatus.BAD_REQUEST, responsebody.getCode());
+        assertEquals("U004", responsebody.getCode());
         assertEquals("회원가입에 실패했습니다. - 비밀번호에 아이디 포함", responsebody.getMsg());
 
     }
