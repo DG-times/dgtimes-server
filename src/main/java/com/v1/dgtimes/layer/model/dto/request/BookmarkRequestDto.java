@@ -9,6 +9,7 @@ package com.v1.dgtimes.layer.model.dto.request;
 
 */
 
+import com.v1.dgtimes.layer.repository.BlackKeywordRepository;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,16 +21,10 @@ import lombok.NoArgsConstructor;
 public class BookmarkRequestDto {
 
     private String keyword;
-//    private String user;
 
-
-    // 공란
-//    public boolean isValidKeywordBlank(){return this.keyword.equals("");}
-
-    // 금지된 키워드
-//    public boolean isValidKeywordBan(){return this.keyword.equals("야한거");}
-
-    // 로그인 되지 않음
-//    public boolean isValidUserNotLogin(){return this.user.isEmpty();}
+    //빈 키워드인지 검사
+    public boolean isValidKeywordBlank(){
+        return this.keyword.equals("") || this.keyword == null;
+    }
 
 }

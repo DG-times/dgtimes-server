@@ -9,6 +9,7 @@ package com.v1.dgtimes.layer.model;
 
 */
 
+import com.v1.dgtimes.layer.model.dto.request.BookmarkRequestDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -43,5 +44,10 @@ public class User {
         this.id = admin;
         this.pw = encode;
         this.username = kimseonjin;
+    }
+
+    public boolean isExistKeyword(Keyword keyword){
+        return this.bookmarks.stream()
+                .anyMatch(x -> x.getKeyword().getKeyword().equals(keyword.getKeyword()));
     }
 }

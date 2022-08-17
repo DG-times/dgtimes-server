@@ -26,6 +26,8 @@ public enum ErrorCode {
     BOOKMARK_KEYWORD_EMPTY_CODE(400,"B001","키워드 저장에 실패했습니다. - 빈 키워드입니다."),
     BOOKMARK_KEYWORD_EXIST_USER_CODE(400,"B002","키워드 저장에 실패했습니다. - 기존에 등록된 키워드입니다."),
     BOOKMARK_KEYWORD_FORBIDDEN_CODE(400,"B003","키워드 저장에 실패했습니다. - 금지된 키워드입니다."),
+    BOOKMARK_KEYWORD_NOT_FOUND(400,"B004","키워드 저장에 실패했습니다. - 조회된 키워드가 없습니다."),
+
 
     //search
     SEARCH_KEYWORD_EMPTY_CODE(400,"S001","키워드 검색에 실패했습니다. - 키워드를 입력해주세요."),
