@@ -11,6 +11,7 @@ package com.v1.dgtimes.integration;
 
 */
 
+import com.v1.dgtimes.config.exception.ErrorCode;
 import com.v1.dgtimes.config.exception.RestApiException;
 import com.v1.dgtimes.layer.model.BlackKeyword;
 import com.v1.dgtimes.layer.model.Keyword;
@@ -133,8 +134,8 @@ public class SearchIntegrationTest extends DefaultIntegrationTest{
         //then
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         RestApiException responsebody = response.getBody();
-        assertEquals("S004", responsebody.getCode());
-        assertEquals("키워드 검색에 실패했습니다. - 찾는 키워드의 검색 결과가 없습니다.", responsebody.getMsg());
+        assertEquals(ErrorCode.SEARCH_KEYWORD_NOT_FOUND_CODE.getCode(), responsebody.getCode());
+        assertEquals(ErrorCode.SEARCH_KEYWORD_NOT_FOUND_CODE.getMessage(), responsebody.getMsg());
     }
 
     // Service쪽에서 keyword의 값이 ""인 경우 실패 반환
@@ -153,8 +154,8 @@ public class SearchIntegrationTest extends DefaultIntegrationTest{
         //then
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         RestApiException responsebody = response.getBody();
-        assertEquals("S001", responsebody.getCode());
-        assertEquals("키워드 검색에 실패했습니다. - 키워드를 입력해주세요.", responsebody.getMsg());
+        assertEquals(ErrorCode.SEARCH_KEYWORD_EMPTY_CODE.getCode(), responsebody.getCode());
+        assertEquals(ErrorCode.SEARCH_KEYWORD_EMPTY_CODE.getMessage(), responsebody.getMsg());
     }
 
     // Bookmark 테이블에서 금지어인지 확인 후, 금지어인경우 실패
@@ -173,7 +174,7 @@ public class SearchIntegrationTest extends DefaultIntegrationTest{
         //then
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         RestApiException responsebody = response.getBody();
-        assertEquals("S002", responsebody.getCode());
-        assertEquals("키워드 검색에 실패했습니다. - 금지된 키워드 입니다.", responsebody.getMsg());
+        assertEquals(ErrorCode.SEARCH_KEYWORD_FORBIDDEN_CODE.getCode(), responsebody.getCode());
+        assertEquals(ErrorCode.SEARCH_KEYWORD_FORBIDDEN_CODE.getMessage(), responsebody.getMsg());
     }
 }

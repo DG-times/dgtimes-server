@@ -1,6 +1,7 @@
 package com.v1.dgtimes.integration;
 
 
+import com.v1.dgtimes.config.exception.ErrorCode;
 import com.v1.dgtimes.config.exception.RestApiException;
 import com.v1.dgtimes.layer.model.User;
 import org.junit.jupiter.api.AfterEach;
@@ -88,8 +89,8 @@ public class UserIntegrationTest  extends DefaultIntegrationTest {
         // then
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         RestApiException responsebody = response.getBody();
-        assertEquals("U003", responsebody.getCode());
-        assertEquals("회원가입에 실패했습니다. - 유효하지 않은 비밀번호 길이", responsebody.getMsg());
+        assertEquals(ErrorCode.PASSWORD_VALID_LENGTH_CODE.getCode(), responsebody.getCode());
+        assertEquals(ErrorCode.PASSWORD_VALID_LENGTH_CODE.getMessage(), responsebody.getMsg());
 
     }
     @Test
@@ -111,8 +112,8 @@ public class UserIntegrationTest  extends DefaultIntegrationTest {
         // then
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         RestApiException responsebody = response.getBody();
-        assertEquals("U002", responsebody.getCode());
-        assertEquals("회원가입에 실패했습니다. - 유효하지 않은 아이디 형식", responsebody.getMsg());
+        assertEquals(ErrorCode.ID_VALID_PATTERN_MATCHES_CODE.getCode(), responsebody.getCode());
+        assertEquals(ErrorCode.ID_VALID_PATTERN_MATCHES_CODE.getMessage(), responsebody.getMsg());
 
     }
     @Test
@@ -133,8 +134,8 @@ public class UserIntegrationTest  extends DefaultIntegrationTest {
         // then
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         RestApiException responsebody = response.getBody();
-        assertEquals("U005", responsebody.getCode());
-        assertEquals("회원가입에 실패했습니다. - 중복된 아이디 입니다", responsebody.getMsg());
+        assertEquals(ErrorCode.ID_EXIST_USER_CODE.getCode(), responsebody.getCode());
+        assertEquals(ErrorCode.ID_EXIST_USER_CODE.getMessage(), responsebody.getMsg());
 
     }
 
@@ -157,8 +158,8 @@ public class UserIntegrationTest  extends DefaultIntegrationTest {
         // then
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         RestApiException responsebody = response.getBody();
-        assertEquals("U001", responsebody.getCode());
-        assertEquals("회원가입에 실패했습니다. - 유효하지 않은 아이디 길이", responsebody.getMsg());
+        assertEquals(ErrorCode.ID_VALID_LENGTH_CODE.getCode(), responsebody.getCode());
+        assertEquals(ErrorCode.ID_VALID_LENGTH_CODE.getMessage(), responsebody.getMsg());
 
     }
 
@@ -182,8 +183,8 @@ public class UserIntegrationTest  extends DefaultIntegrationTest {
         // then
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         RestApiException responsebody = response.getBody();
-        assertEquals("U004", responsebody.getCode());
-        assertEquals("회원가입에 실패했습니다. - 비밀번호에 아이디 포함", responsebody.getMsg());
+        assertEquals(ErrorCode.PASSWORD_CONTAIN_ID_CODE.getCode(), responsebody.getCode());
+        assertEquals(ErrorCode.PASSWORD_CONTAIN_ID_CODE.getMessage(), responsebody.getMsg());
 
     }
     @Test
