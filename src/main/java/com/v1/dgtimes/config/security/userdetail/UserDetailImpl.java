@@ -19,6 +19,10 @@ public class UserDetailImpl implements UserDetails {
         return user;
     }
 
+    public String getUserId(){
+        return user.getId();
+    }
+
     @Override
     public Collection<GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> authorities = new ArrayList<>();

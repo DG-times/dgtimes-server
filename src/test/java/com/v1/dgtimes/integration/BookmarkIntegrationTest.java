@@ -1,10 +1,13 @@
 package com.v1.dgtimes.integration;
 
+import com.v1.dgtimes.config.exception.ErrorCode;
 import com.v1.dgtimes.config.exception.RestApiException;
 import com.v1.dgtimes.config.security.PasswordEncoder;
+import com.v1.dgtimes.layer.model.BlackKeyword;
 import com.v1.dgtimes.layer.model.Bookmark;
 import com.v1.dgtimes.layer.model.Keyword;
 import com.v1.dgtimes.layer.model.User;
+import com.v1.dgtimes.layer.repository.BlackKeywordRepository;
 import com.v1.dgtimes.layer.repository.UserRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -40,7 +43,8 @@ public class BookmarkIntegrationTest extends DefaultIntegrationTest{
     @BeforeEach
     public void setupDB(){
         userRepository.save(new User("admin",passwordEncoder.encode("testtest!!"),"kimseonjin"));
-        keywordRepository.save(new Keyword(new com.v1.dgtimes.layer.model.dto.request.BookmarkRequestDto("코딩교육")));
+        keywordRepository.save(new Keyword("코딩교육"));
+        blackKeywordRepository.save(new BlackKeyword("야한거"));
     }
 
     @AfterEach
@@ -48,6 +52,7 @@ public class BookmarkIntegrationTest extends DefaultIntegrationTest{
         bookmarkRepository.deleteAll();
         userRepository.deleteAll();
         keywordRepository.deleteAll();
+        blackKeywordRepository.deleteAll();
     }
 
 
@@ -97,8 +102,8 @@ public class BookmarkIntegrationTest extends DefaultIntegrationTest{
 
         //then
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals("키워드 저장 실패 - 빈 키워드", response.getBody().getMsg());
-        assertEquals(HttpStatus.BAD_REQUEST, response.getBody().getCode());
+        assertEquals(ErrorCode.BOOKMARK_KEYWORD_EMPTY_CODE.getMessage(), response.getBody().getMsg());
+        assertEquals(ErrorCode.BOOKMARK_KEYWORD_EMPTY_CODE.getCode(), response.getBody().getCode());
 
     }
 
@@ -111,7 +116,6 @@ public class BookmarkIntegrationTest extends DefaultIntegrationTest{
         BookmarkRequestDto bookmarkRequestDto = new BookmarkRequestDto("코딩교육");
         HttpEntity<BookmarkRequestDto> bookmarkRequestDtoHttpEntity = new HttpEntity<>(bookmarkRequestDto);
 
-
         //when
         ResponseEntity<RestApiException> response = testTemplate
                 .postForEntity(
@@ -122,8 +126,8 @@ public class BookmarkIntegrationTest extends DefaultIntegrationTest{
 
         //then
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals("키워드 저장 실패 - 로그인 되지 않음", response.getBody().getMsg());
-        assertEquals(HttpStatus.BAD_REQUEST, response.getBody().getCode());
+        assertEquals(ErrorCode.USER_LOGIN_NOT_CODE.getMessage(), response.getBody().getMsg());
+        assertEquals(ErrorCode.USER_LOGIN_NOT_CODE.getCode(), response.getBody().getCode());
     }
 
 
@@ -153,8 +157,8 @@ public class BookmarkIntegrationTest extends DefaultIntegrationTest{
 
         //then
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals("키워드 저장 실패 - 기존에 등록한 키워드", response.getBody().getMsg());
-        assertEquals(HttpStatus.BAD_REQUEST, response.getBody().getCode());
+        assertEquals(ErrorCode.BOOKMARK_KEYWORD_EXIST_USER_CODE.getMessage(), response.getBody().getMsg());
+        assertEquals(ErrorCode.BOOKMARK_KEYWORD_EXIST_USER_CODE.getCode(), response.getBody().getCode());
 
     }
 
@@ -178,10 +182,11 @@ public class BookmarkIntegrationTest extends DefaultIntegrationTest{
                         RestApiException.class
                 );
 
+
         //then
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals("키워드 저장 실패 - 금지된 키워드", response.getBody().getMsg());
-        assertEquals(HttpStatus.BAD_REQUEST, response.getBody().getCode());
+        assertEquals(ErrorCode.BOOKMARK_KEYWORD_FORBIDDEN_CODE.getMessage(), response.getBody().getMsg());
+        assertEquals(ErrorCode.BOOKMARK_KEYWORD_FORBIDDEN_CODE.getCode(), response.getBody().getCode());
 
     }
 
