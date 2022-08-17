@@ -9,13 +9,9 @@ package com.v1.dgtimes.layer.controller;
 
 */
 
-import com.v1.dgtimes.config.security.PasswordEncoder;
 import com.v1.dgtimes.config.security.userdetail.UserDetailImpl;
-import com.v1.dgtimes.config.security.userdetail.UserDetailServiceImpl;
 import com.v1.dgtimes.layer.model.Bookmark;
-import com.v1.dgtimes.layer.model.User;
 import com.v1.dgtimes.layer.model.dto.request.BookmarkRequestDto;
-import com.v1.dgtimes.layer.model.dto.request.KeywordRequestDto;
 import com.v1.dgtimes.layer.model.dto.response.DefaultResponseDto;
 import com.v1.dgtimes.layer.service.BookmarkService;
 import lombok.RequiredArgsConstructor;
