@@ -51,12 +51,12 @@ public class LoggingRequestFilter implements Filter {
                 getResponseBody(responseWrapper));
     }
 
-    private Map getHeaders(HttpServletRequest request) {
-        Map headerMap = new HashMap<>();
+    private Map<Object, Object> getHeaders(HttpServletRequest request) {
+        Map<Object, Object> headerMap = new HashMap<>();
 
-        Enumeration headerArray = request.getHeaderNames();
+        Enumeration<String> headerArray = request.getHeaderNames();
         while (headerArray.hasMoreElements()) {
-            String headerName = (String) headerArray.nextElement();
+            String headerName = headerArray.nextElement();
             headerMap.put(headerName, request.getHeader(headerName));
         }
         return headerMap;
