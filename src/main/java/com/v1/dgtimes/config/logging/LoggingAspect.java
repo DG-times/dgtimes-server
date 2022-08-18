@@ -18,15 +18,11 @@ class LoggingAspect {
     @Pointcut("execution(* com.v1.dgtimes.layer.controller..*.*(..))")
     private void cut(){}
 
-    //(방법2)Book Service 의 모든 메서드
-    // @Around("execution(*com.example.demo.service.BookService.*(..))")
-    // @Around("execution(*com.example.demo.controller..*.*(..))")
-    // @Around("execution(*com.example.demo..*.*(..))")
-
 
     // Pointcut_에 의해 필터링된 경로로 들어오는 경우 메서드 호출 전에 적용
     @Before("cut()")
     public void beforeParameterLog(JoinPoint joinPoint) {
+
         // 메서드 정보 받아오기
         Method method = getMethod(joinPoint);
         log.info("======= method name = {} =======", method.getName());
