@@ -15,6 +15,15 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
+/*
+설명 : LoggingRequestFilter 구현.
+
+작성일 : 2022.08.18
+
+마지막 수정한 사람 : 공상욱
+
+*/
+
 @Slf4j
 @Component
 public class LoggingRequestFilter implements Filter {
@@ -53,6 +62,7 @@ public class LoggingRequestFilter implements Filter {
         return headerMap;
     }
 
+    // getRequestBody
     private String getRequestBody(ContentCachingRequestWrapper request) {
         ContentCachingRequestWrapper wrapper = WebUtils.getNativeRequest(request, ContentCachingRequestWrapper.class);
         if (wrapper != null) {
@@ -68,6 +78,8 @@ public class LoggingRequestFilter implements Filter {
         return " - ";
     }
 
+
+    // getResponseBody
     private String getResponseBody(final HttpServletResponse response) throws IOException {
         String payload = null;
         ContentCachingResponseWrapper wrapper =

@@ -8,6 +8,14 @@ import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
 
+/*
+설명 : LoggingAspect 구현.
+
+작성일 : 2022.08.18
+
+마지막 수정한 사람 : 공상욱
+
+*/
 
 @Slf4j
 @Aspect
