@@ -11406,3 +11406,11 @@ footer.footer {
   margin-left: 10vw;
 }
 
+#news-body{
+ min-height: 200px;
+}
+
+.like-img{
+  width: 5vw;
+  height: 5vw;
+}

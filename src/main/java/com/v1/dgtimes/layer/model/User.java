@@ -9,7 +9,9 @@ package com.v1.dgtimes.layer.model;
 
 */
 
+import com.v1.dgtimes.layer.model.dto.request.BookmarkRequestDto;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -19,6 +21,7 @@ import java.util.List;
 
 @Getter
 @Entity
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
@@ -36,4 +39,15 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Bookmark> bookmarks = new ArrayList<>();
 
+
+    public User(String admin, String encode, String kimseonjin) {
+        this.id = admin;
+        this.pw = encode;
+        this.username = kimseonjin;
+    }
+
+    public boolean isExistKeyword(Keyword keyword){
+        return this.bookmarks.stream()
+                .anyMatch(x -> x.getKeyword().getKeyword().equals(keyword.getKeyword()));
+    }
 }
