@@ -37,7 +37,7 @@ public interface NewsRepository extends JpaRepository<News, Long> {
             "from news n , keyword k, keyword_mapping km "+
             "where n.id = km.news_id "+
             "and k.id = km.keyword_id "+
-            "and k.keyword like %:keyword%", nativeQuery = true)
+            "and k.keyword = :keyword", nativeQuery = true)
     List<News> findAllByKeyword(@Param("keyword") String keyword);
 
 //  이런 방법도 있음
