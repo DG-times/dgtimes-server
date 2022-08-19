@@ -98,7 +98,8 @@
           },
 
           success: function (response, status, request) {
-              console.log(response)
+              alert(response["msg"])
+              window.location.href = "/signin"
           }
   })
   }

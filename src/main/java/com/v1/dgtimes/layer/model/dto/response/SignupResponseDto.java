@@ -17,6 +17,6 @@ Todo -
 @Getter
 @Builder
 public class SignupResponseDto {
-    private String mag;
+    private String msg;
     private int status;
 }

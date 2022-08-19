@@ -39,7 +39,7 @@ public class UserService {
         userRepository.save(user);
 
         return SignupResponseDto.builder()
-                .mag("회원가입에 성공했습니다.")
+                .msg("회원가입에 성공했습니다.")
                 .status(200)
                 .build();
     }

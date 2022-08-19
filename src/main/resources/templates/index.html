@@ -98,13 +98,11 @@
                 contentType: "application/json",
 
                 error: function (response, status, error) {
-                    console.log(response)
                     alert(response["responseJSON"]["msg"])
                 },
 
                 success: function (response, status, error) {
-                    console.log(response)
-                    alert(response["responseJSON"]["msg"])
+                    alert(response["msg"])
                 },
             });
         }
