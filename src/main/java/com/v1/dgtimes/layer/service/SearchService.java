@@ -22,10 +22,13 @@ import com.v1.dgtimes.layer.repository.BlackKeywordRepository;
 import com.v1.dgtimes.layer.repository.KeywordRepository;
 import com.v1.dgtimes.layer.repository.NewsRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -34,6 +37,14 @@ public class SearchService {
     private final BlackKeywordRepository blackKeywordRepository;
     private final KeywordRepository keywordRepository;
     private final NewsRepository newsRepository;
+
+    public Page<SearchResponseDto> getSearchKeywordPage(KeywordRequestDto keywordRequestDto,  Pageable pageable) {
+        validKeyword(keywordRequestDto);
+        validBlackKeyword(keywordRequestDto);
+        Keyword keyword = searchKeyword(keywordRequestDto);
+        Page<News> news = newsRepository.findAllByKeywordPage(keyword.getKeyword(), pageable);
+        return news.map(n -> new SearchResponseDto(n));
+    }
 
     // 키워드 검색 - 기존
     public List<SearchResponseDto> getSearchKeyword(KeywordRequestDto keywordRequestDto) {
