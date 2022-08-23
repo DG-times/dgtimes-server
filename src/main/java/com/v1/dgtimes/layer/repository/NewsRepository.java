@@ -12,6 +12,8 @@ Todo -
 */
 
 import com.v1.dgtimes.layer.model.News;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -33,12 +35,28 @@ public interface NewsRepository extends JpaRepository<News, Long> {
 //    select * from news n, keyword k, keyword_mapping km
 //    where n.id = km.news_id and k.id = km.keyword_id and k.keyword like '%코딩%'
 //    이걸사용하면, Service쪽에 코드가 짧아질것으로 예상
-    @Query(value = "select * "+
+    @Query(
+            value = "select * "+
             "from news n , keyword k, keyword_mapping km "+
             "where n.id = km.news_id "+
             "and k.id = km.keyword_id "+
-            "and k.keyword = :keyword", nativeQuery = true)
+            "and k.keyword = :keyword",
+            nativeQuery = true)
     List<News> findAllByKeyword(@Param("keyword") String keyword);
+
+    @Query(
+            value = "select * "+
+                    "from news n , keyword k, keyword_mapping km "+
+                    "where n.id = km.news_id "+
+                    "and k.id = km.keyword_id "+
+                    "and k.keyword = :keyword",
+            countQuery = "select COUNT(*) "+
+                    "from news n , keyword k, keyword_mapping km "+
+                    "where n.id = km.news_id "+
+                    "and k.id = km.keyword_id "+
+                    "and k.keyword = :keyword",
+            nativeQuery = true)
+    Page<News> findAllByKeywordPage(@Param("keyword") String keyword, Pageable pageable);
 
 //  이런 방법도 있음
 //    select * from news n where n.id in
