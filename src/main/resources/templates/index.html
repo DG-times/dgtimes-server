@@ -107,7 +107,7 @@
 
                     $.ajax({
                         type: "GET",
-                        url: "/api/newsPage?keyword=" + keyword + "&page="+count+"&size=10",
+                        url: "/api/news?keyword=" + keyword + "&page="+count+"&size=10",
                         timeout: 10000,
                         contentType: "application/json",
                         success: function (response, status, request) {
@@ -156,8 +156,8 @@
 
             $.ajax({
                 type: "GET" ,
-                url: "/api/newsPage?keyword="+keyword+"&page=0&size=10",
-                timeout: 10000,
+                url: "/api/news?keyword="+keyword+"&page=0&size=10",
+                timeout: 100000,
                 contentType: "application/json",
 
                 error: function (response, status, error) {
@@ -166,6 +166,7 @@
                 },
 
                 success: function (response, status, request) {
+                    console.log(response)
                     let rows = response["content"]
                     for (let i = 0; i < rows.length; i++) {
                         let content = rows[i]['content']
