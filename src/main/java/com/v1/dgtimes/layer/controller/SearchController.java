@@ -10,9 +10,13 @@ package com.v1.dgtimes.layer.controller;
 Todo -
 */
 
+import com.v1.dgtimes.config.logging.Timer;
 import com.v1.dgtimes.layer.model.dto.request.KeywordRequestDto;
 import com.v1.dgtimes.layer.model.dto.response.SearchResponseDto;
-import com.v1.dgtimes.layer.service.SearchService;
+import com.v1.dgtimes.layer.repository.NewsRepository;
+import com.v1.dgtimes.layer.service.SearchServiceImples.GetNewsWithKeywordService;
+import com.v1.dgtimes.layer.service.SearchServiceImples.GetNewsWithLikeService;
+import com.v1.dgtimes.layer.service.SearchServiceImples.GetNewsWithMatchAgainstService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,12 +30,25 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class SearchController {
 
-    private final SearchService searchService;
-    
+    private final GetNewsWithKeywordService getNewsWithKeywordService;
+    private final GetNewsWithLikeService getNewsWithLikeService;
+    private final GetNewsWithMatchAgainstService getNewsWithMatchAgainstService;
+
+
     // 뉴스 키워드 검색 - 기존 작성했던 코드 방법
     @GetMapping("/api/news")
+    public ResponseEntity<Page<SearchResponseDto>> searchNewsMatch(@RequestParam String keyword, Pageable pageable) {
+        return new ResponseEntity(getNewsWithMatchAgainstService.getSearchKeyword(new KeywordRequestDto(keyword), pageable), HttpStatus.OK);
+    }
+
+    @GetMapping("/api/newsLike")
+    public ResponseEntity<Page<SearchResponseDto>> searchNewsLike(@RequestParam String keyword, Pageable pageable) {
+        return new ResponseEntity(getNewsWithLikeService.getSearchKeyword(new KeywordRequestDto(keyword), pageable), HttpStatus.OK);
+    }
+
+    @GetMapping("/api/newsMatch")
     public ResponseEntity<Page<SearchResponseDto>> searchNews(@RequestParam String keyword, Pageable pageable) {
-        return new ResponseEntity(searchService.getSearchKeyword(new KeywordRequestDto(keyword), pageable), HttpStatus.OK);
+        return new ResponseEntity(getNewsWithKeywordService.getSearchKeyword(new KeywordRequestDto(keyword), pageable), HttpStatus.OK);
     }
 
 }
