@@ -12,6 +12,8 @@ Todo -
 */
 
 import com.v1.dgtimes.layer.model.News;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -20,25 +22,23 @@ import java.util.List;
 
 public interface NewsRepository extends JpaRepository<News, Long> {
 
-    // select * from news n left join keyword_mapping km on n.id = km.news_id
-//    @Query("select n.id, n.title, n.content, n.main_url, n.thumbnail_url, n.date from News n left join KeywordMapping km where km.news.id = :id")
-    //select 안에 km.news_id와 같이 특정값을 불러올려고 할때, news 엔티티 안에 없으므로, interface를 통해 매핑시켜줘야한다.
-    @Query(value="select * "+
-            "from news n "+
-            "left join keyword_mapping km on n.id = km.news_id "+
-            "where km.KEYWORD_ID = :id", nativeQuery = true)
-    List<News> findAllId(@Param("id") Long id);
-
 //    Oracle 문법으로 사용 - 참고 : https://blog.naver.com/PostView.nhn?blogId=regenesis90&logNo=222190687396
 //    select * from news n, keyword k, keyword_mapping km
 //    where n.id = km.news_id and k.id = km.keyword_id and k.keyword like '%코딩%'
 //    이걸사용하면, Service쪽에 코드가 짧아질것으로 예상
-    @Query(value = "select * "+
-            "from news n , keyword k, keyword_mapping km "+
-            "where n.id = km.news_id "+
-            "and k.id = km.keyword_id "+
-            "and k.keyword = :keyword", nativeQuery = true)
-    List<News> findAllByKeyword(@Param("keyword") String keyword);
+    @Query(
+            value = "select * "+
+                    "from news n , keyword k, keyword_mapping km "+
+                    "where n.id = km.news_id "+
+                    "and k.id = km.keyword_id "+
+                    "and k.keyword = :keyword",
+            countQuery = "select COUNT(*) "+
+                    "from news n , keyword k, keyword_mapping km "+
+                    "where n.id = km.news_id "+
+                    "and k.id = km.keyword_id "+
+                    "and k.keyword = :keyword",
+            nativeQuery = true)
+    Page<News> findAllByKeyword(@Param("keyword") String keyword, Pageable pageable);
 
 //  이런 방법도 있음
 //    select * from news n where n.id in
@@ -57,7 +57,12 @@ public interface NewsRepository extends JpaRepository<News, Long> {
     @Query(value = "select * "+
             "from news "+
             "where title like %:keyword% "+
-            "or content like %:keyword%", nativeQuery = true)
-    List<News> findAllByTitleAndContent(@Param("keyword") String keyword);
+            "or content like %:keyword%",
+            countQuery = "select COUNT(*) "+
+                    "from news "+
+                    "where title like %:keyword% "+
+                    "or content like %:keyword%",
+            nativeQuery = true)
+    Page<News> findAllByTitleAndContent(@Param("keyword") String keyword, Pageable pageable);
     //     news WHERE LIKE %keyword% IN TITLE, CONTENT
 }

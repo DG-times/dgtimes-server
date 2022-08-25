@@ -9,23 +9,24 @@
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="../assets/favicon.ico" />
         <!-- Bootstrap icons-->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" type="text/css" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
         <!-- Google fonts-->
         <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css" />
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="../css/styles.css" rel="stylesheet" />
     </head>
     <body>
-        <!-- Navigation-->
-        <nav class="navbar navbar-light bg-light static-top">
-            <div class="container header-container">
+        <nav class="navbar navbar-expand-lg bg-light">
+            <div class="container-fluid">
                 <div class="container-left">
                     <img class="header-img" src="../assets/img/logo_transparent.png">
                     <a class="navbar-brand" href="/">DG times</a>
                 </div>
-                <div class="container-right">
-                    <a class="btn btn-primary" href="/signin" sec:authorize="!authenticated">Sign in</a>
-                    <a class="btn btn-primary" href="/signout" sec:authorize="authenticated">Sign out</a>
+                <div id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li><a class="btn btn-primary" href="/signin" sec:authorize="!authenticated">Sign in</a></li>
+                        <li><a class="btn btn-primary" href="/signout" sec:authorize="authenticated">Sign out</a></li>
+                    </ul>
                 </div>
             </div>
         </nav>
@@ -46,9 +47,6 @@
                             <!-- https://startbootstrap.com/solution/contact-forms-->
                             <!-- to get an API token!-->
                                 <div class="row">
-                                    <div class="col-auto" onclick="bookmark()">
-                                        <img class="like-img" src="../assets/img/star.png">
-                                    </div>
                                     <div class="col">
                                         <input class="form-control form-control-lg" id="keyword" type="text" placeholder="검색어를 입력하세요"/>
                                     </div>
@@ -69,83 +67,163 @@
         </header>
 
         <section class="showcase">
-            <div class="container-fluid p-0" id = "news-body-container">
+            <div class="container-fluid p-5" id = "news-body-container">
             </div>
         </section>
+        <div id = "myModal" class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="text-center">
+                        <div class="spinner-border text-primary m-5" style="width: 3rem; height: 3rem;" role="status">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- Bootstrap core JS-->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->
         <script src="../js/scripts.js"></script>
         <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
         <!-- * *                               SB Forms JS                               * *-->
         <!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
         <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
-        <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
-        function bookmark(){
-            let keyword = $('#keyword').val()
-            $.ajax({
-                type: "POST",
-                url: "/api/bookmarks",
-                timeout: 3000,
-                data: JSON.stringify(
-                    {
-                        keyword: keyword
-                    }
-                ),
-                contentType: "application/json",
+        var count = 0;
+        var keyword = "";
+        var ready = true;
 
-                error: function (response, status, error) {
-                    alert(response["responseJSON"]["msg"])
-                },
+        $(document).ready(function () {
+            $(document).scroll(function() {
+                var maxHeight = $(document).height();
+                var currentScroll = $(window).scrollTop() + $(window).height();
 
-                success: function (response, status, error) {
-                    alert(response["msg"])
-                },
-            });
-        }
+                if (maxHeight <= currentScroll + 100 && ready) {
+                    $('#myModal').modal("toggle")
+                    ready = false;
+                    count += 1;
+
+                    $.ajax({
+                        type: "GET",
+                        url: "/api/news?keyword=" + keyword + "&page="+count+"&size=10",
+                        timeout: 10000,
+                        contentType: "application/json",
+                        success: function (response, status, request) {
+                            let rows = response["content"]
+                            for (let i = 0; i < rows.length; i++) {
+                                let content = rows[i]['content']
+                                let date = dateFormat(rows[i]['date'])
+                                let mainUrl = rows[i]['mainUrl']
+                                let thumbnailUrl = rows[i]['thumbnailUrl']
+                                let title = rows[i]['title']
+
+                                let temp_html =
+                                    `<div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                                            <div class="col-auto d-none d-lg-block">
+                                              <img id = "news-img" src="${thumbnailUrl}">
+                                            </div>
+                                            <div class="col p-4 d-flex flex-column position-static">
+                                              <strong class="d-inline-block mb-2 text-success">무슨 일보</strong>
+                                              <h3 class="mb-0">${title}</h3>
+                                              <div class="mb-1 text-muted">${date}</div>
+                                              <p class="mb-auto" id = "news-content">${content}</p>
+                                              <a href="${mainUrl}" class="stretched-link">Continue reading</a>
+                                            </div>
+                                          </div>`
+
+                                $('#news-body-container').append(temp_html)
+                                setTimeout(function(){
+                                    ready = true;
+                                    $('#myModal').modal("toggle")
+                                },500)
+                                clearTimeout()
+                            }
+                        },
+                    })
+                }
+            })
+        });
 
         function search() {
+            $('#myModal').modal("toggle")
+            count = 0;
 
-            let keyword = $('#keyword').val()
+            $('#news-body-container').empty()
+
+            keyword = $('#keyword').val()
 
             $.ajax({
                 type: "GET" ,
-                url: "/api/news?keyword="+keyword,
-                timeout: 3000,
+                url: "/api/news?keyword="+keyword+"&page=0&size=10",
+                timeout: 100000,
                 contentType: "application/json",
 
                 error: function (response, status, error) {
+                    console.log(response)
                     alert(response["responseJSON"]["msg"])
                 },
 
                 success: function (response, status, request) {
-                    let rows = response
+                    console.log(response)
+                    let rows = response["content"]
                     for (let i = 0; i < rows.length; i++) {
                         let content = rows[i]['content']
-                        let date = rows[i]['date']
+                        let date = dateFormat(rows[i]['date'])
                         let mainUrl = rows[i]['mainUrl']
                         let thumbnailUrl = rows[i]['thumbnailUrl']
                         let title = rows[i]['title']
-
-                        let temp_html = `<div class="main-container gx-4 gx-lg-5 align-items-center my-5" href="${mainUrl}">
-                                            <div class="col-lg-5">
-                                                <img class="img-fluid rounded mb-4 mb-lg-0" src="${thumbnailUrl}" alt="..." />
+                        let temp_html =
+                                        `<div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                                            <div class="col-auto d-none d-lg-block">
+                                              <img id = "news-img" src="${thumbnailUrl}">
                                             </div>
-                                            <div class="col-lg-6">
-                                                <h1 class="font-weight-light">${title}</h1>
-                                                <p id = "news-body">
-                                                    ${content}
-                                                </p>
+                                            <div class="col p-4 d-flex flex-column position-static">
+                                              <strong class="d-inline-block mb-2 text-success">무슨 일보</strong>
+                                              <h3 class="mb-0">${title}</h3>
+                                              <div class="mb-1 text-muted">${date}</div>
+                                              <p class="mb-auto" id = "news-content">${content}</p>
+                                              <a href="${mainUrl}" class="stretched-link">Continue reading</a>
                                             </div>
-                                        </div>`
+                                          </div>`
 
                         $('#news-body-container').append(temp_html)
+                        setTimeout(function(){
+                            $('#myModal').modal("toggle")
+                        },500)
+                        clearTimeout()
                     }
-                }
+                },
+                timeout: 10000
             })
+        }
+
+        function dateFormat(date){
+            const date_first_split = date.split("T");
+            const date_second_split = date_first_split[0].split("-");
+            const year = date_second_split[0]
+            const month = date_second_split[1]
+            const days = date_second_split[2]
+
+            return year + " " + changeMonthToEng(month) + " " + days
+        }
+        function changeMonthToEng(month){
+            const Month_Eng_Map = {
+                1 : "Jen",
+                2 : "Feb",
+                3 : "Mar",
+                4 : "Apr",
+                5 : "May",
+                6 : "Jun",
+                7 : "Jul",
+                8 : "Aug",
+                9 : "Sep",
+                10 : "Oct",
+                11 : "Nov",
+                12 : "Dec"
+            }
+            return Month_Eng_Map[month]
         }
     </script>
     </body>
