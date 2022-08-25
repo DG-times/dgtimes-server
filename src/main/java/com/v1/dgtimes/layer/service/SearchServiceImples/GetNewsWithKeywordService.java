@@ -2,16 +2,15 @@ package com.v1.dgtimes.layer.service.SearchServiceImples;
 
 import com.v1.dgtimes.config.exception.CustomException;
 import com.v1.dgtimes.config.exception.ErrorCode;
+import com.v1.dgtimes.config.logging.Timer;
 import com.v1.dgtimes.layer.model.News;
 import com.v1.dgtimes.layer.model.dto.request.KeywordRequestDto;
 import com.v1.dgtimes.layer.model.dto.response.SearchResponseDto;
-import com.v1.dgtimes.layer.repository.KeywordRepository;
 import com.v1.dgtimes.layer.repository.NewsRepository;
-import com.v1.dgtimes.layer.service.SearchService;
-import org.springframework.context.annotation.Primary;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 /*
 설명 : GetNewsWithKeywordService 구현
@@ -24,20 +23,19 @@ import org.springframework.stereotype.Component;
 Todo -
 */
 
-@Primary
-@Component
-public class GetNewsWithKeywordService extends SearchService {
+@Service
+@RequiredArgsConstructor
+public class GetNewsWithKeywordService{
 
-    public GetNewsWithKeywordService(KeywordRepository keywordRepository, NewsRepository newsRepository) {
-        super(keywordRepository, newsRepository);
-    }
+    private final NewsRepository newsRepository;
 
     public Page<SearchResponseDto> getSearchKeyword(KeywordRequestDto keywordRequestDto, Pageable pageable) {
-        validKeyword(keywordRequestDto);
+        SearchServiceValidator.validKeyword(keywordRequestDto);
         Page<News> news = searchKeyword(keywordRequestDto, pageable);
-        return makeSearchResponseDto(news);
+        return SearchServiceValidator.makeSearchResponseDto(news);
     }
 
+    @Timer
     private Page<News> searchKeyword(KeywordRequestDto keywordRequestDto, Pageable pageable) {
         Page<News> news = newsRepository.findAllByKeyword(keywordRequestDto.getKeyword(), pageable);
         if (news.getTotalElements() == 0) {

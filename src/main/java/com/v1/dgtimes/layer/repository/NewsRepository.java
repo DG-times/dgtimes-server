@@ -65,4 +65,15 @@ public interface NewsRepository extends JpaRepository<News, Long> {
             nativeQuery = true)
     Page<News> findAllByTitleAndContent(@Param("keyword") String keyword, Pageable pageable);
     //     news WHERE LIKE %keyword% IN TITLE, CONTENT
+
+
+    @Query(value = "SELECT * FROM news WHERE MATCH(content) AGAINST(:keyword IN boolean mode)",
+            countQuery = "SELECT \n" +
+                    "            TABLE_ROWS\n" +
+                    "FROM\n" +
+                    "            information_schema.\n" +
+                    "tables\n" +
+                    "WHERE table_schema =  'dgtimes' AND TABLE_NAME = \"news\"",
+            nativeQuery = true)
+    Page<News> findAllByMatch(@Param("keyword") String keyword, Pageable pageable);
 }

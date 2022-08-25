@@ -12,20 +12,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-/*
-설명 : GetNewsWithKeywordService 구현
-    > SearchService 에서 LIKE 검색 로직을 분리
-
-작성일 : 2022.08.24
-
-마지막 수정한 사람 : 김선진
-
-Todo -
-*/
-
 @Service
 @RequiredArgsConstructor
-public class GetNewsWithLikeService {
+public class GetNewsWithMatchAgainstService {
 
     private final NewsRepository newsRepository;
 
@@ -35,14 +24,13 @@ public class GetNewsWithLikeService {
         return SearchServiceValidator.makeSearchResponseDto(news);
     }
 
-    @Timer
     // 뉴스 엔티티에서 keyword 검색
+    @Timer
     private Page<News> searchNews(KeywordRequestDto keywordRequestDto, Pageable pageable) {
-        Page<News> news = newsRepository.findAllByTitleAndContent(keywordRequestDto.getKeyword(), pageable);
+        Page<News> news = newsRepository.findAllByMatch(keywordRequestDto.getKeyword(), pageable);
         if (news.getTotalElements() == 0) {
             throw new CustomException(ErrorCode.SEARCH_NEWS_NOT_FOUND_CODE);
         }
         return news;
     }
-
 }

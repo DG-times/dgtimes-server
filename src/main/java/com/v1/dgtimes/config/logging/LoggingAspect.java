@@ -2,9 +2,11 @@ package com.v1.dgtimes.config.logging;
 
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StopWatch;
 
 import java.lang.reflect.Method;
 
@@ -21,6 +23,7 @@ import java.lang.reflect.Method;
 @Aspect
 @Component
 class LoggingAspect {
+    /*
 
     // ccom.v1.dgtimes.layer.controller 이하 패키지의 모든 클래스 이하 모든 메서드에 적용
     @Pointcut("execution(* com.v1.dgtimes.layer.controller..*.*(..))")
@@ -60,5 +63,30 @@ class LoggingAspect {
     private Method getMethod(JoinPoint joinPoint) {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         return signature.getMethod();
+    }
+
+     */
+
+
+
+
+    @Pointcut("@annotation(com.v1.dgtimes.config.logging.Timer)")
+    private void timer(){};
+
+    @Around("timer()")
+    public void AssumeExecutionTime(ProceedingJoinPoint joinPoint) throws Throwable {
+
+        StopWatch stopWatch = new StopWatch();
+
+        stopWatch.start();
+        joinPoint.proceed(); // 조인포인트의 메서드 실행
+        stopWatch.stop();
+
+        long totalTimeMillis = stopWatch.getTotalTimeMillis();
+
+        MethodSignature signature = (MethodSignature) joinPoint.getSignature();
+        String methodName = signature.getMethod().getName();
+
+        log.info("실행 메서드: {}, 실행시간 = {}ms", methodName, totalTimeMillis);
     }
 }
