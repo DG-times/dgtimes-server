@@ -10,10 +10,16 @@ package com.v1.dgtimes.layer.controller;
 Todo -
 */
 
+import com.v1.dgtimes.config.logging.Timer;
 import com.v1.dgtimes.layer.model.dto.request.KeywordRequestDto;
 import com.v1.dgtimes.layer.model.dto.response.SearchResponseDto;
-import com.v1.dgtimes.layer.service.SearchService;
+import com.v1.dgtimes.layer.repository.NewsRepository;
+import com.v1.dgtimes.layer.service.SearchServiceImples.GetNewsWithKeywordService;
+import com.v1.dgtimes.layer.service.SearchServiceImples.GetNewsWithLikeService;
+import com.v1.dgtimes.layer.service.SearchServiceImples.GetNewsWithMatchAgainstService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,23 +30,25 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class SearchController {
 
-    private final SearchService searchService;
-    
+    private final GetNewsWithKeywordService getNewsWithKeywordService;
+    private final GetNewsWithLikeService getNewsWithLikeService;
+    private final GetNewsWithMatchAgainstService getNewsWithMatchAgainstService;
+
+
     // 뉴스 키워드 검색 - 기존 작성했던 코드 방법
     @GetMapping("/api/news")
-    public ResponseEntity<SearchResponseDto[]> searchNews(@RequestParam String keyword) {
-        return new ResponseEntity(searchService.getSearchKeyword(new KeywordRequestDto(keyword)), HttpStatus.OK);
+    public ResponseEntity<Page<SearchResponseDto>> searchNewsMatch(@RequestParam String keyword, Pageable pageable) {
+        return new ResponseEntity(getNewsWithMatchAgainstService.getSearchKeyword(new KeywordRequestDto(keyword), pageable), HttpStatus.OK);
     }
 
-    // 새로운 방법 - 네이티브 쿼리문 3개의 테이블 innerJoin으로 수정후 Keyword로 조회
-    @GetMapping("/api/innerNews")
-    public ResponseEntity<SearchResponseDto[]> innerSearchNews(@RequestParam String keyword) {
-        return new ResponseEntity(searchService.getNewSearchKeyword(new KeywordRequestDto(keyword)),HttpStatus.OK);
+    @GetMapping("/api/newsLike")
+    public ResponseEntity<Page<SearchResponseDto>> searchNewsLike(@RequestParam String keyword, Pageable pageable) {
+        return new ResponseEntity(getNewsWithLikeService.getSearchKeyword(new KeywordRequestDto(keyword), pageable), HttpStatus.OK);
     }
 
-    // 뉴스 엔티티로 바로 검색 - 속도 비교용
-    @GetMapping("/api/directNews")
-    public ResponseEntity<SearchResponseDto[]> directSearchNews(@RequestParam String keyword) {
-        return new ResponseEntity(searchService.getSearchNews(new KeywordRequestDto(keyword)),HttpStatus.OK);
+    @GetMapping("/api/newsMatch")
+    public ResponseEntity<Page<SearchResponseDto>> searchNews(@RequestParam String keyword, Pageable pageable) {
+        return new ResponseEntity(getNewsWithKeywordService.getSearchKeyword(new KeywordRequestDto(keyword), pageable), HttpStatus.OK);
     }
+
 }

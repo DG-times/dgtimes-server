@@ -11381,10 +11381,12 @@ footer.footer {
 
 .header-img{
   width: 5%;
+  min-width: 50px;
 }
 
 .search-icon{
   width: 2vw;
+  min-width: 30px;
 }
 
 .container-right {
@@ -11413,4 +11415,25 @@ footer.footer {
 .like-img{
   width: 5vw;
   height: 5vw;
+}
+
+.container-left{
+  display: flex;
+  max-width: 30%;
+}
+
+#news-content{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 5; /* 표시하고자 하는 라인 수 */
+  -webkit-box-orient: vertical;
+}
+
+#news-body-container{
+  padding: 10%;
+}
+
+#news-img{
+  width: 20vw;
 }
