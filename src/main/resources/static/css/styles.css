@@ -11437,3 +11437,46 @@ footer.footer {
 #news-img{
   width: 20vw;
 }
+
+.main-toggle-button{
+  width: 100%;
+  font-size: 15px;
+  color: white;
+  display: flex;
+  justify-content: center;
+}
+
+.toggle-title{
+  color: black;
+}
+
+.like-list{
+  margin-top: 1vh;
+  margin-bottom: 3vh;
+}
+
+.dislike-list{
+  margin-top: 1vh;
+  margin-bottom: 3vh;
+}
+
+
+.up-tri{
+  margin-bottom: 10px;
+  width: 0;
+  height: 0;
+  border-bottom: 10px solid red;
+  border-top: 10px solid transparent;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+}
+
+.down-tri{
+  margin-top: 10px;
+  width: 0;
+  height: 0;
+  border-bottom: 10px solid transparent;
+  border-top: 10px solid blue;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+}
