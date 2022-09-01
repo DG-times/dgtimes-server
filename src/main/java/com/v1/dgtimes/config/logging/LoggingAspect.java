@@ -1,92 +1,56 @@
 package com.v1.dgtimes.config.logging;
 
 import lombok.extern.slf4j.Slf4j;
-import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
-import org.aspectj.lang.reflect.MethodSignature;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StopWatch;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
-import java.lang.reflect.Method;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /*
 설명 : LoggingAspect 구현.
 
-작성일 : 2022.08.18
+작성일 : 2022.09.01
 
 마지막 수정한 사람 : 공상욱
+
+ @Pointcut("within(com.v1.dgtimes.layer.controller..*)")
+    private void onRequest() {
+    }
 
 */
 
 @Slf4j
 @Aspect
 @Component
-class LoggingAspect {
-    /*
+public class LoggingAspect {
+    private static final Logger logger = LoggerFactory.getLogger(LoggingAspect.class);
 
-    // ccom.v1.dgtimes.layer.controller 이하 패키지의 모든 클래스 이하 모든 메서드에 적용
-    @Pointcut("execution(* com.v1.dgtimes.layer.controller..*.*(..))")
-    private void cut(){}
+    @Pointcut("within(com.v1.dgtimes.layer.controller..*)")
+    public void onRequest() {
+    }
 
+@Around("com.v1.dgtimes.config.logging.LoggingAspect.onRequest()")
 
-    // Pointcut_에 의해 필터링된 경로로 들어오는 경우 메서드 호출 전에 적용
-    @Before("cut()")
-    public void beforeParameterLog(JoinPoint joinPoint) {
-
-        // 메서드 정보 받아오기
-        Method method = getMethod(joinPoint);
-        log.info("======= method name = {} =======", method.getName());
-
-        // 파라미터 받아오기
-        Object[] args = joinPoint.getArgs();
-        if (args.length <= 0) log.info("no parameter");
-        for (Object arg : args) {
-            log.info("parameter type = {}", arg.getClass().getSimpleName());
-            log.info("parameter value = {}", arg);
+public Object requestLogging(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+        long start = System.currentTimeMillis();
+        try {
+            return proceedingJoinPoint.proceed(proceedingJoinPoint.getArgs());
+        } finally {
+            long end = System.currentTimeMillis();
+            logger.info("Request: {} {}: {} ({}ms)", request.getMethod(), request.getRequestURL(), paramMapToString(request.getParameterMap()), end - start);
         }
     }
 
-    // Poincut_에 의해 필터링된 경로로 들어오는 경우 메서드 리턴 후에 적용
-    @AfterReturning(value = "cut()", returning = "returnObj")
-    public void afterReturnLog(JoinPoint joinPoint, Object returnObj) {
-
-        // 메서드 정보 받아오기
-        Method method = getMethod(joinPoint);
-        log.info("======= method name = {} =======", method.getName());
-
-        log.info("return type = {}", returnObj.getClass().getSimpleName());
-        log.info("return value = {}", returnObj);
-    }
-
-    // JoinPoint_로 메서드 정보 가져오기
-    private Method getMethod(JoinPoint joinPoint) {
-        MethodSignature signature = (MethodSignature) joinPoint.getSignature();
-        return signature.getMethod();
-    }
-
-     */
-
-
-
-
-    @Pointcut("@annotation(com.v1.dgtimes.config.logging.Timer)")
-    private void timer(){};
-
-    @Around("timer()")
-    public void AssumeExecutionTime(ProceedingJoinPoint joinPoint) throws Throwable {
-
-        StopWatch stopWatch = new StopWatch();
-
-        stopWatch.start();
-        joinPoint.proceed(); // 조인포인트의 메서드 실행
-        stopWatch.stop();
-
-        long totalTimeMillis = stopWatch.getTotalTimeMillis();
-
-        MethodSignature signature = (MethodSignature) joinPoint.getSignature();
-        String methodName = signature.getMethod().getName();
-
-        log.info("실행 메서드: {}, 실행시간 = {}ms", methodName, totalTimeMillis);
+    private String paramMapToString(Map<String, String[]> paraStringMap) {
+        return paraStringMap.entrySet().stream().map(entry -> String.format("%s : %s", entry.getKey(), Arrays.toString(entry.getValue()))).collect(Collectors.joining(", "));
     }
 }
