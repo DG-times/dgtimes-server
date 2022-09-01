@@ -26,7 +26,7 @@ public class PageController {
 
     @GetMapping("/login-error")
     public ModelAndView signInError(){
-        return new ModelAndView("login-error");
+        return new ModelAndView("signin-error");
     }
 
     @GetMapping("/signup")

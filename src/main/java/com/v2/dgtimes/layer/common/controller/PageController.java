@@ -1,7 +1,5 @@
 package com.v2.dgtimes.layer.common.controller;
 
-import com.v2.dgtimes.config.exception.CustomException;
-import com.v2.dgtimes.config.exception.ErrorCode;
 import com.v2.dgtimes.config.security.userdetail.UserDetailImpl;
 import com.v2.dgtimes.layer.bookmark.model.Bookmark;
 import com.v2.dgtimes.layer.bookmark.service.BookmarkService;
@@ -11,8 +9,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -42,7 +38,7 @@ public class PageController {
 
     @GetMapping("/signin-error")
     public ModelAndView signInError(){
-        return new ModelAndView("login-error");
+        return new ModelAndView("signin-error");
     }
 
     @GetMapping("/signup")

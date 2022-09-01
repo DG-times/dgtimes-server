@@ -23,7 +23,7 @@ public class NewsRequestDto {
         return false;
     }
 
-    public String makeQuery(){
+    public String getKeyword(){
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(keyword);
         stringBuilder.append(" >");
