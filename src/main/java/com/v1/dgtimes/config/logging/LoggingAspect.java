@@ -37,9 +37,9 @@ public class LoggingAspect {
     public void onRequest() {
     }
 
-@Around("com.v1.dgtimes.config.logging.LoggingAspect.onRequest()")
+    @Around("com.v1.dgtimes.config.logging.LoggingAspect.onRequest()")
 
-public Object requestLogging(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
+    public Object requestLogging(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
         long start = System.currentTimeMillis();
         try {
