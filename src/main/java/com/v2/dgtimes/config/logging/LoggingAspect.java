@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
 public class LoggingAspect {
     private static final Logger logger = LoggerFactory.getLogger(LoggingAspect.class);
 
-    @Pointcut("within(com.v1.dgtimes.layer.controller..*)")
+    @Pointcut("within(com.v2.dgtimes.layer.common.controller..*)")
     public void onRequest() {
     }
 
