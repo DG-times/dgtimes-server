@@ -22,7 +22,6 @@ public class NewsController {
 
     private final NewsService newsService;
 
-
     // 뉴스 키워드 검색 - 기존 작성했던 코드 방법
     @GetMapping("/api/news")
     public ResponseEntity<Page<NewsResponseDto>> searchNewsMatch(

@@ -15,6 +15,7 @@ public class NewsRequestDto {
     private String keyword;
     private List<String> includeKeywordList;
     private List<String> excludeKeywordList;
+    
     public boolean isNone(){
         if("".equals(keyword) || keyword == null) {
             return true;

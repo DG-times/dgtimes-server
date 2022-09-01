@@ -13,7 +13,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@ToString
 public class Bookmark {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
