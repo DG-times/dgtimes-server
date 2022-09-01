@@ -45,6 +45,7 @@ dependencies {
 
 	// logging AOP 설정
 	implementation('org.springframework.boot:spring-boot-starter-aop')
+	implementation 'org.springframework.boot:spring-boot-starter-aop'
 }
 
 tasks.named('test') {
