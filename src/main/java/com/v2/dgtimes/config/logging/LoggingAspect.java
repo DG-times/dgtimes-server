@@ -16,15 +16,18 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-//설명 : LoggingAspect 구현.
-//
-//작성일 : 2022.09.01
-//
-//마지막 수정한 사람 : 공상욱
-//
-// @Pointcut("within(com.v1.dgtimes.layer.controller..*)")
-//    private void onRequest() {
-//    }
+/*
+설명 : LoggingAspect 구현.
+
+작성일 : 2022.09.02
+
+담당자 : 공상욱
+
+경로
+@Pointcut("within(com.v2.dgtimes.layer.common.controller..*)")
+
+ */
+
 @Slf4j
 @Aspect
 @Component
