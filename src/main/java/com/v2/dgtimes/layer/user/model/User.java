@@ -31,4 +31,14 @@ public class User implements Serializable {
     private Bookmark bookmark;
     @Enumerated(EnumType.ORDINAL)
     private Gender gender;
+    
+    public void setBookmark(Bookmark bookmark){
+        this.bookmark = bookmark;
+    }
+
+    public Bookmark getBookmark(){
+        if(this.bookmark == null)
+            this.setBookmark(new Bookmark());
+        return this.bookmark;
+    }
 }

@@ -13,7 +13,8 @@ public class NewsResponseDto {
     private String content;
     private String thumbnailUrl;
     private String mainUrl;
-    private Date date;
+    private Date publishedDate;
+    private String tag;
 
     // Service 뉴스데이터 관련 생성자
     public NewsResponseDto(News news) {
@@ -21,7 +22,8 @@ public class NewsResponseDto {
         this.content = news.getContent();
         this.thumbnailUrl = news.getThumbnailUrl();
         this.mainUrl = news.getNewsUrl();
-        this.date = news.getPublishedDate();
+        this.publishedDate = news.getPublishedDate();
+        this.tag = news.getTag();
     }
 }
 
