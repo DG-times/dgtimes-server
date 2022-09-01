@@ -66,14 +66,20 @@
                                         </h2>
                                         <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
                                             <div class="accordion-body">
-                                                <div class="card card-body" sec:authorize="!authenticated">
+                                                <div class="card card-body" sec:authorize="authenticated">
                                                     <p class ="toggle-title">포함 키워드</p>
                                                     <input class="form-control form-control-sm" id="like" type="text" onkeydown="inputLikeKeyword(this)" placeholder="포함 키워드를 ' ' 로 구분하여 최대 10개까지 넣어주세요"/>
                                                     <div class = "like-list" id = "like-list">
+                                                        <tr th:each="keyword : ${include_keyword}">
+                                                            <td><span class="like-badge badge rounded-pill text-bg-primary" th:text="${keyword}" onclick="deleteBadge(this)"></span></td>
+                                                        </tr>
                                                     </div>
                                                     <p class ="toggle-title">제외 키워드</p>
                                                     <input class="form-control form-control-sm" id="dislike" type="text" onkeydown="inputDisLikeKeyword(this)" placeholder="제외 키워드를 ' ' 로 구분하여 최대 10개까지 넣어주세요"/>
                                                     <div class = "dislike-list" id = "dislike-list">
+                                                        <tr th:each="keyword : ${exclude_keyword}">
+                                                            <td><span class="dislike-badge badge rounded-pill text-bg-danger" th:text="${keyword}" onclick="deleteBadge(this)"></span></td>
+                                                        </tr>
                                                     </div>
                                                 </div>
                                                 <div class="card card-body" sec:authorize="!authenticated">
@@ -205,13 +211,16 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
+        function deleteBadge(e){
+            $(e).remove()
+        }
         function inputLikeKeyword(e){
             if (event.keyCode == 'Space' || event.keyCode == 32) {
                 let likeKeyword = $('#like').val()
 
                 if(likeKeyword !== " " || likeKeyword !== "" ){
                     let temp_html =
-                        `<span class="like-badge badge rounded-pill text-bg-primary">${likeKeyword.trim()}</span>`
+                        `<span class="like-badge badge rounded-pill text-bg-primary" onclick="deleteBadge(this)">${likeKeyword.trim()}</span>`
 
                     $('#like-list').append(temp_html)
                 }
@@ -226,7 +235,7 @@
 
                 if(dislikeKeyword !== ""){
                     let temp_html =
-                        `<span class="dislike-badge badge rounded-pill text-bg-danger">${dislikeKeyword.trim()}</span>`
+                        `<span class="dislike-badge badge rounded-pill text-bg-danger" onclick="deleteBadge(this)">${dislikeKeyword.trim()}</span>`
 
                     $('#dislike-list').append(temp_html)
                 }
@@ -238,6 +247,8 @@
         var count = 0;
         var keyword = "";
         var ready = true;
+        var includeKeywordList = ""
+        var excludeKeywordList = ""
 
         $(document).ready(function () {
             $(document).scroll(function() {
@@ -249,9 +260,26 @@
                     ready = false;
                     count += 1;
 
+                    includeKeywordList = ""
+                    excludeKeywordList = ""
+                    likeBadge.forEach(function(item) {
+                        if(includeKeywordList == "")
+                            includeKeywordList += item.innerHTML;
+                        else
+                            includeKeywordList += "," + item.innerHTML;
+                    });
+                    dislikeBadge.forEach(function(item) {
+                        if(excludeKeywordList == "")
+                            excludeKeywordList += item.innerHTML;
+                        else
+                            excludeKeywordList += "," + item.innerHTML;
+                    });
+
+
+
                     $.ajax({
                         type: "GET",
-                        url: "/api/news?keyword=" + keyword + "&page="+count+"&size=10",
+                        url: "/api/news?keyword=" + keyword +"&includeKeywordList="+ includeKeywordList+ "&excludeKeywordList="+ excludeKeywordList+ "&page="+count+"&size=10",
                         timeout: 10000,
                         contentType: "application/json",
                         success: function (response, status, request) {
@@ -301,19 +329,25 @@
 
             var likeBadge = document.querySelectorAll('.like-badge');
             var dislikeBadge = document.querySelectorAll('.dislike-badge');
-            let test = keyword + " >"
+
+            includeKeywordList = ""
+            excludeKeywordList = ""
             likeBadge.forEach(function(item) {
-                test += " +" + item.innerHTML;
+                if(includeKeywordList == "")
+                    includeKeywordList += item.innerHTML;
+                else
+                    includeKeywordList += "," + item.innerHTML;
             });
             dislikeBadge.forEach(function(item) {
-                test += " -" + item.innerHTML;
+                if(excludeKeywordList == "")
+                    excludeKeywordList += item.innerHTML;
+                else
+                    excludeKeywordList += "," + item.innerHTML;
             });
-
-            console.log(test)
 
             $.ajax({
                 type: "GET" ,
-                url: "/api/news?keyword="+test+"&page=0&size=10",
+                url: "/api/news?keyword=" + keyword +"&includeKeywordList="+ includeKeywordList+ "&excludeKeywordList="+ excludeKeywordList+ "&page="+count+"&size=10",
                 timeout: 100000,
                 contentType: "application/json",
 

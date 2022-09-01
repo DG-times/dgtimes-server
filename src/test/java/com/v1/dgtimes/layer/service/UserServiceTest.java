@@ -46,7 +46,7 @@ public class UserServiceTest {
     public void test1() {
         //Given
         SignupResponseDto signupResponseDto = SignupResponseDto.builder()
-                .mag("회원가입에 성공했습니다.")
+                .msg("회원가입에 성공했습니다.")
                 .status(200)
                 .build();
         User find_user = new User();
@@ -57,7 +57,7 @@ public class UserServiceTest {
         SignupResponseDto responseDto = ReflectionTestUtils.invokeMethod(userService, "signupUser", signupRequestDto);
 
         // then
-        assertEquals(responseDto.getMag(), signupResponseDto.getMag());
+        assertEquals(responseDto.getMsg(), signupResponseDto.getMsg());
     }
 
     @Test
