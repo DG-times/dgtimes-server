@@ -1,5 +1,6 @@
 package com.v2.dgtimes.config.logging;
 
+import com.v1.dgtimes.config.exception.ExceptionHandlers;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -13,7 +14,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -40,7 +41,7 @@ public class LoggingAspect {
     public void onRequest() {
     }
 
-    @Pointcut("execution(* com.v2.dgtimes.config.exception.*.*(..))")
+    @Pointcut("execution(* com.v2.dgtimes.config.exception..*(..))")
     public void ExceptionHandlers() {
     }
 
@@ -65,17 +66,15 @@ public class LoggingAspect {
     }
 
 
-//    @Around("ExceptionHandlers()")
-//    public Response methodLoggingOnlyException(ProceedingJoinPoint com) throws Throwable {
-//
-//        ResponseError responseError = (ResponseError) com.proceed();
-//        Map<String, Object> params = new HashMap<>();
-//        params.put("Status", Integer.toString(responseError.getStatus()));
-//        params.put("Message", responseError.getMessage());
-//        params.put("CODE", responseError.getCode());
-//        log.info("@AutoLogging {}", params);
-//        return responseError;
-//    }
+    @Around("ExceptionHandlers()")
+    public ExceptionHandlers methodLoggingOnlyException(ProceedingJoinPoint com) throws Throwable {
+
+        ExceptionHandlers exceptionHandlers = (ExceptionHandlers) com.proceed();
+        Map<String, Object> params = new Hashtable<>();
+        params.put("메시지", exceptionHandlers.toString());
+        log.info("ExceptionHandlers : {}", params);
+        return exceptionHandlers;
+    }
 
 
     private String paramMapToString(Map<String, String[]> paraStringMap) {
