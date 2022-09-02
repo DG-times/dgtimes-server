@@ -1,8 +1,10 @@
 package com.v2.dgtimes.layer.bookmark.model;
 
 import com.v2.dgtimes.layer.news.model.dto.request.NewsRequestDto;
-import com.v2.dgtimes.layer.user.model.User;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Arrays;
@@ -13,6 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Table(name = "bookmark")
 public class Bookmark {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
