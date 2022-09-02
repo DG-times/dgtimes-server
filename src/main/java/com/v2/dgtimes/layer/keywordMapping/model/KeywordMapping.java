@@ -14,6 +14,7 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "keyword_mapping")
 public class KeywordMapping {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

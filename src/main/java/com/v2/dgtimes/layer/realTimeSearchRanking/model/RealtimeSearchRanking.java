@@ -1,6 +1,5 @@
 package com.v2.dgtimes.layer.realTimeSearchRanking.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +12,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor
+@Table(name = "realtime_search_ranking")
 public class RealtimeSearchRanking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
