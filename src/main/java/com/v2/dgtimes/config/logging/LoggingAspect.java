@@ -12,7 +12,9 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.ws.Response;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -34,8 +36,13 @@ import java.util.stream.Collectors;
 public class LoggingAspect {
     private static final Logger logger = LoggerFactory.getLogger(LoggingAspect.class);
 
+
     @Pointcut("within(com.v2.dgtimes.layer.common.controller..*)")
     public void onRequest() {
+    }
+
+    @Pointcut("execution(* com.v2.dgtimes.config.exception.*.*(..))")
+    public void ExceptionHandlers() {
     }
 
 
@@ -56,6 +63,19 @@ public class LoggingAspect {
                     paramMapToString(request.getParameterMap()), end - start);
         }
     }
+
+
+//    @Around("ExceptionHandlers()")
+//    public Response methodLoggingOnlyException(ProceedingJoinPoint com) throws Throwable {
+//
+//        ResponseError responseError = (ResponseError) com.proceed();
+//        Map<String, Object> params = new HashMap<>();
+//        params.put("Status", Integer.toString(responseError.getStatus()));
+//        params.put("Message", responseError.getMessage());
+//        params.put("CODE", responseError.getCode());
+//        log.info("@AutoLogging {}", params);
+//        return responseError;
+//    }
 
 
     private String paramMapToString(Map<String, String[]> paraStringMap) {
