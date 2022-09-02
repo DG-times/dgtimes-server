@@ -12,9 +12,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.xml.ws.Response;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -37,7 +35,7 @@ public class LoggingAspect {
     private static final Logger logger = LoggerFactory.getLogger(LoggingAspect.class);
 
 
-    @Pointcut("within(com.v2.dgtimes.layer.common.controller..*)")
+    @Pointcut("within(com.v2.dgtimes.layer.*.controller..*)")
     public void onRequest() {
     }
 
@@ -57,9 +55,10 @@ public class LoggingAspect {
             return proceedingJoinPoint.proceed(proceedingJoinPoint.getArgs());
         } finally {
             long end = System.currentTimeMillis();
-            logger.info("Request: {} {}: {} ({}ms)",
+            logger.info("Request: {} {} {}: {} ({}ms)",
                     request.getMethod(),
                     request.getRequestURL(),
+                    request.getQueryString(),
                     paramMapToString(request.getParameterMap()), end - start);
         }
     }
