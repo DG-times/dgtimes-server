@@ -13,6 +13,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -55,7 +56,7 @@ public class LoggingAspect {
             return proceedingJoinPoint.proceed(proceedingJoinPoint.getArgs());
         } finally {
             long end = System.currentTimeMillis();
-            logger.info("Request: {} {} {}: {} ({}ms)",
+            logger.info("\n Request : {} {}  \n QueryString : {} \n {}  \n Time : ({}ms)",
                     request.getMethod(),
                     request.getRequestURL(),
                     request.getQueryString(),
