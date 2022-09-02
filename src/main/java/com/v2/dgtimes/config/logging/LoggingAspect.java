@@ -5,87 +5,83 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import org.aspectj.lang.reflect.MethodSignature;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StopWatch;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /*
 설명 : LoggingAspect 구현.
 
-작성일 : 2022.08.18
+작성일 : 2022.09.02
 
-마지막 수정한 사람 : 공상욱
+담당자 : 공상욱
 
-*/
+경로
+@Pointcut("within(com.v2.dgtimes.layer.common.controller..*)")
+
+ */
 
 @Slf4j
 @Aspect
 @Component
-class LoggingAspect {
-    /*
-
-    // ccom.v1.dgtimes.layer.controller 이하 패키지의 모든 클래스 이하 모든 메서드에 적용
-    @Pointcut("execution(* com.v1.dgtimes.layer.controller..*.*(..))")
-    private void cut(){}
+public class LoggingAspect {
+    private static final Logger logger = LoggerFactory.getLogger(LoggingAspect.class);
 
 
-    // Pointcut_에 의해 필터링된 경로로 들어오는 경우 메서드 호출 전에 적용
-    @Before("cut()")
-    public void beforeParameterLog(JoinPoint joinPoint) {
+    @Pointcut("within(com.v2.dgtimes.layer.*.controller..*)")
+    public void onRequest() {
+    }
 
-        // 메서드 정보 받아오기
-        Method method = getMethod(joinPoint);
-        log.info("======= method name = {} =======", method.getName());
+    @Pointcut("execution(* com.v2.dgtimes.config.exception.*.*(..))")
+    public void ExceptionHandlers() {
+    }
 
-        // 파라미터 받아오기
-        Object[] args = joinPoint.getArgs();
-        if (args.length <= 0) log.info("no parameter");
-        for (Object arg : args) {
-            log.info("parameter type = {}", arg.getClass().getSimpleName());
-            log.info("parameter value = {}", arg);
+
+    @Around("com.v2.dgtimes.config.logging.LoggingAspect.onRequest()")
+    public Object requestLogging(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder
+                .currentRequestAttributes())
+                .getRequest();
+
+        long start = System.currentTimeMillis();
+        try {
+            return proceedingJoinPoint.proceed(proceedingJoinPoint.getArgs());
+        } finally {
+            long end = System.currentTimeMillis();
+            logger.info("Request: {} {} {}: {} ({}ms)",
+                    request.getMethod(),
+                    request.getRequestURL(),
+                    request.getQueryString(),
+                    paramMapToString(request.getParameterMap()), end - start);
         }
     }
 
-    // Poincut_에 의해 필터링된 경로로 들어오는 경우 메서드 리턴 후에 적용
-    @AfterReturning(value = "cut()", returning = "returnObj")
-    public void afterReturnLog(JoinPoint joinPoint, Object returnObj) {
 
-        // 메서드 정보 받아오기
-        Method method = getMethod(joinPoint);
-        log.info("======= method name = {} =======", method.getName());
-
-        log.info("return type = {}", returnObj.getClass().getSimpleName());
-        log.info("return value = {}", returnObj);
-    }
-
-    // JoinPoint_로 메서드 정보 가져오기
-    private Method getMethod(JoinPoint joinPoint) {
-        MethodSignature signature = (MethodSignature) joinPoint.getSignature();
-        return signature.getMethod();
-    }
-
-     */
+//    @Around("ExceptionHandlers()")
+//    public Response methodLoggingOnlyException(ProceedingJoinPoint com) throws Throwable {
+//
+//        ResponseError responseError = (ResponseError) com.proceed();
+//        Map<String, Object> params = new HashMap<>();
+//        params.put("Status", Integer.toString(responseError.getStatus()));
+//        params.put("Message", responseError.getMessage());
+//        params.put("CODE", responseError.getCode());
+//        log.info("@AutoLogging {}", params);
+//        return responseError;
+//    }
 
 
-
-
-    @Pointcut("@annotation(com.v2.dgtimes.config.logging.Timer)")
-    private void timer(){};
-
-    @Around("timer()")
-    public void AssumeExecutionTime(ProceedingJoinPoint joinPoint) throws Throwable {
-
-        StopWatch stopWatch = new StopWatch();
-
-        stopWatch.start();
-        joinPoint.proceed(); // 조인포인트의 메서드 실행
-        stopWatch.stop();
-
-        long totalTimeMillis = stopWatch.getTotalTimeMillis();
-
-        MethodSignature signature = (MethodSignature) joinPoint.getSignature();
-        String methodName = signature.getMethod().getName();
-
-        log.info("실행 메서드: {}, 실행시간 = {}ms", methodName, totalTimeMillis);
+    private String paramMapToString(Map<String, String[]> paraStringMap) {
+        return paraStringMap
+                .entrySet()
+                .stream()
+                .map(entry -> String.format("%s : %s", entry.getKey(), Arrays.toString(entry.getValue())))
+                .collect(Collectors.joining(", "));
     }
 }
