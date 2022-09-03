@@ -23,8 +23,8 @@ import java.util.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "Long")
-public class LoggingModel {
+@Table(name = "search_log")
+public class SearchLog {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

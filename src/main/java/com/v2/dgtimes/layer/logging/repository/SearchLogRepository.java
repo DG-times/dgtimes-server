@@ -1,5 +1,6 @@
 package com.v2.dgtimes.layer.logging.repository;
 
+import com.v2.dgtimes.layer.logging.model.SearchLog;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /*
@@ -11,5 +12,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 */
 
-public interface LoggingRepository extends JpaRepository<Long, String> {
+public interface SearchLogRepository extends JpaRepository<SearchLog, String> {
+
 }
