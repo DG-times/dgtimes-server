@@ -20,9 +20,11 @@ public class Bookmark {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "include_keyword_list")
     private String includeKeywordList;
+    @Column(name = "exclude_keyword_list")
     private String excludeKeywordList;
-    
+
     public List<String> getIncludeKeywordList() {
         return Arrays.asList(includeKeywordList.split(","));
     }

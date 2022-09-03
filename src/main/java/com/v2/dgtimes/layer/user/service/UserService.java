@@ -4,12 +4,23 @@ import com.v2.dgtimes.config.exception.CustomException;
 import com.v2.dgtimes.config.exception.ErrorCode;
 import com.v2.dgtimes.config.security.PasswordEncoder;
 import com.v2.dgtimes.layer.user.model.User;
-import com.v2.dgtimes.layer.user.model.dto.response.SignupResponseDto;
 import com.v2.dgtimes.layer.user.model.dto.request.SignupRequestDto;
+import com.v2.dgtimes.layer.user.model.dto.response.SignupResponseDto;
 import com.v2.dgtimes.layer.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+/*
+설명 : User service
+    - user를 생성할때 DataSource가 replica로 실행되는 것을
+       @Transactional 어노테이션을 사용해 수정
+
+작성일 : 2022.09.03
+
+마지막 수정한 사람 : 안상록
+
+*/
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -17,6 +28,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
+    @Transactional
     public SignupResponseDto signupUser(SignupRequestDto requestDto) {
         // Valid
         signupDtoValid(requestDto);
@@ -54,7 +66,8 @@ public class UserService {
         }
     }
 
-    private boolean isExistUser(SignupRequestDto requestDto){
+    @Transactional(readOnly = true)
+    boolean isExistUser(SignupRequestDto requestDto){
         return userRepository.existsById(requestDto.getId()) ;
     }
 }
