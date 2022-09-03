@@ -15,10 +15,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface SearchRankingRepository extends JpaRepository<RealtimeSearchRanking, Long> {
 
 }
-//@Component
-//@RequiredArgsConstructor
-//public class SearchRankingRepository {
-//    private final SearchRankingReplicaRepository replicaRepository;
-//    private final SearchRankingSourceRepository sourceRepository;
-//
-//}
+
