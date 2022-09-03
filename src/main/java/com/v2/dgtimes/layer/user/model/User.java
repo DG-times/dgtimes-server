@@ -39,7 +39,7 @@ public class User implements Serializable {
 
     public Bookmark getBookmark(){
         if(this.bookmark == null)
-            this.setBookmark(new Bookmark());
+            this.setBookmark(new Bookmark(null, "", ""));
         return this.bookmark;
     }
 }
