@@ -1,6 +1,5 @@
 package com.v2.dgtimes.config.logging;
 
-import com.v1.dgtimes.config.exception.ExceptionHandlers;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -14,7 +13,6 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
-import java.util.Hashtable;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -41,10 +39,6 @@ public class LoggingAspect {
     public void onRequest() {
     }
 
-    @Pointcut("execution(* com.v2.dgtimes.config.exception..*(..))")
-    public void ExceptionHandlers() {
-    }
-
 
     @Around("com.v2.dgtimes.config.logging.LoggingAspect.onRequest()")
     public Object requestLogging(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
@@ -63,17 +57,6 @@ public class LoggingAspect {
                     request.getQueryString(),
                     paramMapToString(request.getParameterMap()), end - start);
         }
-    }
-
-
-    @Around("ExceptionHandlers()")
-    public ExceptionHandlers methodLoggingOnlyException(ProceedingJoinPoint com) throws Throwable {
-
-        ExceptionHandlers exceptionHandlers = (ExceptionHandlers) com.proceed();
-        Map<String, Object> params = new Hashtable<>();
-        params.put("메시지", exceptionHandlers.toString());
-        log.info("ExceptionHandlers : {}", params);
-        return exceptionHandlers;
     }
 
 
