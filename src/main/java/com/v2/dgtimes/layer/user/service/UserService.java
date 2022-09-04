@@ -13,10 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 /*
 설명 : User service
-    - user를 생성할때 DataSource가 replica로 실행되는 것을
-       @Transactional 어노테이션을 사용해 수정
+    - 불필요한 @Transaction 삭제
 
-작성일 : 2022.09.03
+작성일 : 2022.09.04
 
 마지막 수정한 사람 : 안상록
 
@@ -66,7 +65,6 @@ public class UserService {
         }
     }
 
-    @Transactional(readOnly = true)
     boolean isExistUser(SignupRequestDto requestDto){
         return userRepository.existsById(requestDto.getId()) ;
     }

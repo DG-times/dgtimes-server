@@ -10,8 +10,17 @@ import com.v2.dgtimes.layer.user.model.User;
 import com.v2.dgtimes.layer.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
+/*
+설명 : BookmarkService
+    -@Transactional(readOnly = true) 설정
+
+작성일 : 2022.09.04
+
+마지막 수정한 사람 : 안상록
+
+*/
 @Service
 @RequiredArgsConstructor
 public class BookmarkService {
@@ -29,6 +38,7 @@ public class BookmarkService {
         return bookmarkRepository.save(bookmark);
     }
 
+    @Transactional(readOnly = true)
     public Bookmark getBookmarkFromUser(UserDetailImpl userDetail){
         User user = userRepository.findById(userDetail.getUserId()).get();
         Bookmark bookmark = user.getBookmark();
