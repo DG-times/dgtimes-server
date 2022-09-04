@@ -1,5 +1,6 @@
 package com.v2.dgtimes.config.logging;
-
+import com.v2.dgtimes.layer.logging.repository.SearchLogRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -31,7 +32,10 @@ import java.util.stream.Collectors;
 @Slf4j
 @Aspect
 @Component
+@RequiredArgsConstructor
 public class LoggingAspect {
+
+    private final SearchLogRepository searchLogRepository;
     private static final Logger logger = LoggerFactory.getLogger(LoggingAspect.class);
 
 
@@ -51,7 +55,7 @@ public class LoggingAspect {
             return proceedingJoinPoint.proceed(proceedingJoinPoint.getArgs());
         } finally {
             long end = System.currentTimeMillis();
-            logger.info("\n Request : {} {}  \n QueryString : {} \n {}  \n Time : ({}ms)",
+            logger.info("[ Request ] : {} {} || QueryString : {} || {} || Time : ({}ms)",
                     request.getMethod(),
                     request.getRequestURL(),
                     request.getQueryString(),
