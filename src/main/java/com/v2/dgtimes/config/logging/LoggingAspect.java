@@ -1,4 +1,5 @@
 package com.v2.dgtimes.config.logging;
+import com.v2.dgtimes.layer.logging.model.SearchLog;
 import com.v2.dgtimes.layer.logging.repository.SearchLogRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -60,6 +61,16 @@ public class LoggingAspect {
                     request.getRequestURL(),
                     request.getQueryString(),
                     paramMapToString(request.getParameterMap()), end - start);
+
+
+            SearchLog searchLog = SearchLog.builder()
+                    .keyword(Arrays.toString(request.getParameterMap().get("keyword")))
+                    .includeKeywordList(Arrays.toString(request.getParameterMap().get("includeKeywordList")))
+                    .excludeKeywordList(Arrays.toString(request.getParameterMap().get("excludeKeywordList")))
+                    .build();
+
+            searchLogRepository.save(searchLog);
+
         }
     }
 
