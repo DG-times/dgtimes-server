@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
 
 /*
 설명 : LoggingModel 작성
@@ -25,13 +24,13 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "search_log")
-public class SearchLog {
+public class SearchLog extends Timestamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Date timestamp;
+    private String user_id;
 
     private String keyword;
 
