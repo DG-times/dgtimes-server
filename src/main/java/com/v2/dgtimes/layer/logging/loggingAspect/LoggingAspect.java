@@ -15,11 +15,8 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 /*
@@ -75,9 +72,8 @@ public class LoggingAspect {
                     .build();
 
 
-
-
-            searchLogRepository.save(searchLog);
+            if(request.getParameterMap().get("keyword") != null)
+                searchLogRepository.save(searchLog);
 
         }
     }
