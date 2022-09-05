@@ -69,7 +69,9 @@ public class LoggingAspect {
                     .excludeKeywordList(Arrays.toString(request.getParameterMap().get("excludeKeywordList")))
                     .build();
 
-            searchLogRepository.save(searchLog);
+            if (request.getParameterMap().get("keyword") != null){
+                searchLogRepository.save(searchLog);
+            }
 
         }
     }
