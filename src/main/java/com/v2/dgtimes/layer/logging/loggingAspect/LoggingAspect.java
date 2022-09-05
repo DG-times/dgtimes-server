@@ -1,4 +1,4 @@
-package com.v2.dgtimes.config.logging;
+package com.v2.dgtimes.layer.logging.loggingAspect;
 import com.v2.dgtimes.layer.logging.model.SearchLog;
 import com.v2.dgtimes.layer.logging.repository.SearchLogRepository;
 import lombok.RequiredArgsConstructor;
@@ -10,12 +10,16 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /*
@@ -44,8 +48,8 @@ public class LoggingAspect {
     public void onRequest() {
     }
 
-
-    @Around("com.v2.dgtimes.config.logging.LoggingAspect.onRequest()")
+    @Transactional
+    @Around("com.v2.dgtimes.layer.logging.loggingAspect.LoggingAspect.onRequest()")
     public Object requestLogging(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder
                 .currentRequestAttributes())
@@ -64,10 +68,14 @@ public class LoggingAspect {
 
 
             SearchLog searchLog = SearchLog.builder()
+                    .user_id(Arrays.toString(request.getParameterMap().get("user_id")))
                     .keyword(Arrays.toString(request.getParameterMap().get("keyword")))
                     .includeKeywordList(Arrays.toString(request.getParameterMap().get("includeKeywordList")))
                     .excludeKeywordList(Arrays.toString(request.getParameterMap().get("excludeKeywordList")))
                     .build();
+
+
+
 
             searchLogRepository.save(searchLog);
 
