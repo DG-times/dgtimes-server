@@ -1,6 +1,6 @@
 package com.v2.dgtimes.layer.realTimeSearchRanking.service;
 
-import com.v2.dgtimes.config.logging.Timer;
+import com.v2.dgtimes.layer.logging.model.Timer;
 import com.v2.dgtimes.layer.realTimeSearchRanking.model.RealtimeSearchRanking;
 import com.v2.dgtimes.layer.realTimeSearchRanking.model.SearchRankingVariation;
 import com.v2.dgtimes.layer.realTimeSearchRanking.repository.SearchRankingRepository;
