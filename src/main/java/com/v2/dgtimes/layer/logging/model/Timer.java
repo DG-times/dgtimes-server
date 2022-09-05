@@ -1,4 +1,4 @@
-package com.v2.dgtimes.config.logging;
+package com.v2.dgtimes.layer.logging.model;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
