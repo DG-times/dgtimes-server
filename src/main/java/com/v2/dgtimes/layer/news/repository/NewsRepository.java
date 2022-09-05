@@ -66,7 +66,7 @@ public interface NewsRepository extends JpaRepository<News, Long> {
     Page<News> findAllByTitleAndContent(@Param("keyword") String keyword, Pageable pageable);
 //         news WHERE LIKE %keyword% IN TITLE, CONTENT
 
-    @Query(value = "SELECT * FROM news WHERE MATCH(content) AGAINST(:keyword IN boolean mode)",
+    @Query(value = "SELECT * FROM news WHERE MATCH(title, content) AGAINST(:keyword IN boolean mode)",
             countQuery = "SELECT \n" +
                     "            TABLE_ROWS\n" +
                     "FROM\n" +
