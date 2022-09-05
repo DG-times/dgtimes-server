@@ -250,6 +250,7 @@
         var includeKeywordList = ""
         var excludeKeywordList = ""
 
+
         $(document).ready(function () {
             $(document).scroll(function() {
                 var maxHeight = $(document).height();
@@ -259,6 +260,10 @@
                     $('#myModal').modal("toggle")
                     ready = false;
                     count += 1;
+
+
+                    let likeBadge = document.querySelectorAll('.like-badge');
+                    let dislikeBadge = document.querySelectorAll('.dislike-badge');
 
                     includeKeywordList = ""
                     excludeKeywordList = ""
@@ -286,7 +291,7 @@
                             let rows = response["content"]
                             for (let i = 0; i < rows.length; i++) {
                                 let content = rows[i]['content']
-                                let date = dateFormat(rows[i]['date'])
+                                let date = dateFormat(rows[i]['publishedDate'])
                                 let mainUrl = rows[i]['mainUrl']
                                 let thumbnailUrl = rows[i]['thumbnailUrl']
                                 let title = rows[i]['title']
@@ -327,8 +332,8 @@
             keyword = $('#keyword').val()
 
 
-            var likeBadge = document.querySelectorAll('.like-badge');
-            var dislikeBadge = document.querySelectorAll('.dislike-badge');
+            let likeBadge = document.querySelectorAll('.like-badge');
+            let dislikeBadge = document.querySelectorAll('.dislike-badge');
 
             includeKeywordList = ""
             excludeKeywordList = ""
@@ -361,7 +366,7 @@
                     let rows = response["content"]
                     for (let i = 0; i < rows.length; i++) {
                         let content = rows[i]['content']
-                        let date = dateFormat(rows[i]['date'])
+                        let date = dateFormat(rows[i]['publishedDate'])
                         let mainUrl = rows[i]['mainUrl']
                         let thumbnailUrl = rows[i]['thumbnailUrl']
                         let title = rows[i]['title']
@@ -401,18 +406,18 @@
         }
         function changeMonthToEng(month){
             const Month_Eng_Map = {
-                1 : "Jen",
-                2 : "Feb",
-                3 : "Mar",
-                4 : "Apr",
-                5 : "May",
-                6 : "Jun",
-                7 : "Jul",
-                8 : "Aug",
-                9 : "Sep",
-                10 : "Oct",
-                11 : "Nov",
-                12 : "Dec"
+                "01" : "Jen",
+                "02" : "Feb",
+                "03" : "Mar",
+                "04" : "Apr",
+                "05" : "May",
+                "06" : "Jun",
+                "07" : "Jul",
+                "08" : "Aug",
+                "09" : "Sep",
+                "10" : "Oct",
+                "11" : "Nov",
+                "12" : "Dec"
             }
             return Month_Eng_Map[month]
         }

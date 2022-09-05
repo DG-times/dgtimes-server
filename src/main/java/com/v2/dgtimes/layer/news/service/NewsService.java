@@ -41,6 +41,7 @@ public class NewsService {
     }
 
     public Page<NewsResponseDto> getSearchKeywordWithMatchAgainst(NewsRequestDto newsRequestDto, Pageable pageable, UserDetailImpl userDetail) {
+
         bookmarkService.saveBookmark(newsRequestDto, userDetail);
 
         return getNewsWithMatchAgainstService.getSearchKeyword(newsRequestDto, pageable);

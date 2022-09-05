@@ -31,7 +31,7 @@ public class BookmarkService {
     @Transactional
     public Bookmark saveBookmark(NewsRequestDto newsRequestDto, UserDetailImpl userDetail){
         if (userDetail == null) {
-            throw new CustomException(ErrorCode.USER_LOGIN_NOT_CODE);
+            return null;
         }
         Bookmark bookmark = getBookmarkFromUser(userDetail);
         bookmark.update(newsRequestDto);
