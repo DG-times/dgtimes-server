@@ -16,7 +16,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.Map;
@@ -28,9 +27,6 @@ import java.util.stream.Collectors;
 작성일 : 2022.09.02
 
 담당자 : 공상욱
-
-경로
-@Pointcut("within(com.v2.dgtimes.layer.common.controller..*)")
 
  */
 
@@ -44,11 +40,9 @@ public class LoggingAspect {
 
     private static final Logger logger = LoggerFactory.getLogger(LoggingAspect.class);
 
-
     @Pointcut("within(com.v2.dgtimes.layer.*.controller..*)")
     public void onRequest() {
     }
-
 
     @Transactional
     @Around("com.v2.dgtimes.layer.logging.loggingAspect.LoggingAspect.onRequest()")
@@ -69,19 +63,23 @@ public class LoggingAspect {
                     request.getQueryString(),
                     paramMapToString(request.getParameterMap()), end - start);
 
+            // user_Id 가져옴
             String user_id = null;
+            if (SecurityContextHolder.getContext()
+                    .getAuthentication()
+                    .getPrincipal() != "anonymousUser") {
 
-            if(SecurityContextHolder.getContext().getAuthentication().getPrincipal() != "anonymousUser") {
-                UserDetailImpl userDetail = (UserDetailImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+                UserDetailImpl userDetail = (UserDetailImpl) SecurityContextHolder
+                        .getContext()
+                        .getAuthentication()
+                        .getPrincipal();
+
                 user_id = userDetail.getUserId();
             }
 
-            System.out.println(user_id);
-
+            // log MySQL 저장
             SearchLog searchLog = SearchLog.builder()
                     .user_id(user_id)
-
-//                    .user_id(RequestContextHolder.currentRequestAttributes().getSessionId())
 
                     .keyword(Arrays.toString(request
                             .getParameterMap()
@@ -109,6 +107,7 @@ public class LoggingAspect {
     }
 
 
+    // 시간계산
     private String paramMapToString(Map<String, String[]> paraStringMap) {
         return paraStringMap
                 .entrySet()
