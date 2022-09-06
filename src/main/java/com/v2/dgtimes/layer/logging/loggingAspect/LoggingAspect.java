@@ -76,6 +76,7 @@ public class LoggingAspect {
                 user_id = userDetail.getUserId();
             }
 
+            System.out.println(user_id);
 
             SearchLog searchLog = SearchLog.builder()
                     .user_id(user_id)
