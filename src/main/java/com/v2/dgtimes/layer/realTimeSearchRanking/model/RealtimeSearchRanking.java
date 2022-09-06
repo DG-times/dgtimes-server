@@ -5,8 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -18,7 +18,7 @@ public class RealtimeSearchRanking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(columnDefinition="TIMESTAMP")
-    private Date date;
+    private LocalDateTime date;
     private String keywordList;
 
     public List<String> getKeywordList() {
@@ -30,7 +30,7 @@ public class RealtimeSearchRanking {
     }
 
     @Builder
-    public RealtimeSearchRanking(Date date, List<String> keywordList) {
+    public RealtimeSearchRanking(LocalDateTime date, List<String> keywordList) {
         this.date = date;
         this.setKeywordList(keywordList);
     }
