@@ -1,4 +1,6 @@
 package com.v2.dgtimes.layer.logging.loggingAspect;
+
+import com.v2.dgtimes.config.security.userdetail.UserDetailImpl;
 import com.v2.dgtimes.layer.logging.model.SearchLog;
 import com.v2.dgtimes.layer.logging.repository.SearchLogRepository;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +11,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -38,6 +41,7 @@ import java.util.stream.Collectors;
 public class LoggingAspect {
 
     private final SearchLogRepository searchLogRepository;
+
     private static final Logger logger = LoggerFactory.getLogger(LoggingAspect.class);
 
 
@@ -45,12 +49,14 @@ public class LoggingAspect {
     public void onRequest() {
     }
 
+
     @Transactional
     @Around("com.v2.dgtimes.layer.logging.loggingAspect.LoggingAspect.onRequest()")
     public Object requestLogging(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder
                 .currentRequestAttributes())
                 .getRequest();
+
 
         long start = System.currentTimeMillis();
         try {
@@ -63,16 +69,40 @@ public class LoggingAspect {
                     request.getQueryString(),
                     paramMapToString(request.getParameterMap()), end - start);
 
+            String user_id = null;
+
+            if(SecurityContextHolder.getContext().getAuthentication().getPrincipal() != "anonymousUser") {
+                UserDetailImpl userDetail = (UserDetailImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+                user_id = userDetail.getUserId();
+            }
+
+            System.out.println(user_id);
 
             SearchLog searchLog = SearchLog.builder()
-                    .user_id(Arrays.toString(request.getParameterMap().get("user_id")))
-                    .keyword(Arrays.toString(request.getParameterMap().get("keyword")))
-                    .includeKeywordList(Arrays.toString(request.getParameterMap().get("includeKeywordList")))
-                    .excludeKeywordList(Arrays.toString(request.getParameterMap().get("excludeKeywordList")))
+                    .user_id(user_id)
+
+//                    .user_id(RequestContextHolder.currentRequestAttributes().getSessionId())
+
+                    .keyword(Arrays.toString(request
+                            .getParameterMap()
+                            .get("keyword")))
+
+                    .includeKeywordList(Arrays
+                            .toString(request
+                                    .getParameterMap()
+                                    .get("includeKeywordList")))
+
+                    .excludeKeywordList(Arrays
+                            .toString(request
+                                    .getParameterMap()
+                                    .get("excludeKeywordList")))
+
                     .build();
 
 
-            if(request.getParameterMap().get("keyword") != null)
+            if (request.getParameterMap()
+                    .get("keyword") != null)
+
                 searchLogRepository.save(searchLog);
 
         }
