@@ -17,5 +17,6 @@ import java.util.List;
 
 public interface SearchRankingRepository extends JpaRepository<RealtimeSearchRanking, Long> {
     List<RealtimeSearchRanking> findTop2ByOrderByDateDesc();
+
 }
 

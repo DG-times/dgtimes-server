@@ -1,5 +1,6 @@
 package com.v2.dgtimes.layer.realTimeSearchRanking.controller;
 
+import com.v2.dgtimes.layer.realTimeSearchRanking.model.RealtimeSearchRanking;
 import com.v2.dgtimes.layer.realTimeSearchRanking.model.SearchRankingVariation;
 import com.v2.dgtimes.layer.realTimeSearchRanking.service.SearchRankingService;
 import lombok.RequiredArgsConstructor;
@@ -26,8 +27,14 @@ public class SearchRankingController {
     private final SearchRankingService searchRankingService;
 
     @GetMapping("/api/RealTimeSearchRanking")
-    public ResponseEntity getRealTimeSearchRanking(){
+    public ResponseEntity getRealTimeSearchRankingVariation(){
         List<SearchRankingVariation> variation = searchRankingService.SearchRankingVariation();
         return new ResponseEntity(variation, HttpStatus.OK );
+    }
+
+    @GetMapping("/api/ranking")
+    public ResponseEntity getRealTimeSearchRanking(){
+        RealtimeSearchRanking rankingList = searchRankingService.SearchRanking();
+        return new ResponseEntity(rankingList, HttpStatus.OK );
     }
 }
