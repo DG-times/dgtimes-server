@@ -3,6 +3,7 @@ package com.v2.dgtimes.layer.common.controller;
 import com.v2.dgtimes.config.security.userdetail.UserDetailImpl;
 import com.v2.dgtimes.layer.bookmark.model.Bookmark;
 import com.v2.dgtimes.layer.bookmark.service.BookmarkService;
+import com.v2.dgtimes.layer.searchRanking.service.SearchRankingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
@@ -15,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class PageController {
 
     private final BookmarkService bookmarkService;
+    private final SearchRankingService searchRankingService;
 
     @GetMapping("/")
     public ModelAndView main(@AuthenticationPrincipal UserDetailImpl userDetail){
@@ -27,6 +29,8 @@ public class PageController {
         ModelAndView modelAndView = new ModelAndView("index");
         modelAndView.addObject("include_keyword", bookmark.getIncludeKeywordList());
         modelAndView.addObject("exclude_keyword", bookmark.getExcludeKeywordList());
+        modelAndView.addObject("exclude_keyword", bookmark.getExcludeKeywordList());
+        modelAndView.addObject("keyword_ranking_list", searchRankingService.SearchRankingVariation());
 
         return modelAndView;
     }
