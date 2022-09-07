@@ -11462,7 +11462,7 @@ footer.footer {
 
 
 .up-tri{
-  margin-bottom: 10px;
+  display: inline-block;
   width: 0;
   height: 0;
   border-bottom: 10px solid red;
@@ -11472,7 +11472,7 @@ footer.footer {
 }
 
 .down-tri{
-  margin-top: 10px;
+  display: inline-block;
   width: 0;
   height: 0;
   border-bottom: 10px solid transparent;

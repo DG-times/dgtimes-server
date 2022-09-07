@@ -1,9 +1,10 @@
-package com.v2.dgtimes.layer.realTimeSearchRanking.controller;
+package com.v2.dgtimes.layer.searchRanking.controller;
 
-import com.v2.dgtimes.layer.realTimeSearchRanking.model.RealtimeSearchRanking;
-import com.v2.dgtimes.layer.realTimeSearchRanking.model.SearchRankingVariation;
-import com.v2.dgtimes.layer.realTimeSearchRanking.repository.SearchRankingRepository;
-import com.v2.dgtimes.layer.realTimeSearchRanking.service.SearchRankingService;
+
+import com.v2.dgtimes.layer.searchRanking.model.SearchRanking;
+import com.v2.dgtimes.layer.searchRanking.model.SearchRankingResponseDto;
+import com.v2.dgtimes.layer.searchRanking.repository.SearchRankingRepository;
+import com.v2.dgtimes.layer.searchRanking.service.SearchRankingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,13 +33,13 @@ public class SearchRankingController {
 
     @GetMapping("/api/RealTimeSearchRanking")
     public ResponseEntity getRealTimeSearchRankingVariation(){
-        List<SearchRankingVariation> variation = searchRankingService.SearchRankingVariation();
+        List<SearchRankingResponseDto> variation = searchRankingService.SearchRankingVariation();
         return new ResponseEntity(variation, HttpStatus.OK );
     }
 
     @PostMapping("/api/ranking")
     public ResponseEntity getRealTimeSearchRanking(){
-        RealtimeSearchRanking rankingList = searchRankingService.SearchRanking();
+        SearchRanking rankingList = searchRankingService.SearchRanking();
         return new ResponseEntity(rankingList, HttpStatus.OK );
     }
 

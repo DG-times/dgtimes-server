@@ -1,11 +1,11 @@
-package com.v2.dgtimes.layer.realTimeSearchRanking.service;
+package com.v2.dgtimes.layer.searchRanking.service;
 
 import com.v2.dgtimes.layer.logging.model.SearchLog;
 import com.v2.dgtimes.layer.logging.model.Timer;
 import com.v2.dgtimes.layer.logging.repository.SearchLogRepository;
-import com.v2.dgtimes.layer.realTimeSearchRanking.model.RealtimeSearchRanking;
-import com.v2.dgtimes.layer.realTimeSearchRanking.model.SearchRankingVariation;
-import com.v2.dgtimes.layer.realTimeSearchRanking.repository.SearchRankingRepository;
+import com.v2.dgtimes.layer.searchRanking.model.SearchRanking;
+import com.v2.dgtimes.layer.searchRanking.model.SearchRankingResponseDto;
+import com.v2.dgtimes.layer.searchRanking.repository.SearchRankingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -32,11 +32,11 @@ public class SearchRankingService {
     @Transactional
     @Cacheable(value = "List<SearchRankingVariation>", key = "1", cacheManager = "cacheManager")
     @Timer
-    public List<SearchRankingVariation> SearchRankingVariation(){
+    public List<SearchRankingResponseDto> SearchRankingVariation(){
 
-        SearchRankingVariation variation = new SearchRankingVariation(); // 변동 사항
-        List<SearchRankingVariation> variationList = new ArrayList<>();
-        List<RealtimeSearchRanking> rankingList = repository.findTop2ByOrderByDateDesc();
+        SearchRankingResponseDto variation = new SearchRankingResponseDto(); // 변동 사항
+        List<SearchRankingResponseDto> variationList = new ArrayList<>();
+        List<SearchRanking> rankingList = repository.findTop2ByOrderByDateDesc();
         List<String> presentRankList = rankingList.get(0).getKeywordList();
         List<String> pastRankList = rankingList.get(1).getKeywordList();
 
@@ -56,7 +56,7 @@ public class SearchRankingService {
             }else if (!pastRankList.contains(value)){
                 isRankingUp = "new";
             }
-            variation = SearchRankingVariation.builder()
+            variation = SearchRankingResponseDto.builder()
                     .value(value)
                     .isRankingUp(isRankingUp)
                     .build();
@@ -67,7 +67,7 @@ public class SearchRankingService {
     }
 
     @Transactional
-    public RealtimeSearchRanking SearchRanking(){
+    public SearchRanking SearchRanking(){
 
         HashMap<String, Integer> check = new HashMap<>();
         List<SearchLog> searchLogList = searchLogRepository.findAllById();
@@ -87,7 +87,7 @@ public class SearchRankingService {
         }
         System.out.println("키워드 리스트 = "+keywordList);
 
-        RealtimeSearchRanking ranking = new RealtimeSearchRanking(date, keywordList);
+        SearchRanking ranking = new SearchRanking(date, keywordList);
         repository.save(ranking);
 
         return ranking;

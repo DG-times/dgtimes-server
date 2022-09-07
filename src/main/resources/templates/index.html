@@ -97,77 +97,26 @@
                                         <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
                                             <div class="accordion-body">
                                                 <table class="table">
-                                                    <tbody>
-                                                    <tr>
-                                                        <th scope="row">1</th>
-                                                        <td>정치</td>
-                                                        <td>
-                                                            <div class = 'up-tri'></div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row">2</th>
-                                                        <td>뉴스</td>
-                                                        <td>
-                                                            <div class = 'down-tri'></div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row">3</th>
-                                                        <td>힐러리</td>
-                                                        <td>
-                                                            <div class = 'up-tri'></div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row">4</th>
-                                                        <td>힐러리</td>
-                                                        <td>
-                                                            <div class = 'up-tri'></div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row">5</th>
-                                                        <td>힐러리</td>
-                                                        <td>
-                                                            <div class = 'up-tri'></div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row">6</th>
-                                                        <td>힐러리</td>
-                                                        <td>
-                                                            <div class = 'up-tri'></div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row">7</th>
-                                                        <td>힐러리</td>
-                                                        <td>
-                                                            <div class = 'up-tri'></div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row">8</th>
-                                                        <td>힐러리</td>
-                                                        <td>
-                                                            <div class = 'up-tri'></div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row">9</th>
-                                                        <td>힐러리</td>
-                                                        <td>
-                                                            <div class = 'up-tri'></div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row">10</th>
-                                                        <td>힐러리</td>
-                                                        <td>
-                                                            <div class = 'down-tri'></div>
-                                                        </td>
-                                                    </tr>
+                                                    <tbody id = "rank-table-body">
+
+
+                                                        <tr scope="row" th:each="keyword, meta : ${keyword_ranking_list}">
+                                                            <th scope="row" th:text="${meta.index + 1}"></th>
+                                                            <td th:text="${keyword.value}"></td>
+                                                            <td th:if="${keyword.isRankingUp() == '-'}">
+                                                                <div class = 'up-tri'></div>
+                                                            </td>
+                                                            <td th:if="${keyword.isRankingUp() == '+'}">
+                                                                <div class = 'down-tri'></div>
+                                                            </td>
+                                                            <td th:if="${keyword.isRankingUp() == 'new'}">
+                                                                <div> NEW </div>
+                                                            </td>
+                                                            <td th:if="${keyword.isRankingUp() == null}">
+                                                                <div> - </div>
+                                                            </td>
+                                                        </tr>
+
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -279,8 +228,6 @@
                         else
                             excludeKeywordList += "," + item.innerHTML;
                     });
-
-
 
                     $.ajax({
                         type: "GET",

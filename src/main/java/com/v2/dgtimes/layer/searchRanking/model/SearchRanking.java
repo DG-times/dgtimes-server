@@ -1,4 +1,4 @@
-package com.v2.dgtimes.layer.realTimeSearchRanking.model;
+package com.v2.dgtimes.layer.searchRanking.model;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -23,8 +23,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @Table(name = "realtime_search_ranking")
-//@RedisHash(value = "RealtimeSearchRanking", timeToLive = 3600)
-public class RealtimeSearchRanking implements Serializable {
+public class SearchRanking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -41,7 +40,7 @@ public class RealtimeSearchRanking implements Serializable {
     }
 
     @Builder
-    public RealtimeSearchRanking(LocalDateTime date, List<String> keywordList) {
+    public SearchRanking(LocalDateTime date, List<String> keywordList) {
         this.date = date;
         this.setKeywordList(keywordList);
     }
