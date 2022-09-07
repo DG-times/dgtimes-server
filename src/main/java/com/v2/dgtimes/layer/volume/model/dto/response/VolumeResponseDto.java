@@ -24,8 +24,6 @@ public class VolumeResponseDto {
     private String count;
 
 
-
-
     private VolumeResponseDto(Volume volume){
         this.date = volume.getDate();
         this.count = volume.getCount();

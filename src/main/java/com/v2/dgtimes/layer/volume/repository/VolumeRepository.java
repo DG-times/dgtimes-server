@@ -29,7 +29,7 @@ public interface VolumeRepository extends JpaRepository<Volume, String> {
             + "(now(), INTERVAL -1 MONTH)", nativeQuery = true)
 
 
-    List<Volume> findAllById();
+    List<Volume> findAllByKeywordAndDat();
 
 
 }
