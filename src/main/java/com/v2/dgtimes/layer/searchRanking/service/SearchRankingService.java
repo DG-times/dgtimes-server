@@ -7,6 +7,7 @@ import com.v2.dgtimes.layer.searchRanking.model.SearchRanking;
 import com.v2.dgtimes.layer.searchRanking.model.SearchRankingResponseDto;
 import com.v2.dgtimes.layer.searchRanking.repository.SearchRankingRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +30,7 @@ public class SearchRankingService {
     private final SearchLogRepository searchLogRepository;
 
     @Transactional
+    @Cacheable(value = "List<SearchRankingVariation>", key = "1", cacheManager = "cacheManager")
     @Timer
     public List<SearchRankingResponseDto> SearchRankingVariation(){
 
@@ -47,9 +49,9 @@ public class SearchRankingService {
             if (pastRankList.contains(value)){
                 pastRank = pastRankList.indexOf(value)+1;
                 if (pastRank > presentRank){
-                    isRankingUp = "-";
-                }else if (pastRank < presentRank){
                     isRankingUp = "+";
+                }else if (pastRank < presentRank){
+                    isRankingUp = "-";
                 }
             }else if (!pastRankList.contains(value)){
                 isRankingUp = "new";

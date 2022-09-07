@@ -5,10 +5,20 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
+/*
+설명 : 실시간 검색 랭킹 모델 입니다.
+    - 랭킹 Redis 적용
+
+작성일 : 2022.09.07
+
+마지막 수정한 사람 : 안상록
+
+*/
 @Entity
 @Getter
 @NoArgsConstructor
