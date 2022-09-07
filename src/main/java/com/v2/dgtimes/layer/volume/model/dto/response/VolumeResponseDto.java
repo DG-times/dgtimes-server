@@ -9,5 +9,23 @@ package com.v2.dgtimes.layer.volume.model.dto.response;
 
 */
 
+import com.v2.dgtimes.layer.volume.model.Volume;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import java.util.Date;
+
+@Getter
+@NoArgsConstructor
 public class VolumeResponseDto {
+
+    private Date date;
+
+    private String count;
+
+
+    private VolumeResponseDto(Volume volume){
+        this.date = volume.getDate();
+        this.count = volume.getCount();
+    }
 }
