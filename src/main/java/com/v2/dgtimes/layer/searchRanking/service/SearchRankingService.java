@@ -8,11 +8,13 @@ import com.v2.dgtimes.layer.searchRanking.model.SearchRankingResponseDto;
 import com.v2.dgtimes.layer.searchRanking.repository.SearchRankingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /*
 설명 : 실시간 검색 랭킹 service 입니다.
@@ -20,6 +22,10 @@ import java.util.*;
 작성일 : 2022.09.05
 
 마지막 수정한 사람 : 안상록
+
+TODO
+- 1. SearchRanking 로직에서 로그가 0인 경우, 즉 검색 기록이 없는 경우 INDEX OUT RANGE 에러 핸들링하기
+- 2. 이전 검색 기록과 비교해서 10개가 안되는 경우, 이전 검색 기록의 TOP을 가져와서 아래에 매핑하기!
 
 */
 @Service
@@ -67,6 +73,7 @@ public class SearchRankingService {
     }
 
     @Transactional
+    @Scheduled(fixedRate = 1, timeUnit = TimeUnit.HOURS)
     public SearchRanking SearchRanking(){
 
         HashMap<String, Integer> check = new HashMap<>();
