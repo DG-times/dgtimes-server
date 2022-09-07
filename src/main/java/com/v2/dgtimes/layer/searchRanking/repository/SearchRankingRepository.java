@@ -1,6 +1,6 @@
-package com.v2.dgtimes.layer.realTimeSearchRanking.repository;
+package com.v2.dgtimes.layer.searchRanking.repository;
 
-import com.v2.dgtimes.layer.realTimeSearchRanking.model.RealtimeSearchRanking;
+import com.v2.dgtimes.layer.searchRanking.model.SearchRanking;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -15,8 +15,8 @@ import java.util.List;
 
 */
 
-public interface SearchRankingRepository extends JpaRepository<RealtimeSearchRanking, Long> {
-    List<RealtimeSearchRanking> findTop2ByOrderByDateDesc();
+public interface SearchRankingRepository extends JpaRepository<SearchRanking, Long> {
+    List<SearchRanking> findTop2ByOrderByDateDesc();
 
 }
 
