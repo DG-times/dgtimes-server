@@ -42,10 +42,4 @@ public class SearchRankingController {
         SearchRanking rankingList = searchRankingService.SearchRanking();
         return new ResponseEntity(rankingList, HttpStatus.OK );
     }
-
-    @GetMapping("/api/ranking/redis")
-    public ResponseEntity get(){
-        List<RealtimeSearchRanking> rankingList = (List<RealtimeSearchRanking>) searchRankingRepository.findAll();
-        return new ResponseEntity(rankingList, HttpStatus.OK );
-    }
 }
