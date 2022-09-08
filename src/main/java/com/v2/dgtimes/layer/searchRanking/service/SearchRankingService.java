@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 /*
 설명 : 실시간 검색 랭킹 service 입니다.
 
-작성일 : 2022.09.05
+작성일 : 2022.09.08
 
 마지막 수정한 사람 : 안상록
 
@@ -55,9 +55,9 @@ public class SearchRankingService {
             if (pastRankList.contains(value)){
                 pastRank = pastRankList.indexOf(value)+1;
                 if (pastRank > presentRank){
-                    isRankingUp = "+";
-                }else if (pastRank < presentRank){
                     isRankingUp = "-";
+                }else if (pastRank < presentRank){
+                    isRankingUp = "+";
                 }
             }else if (!pastRankList.contains(value)){
                 isRankingUp = "new";
@@ -69,6 +69,22 @@ public class SearchRankingService {
             variationList.add(variation);
         }
 
+        if (variationList.size() < 10){
+            String isRankingUp = "+";
+            for (String value : pastRankList){
+                if (!presentRankList.contains(value)){
+                    variation = SearchRankingResponseDto.builder()
+                            .value(value)
+                            .isRankingUp(isRankingUp)
+                            .build();
+                    variationList.add(variation);
+                }
+                if (variationList.size() >= 10){
+                    break;
+                }
+            }
+        }
+
         return variationList;
     }
 
@@ -78,6 +94,12 @@ public class SearchRankingService {
 
         HashMap<String, Integer> check = new HashMap<>();
         List<SearchLog> searchLogList = searchLogRepository.findAllById();
+
+        if (searchLogList == null){
+            SearchRanking ranking = repository.findTopByOrderByDateDesc();
+            repository.save(ranking);
+            return ranking;
+        } // 만약 로그 기록이 없으면 제일 최신에 있던 랭킹 불러와 저장
 
         for (SearchLog log : searchLogList){
             check.put(log.getKeyword(), check.getOrDefault(log.getKeyword(), 1) +1);

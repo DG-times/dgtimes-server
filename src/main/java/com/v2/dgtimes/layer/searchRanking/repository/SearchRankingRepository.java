@@ -17,6 +17,7 @@ import java.util.List;
 
 public interface SearchRankingRepository extends JpaRepository<SearchRanking, Long> {
     List<SearchRanking> findTop2ByOrderByDateDesc();
+    SearchRanking findTopByOrderByDateDesc();
 
 }
 
