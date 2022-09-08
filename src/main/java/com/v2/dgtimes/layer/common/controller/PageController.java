@@ -49,4 +49,9 @@ public class PageController {
     public ModelAndView signup(){
         return new ModelAndView("signup");
     }
+
+    @GetMapping("/statistics")
+    public ModelAndView statistics(){
+        return new ModelAndView("statistics");
+    }
 }
