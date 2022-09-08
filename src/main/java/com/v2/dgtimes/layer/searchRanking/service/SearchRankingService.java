@@ -67,6 +67,7 @@ public class SearchRankingService {
                     .isRankingUp(isRankingUp)
                     .build();
             variationList.add(variation);
+
         }
 
         if (variationList.size() < 10){
@@ -79,7 +80,7 @@ public class SearchRankingService {
                             .build();
                     variationList.add(variation);
                 }
-                if (variationList.size() >= 10){
+                if (variationList.size() == 10){
                     break;
                 }
             }
@@ -111,8 +112,12 @@ public class SearchRankingService {
 
         List<String> keywordList = new ArrayList<>();
         LocalDateTime date = searchLogList.get(searchLogList.size()-1).getTimestamp();
+
         for (Map.Entry<String, Integer> entry : entryList){
             keywordList.add(entry.getKey());
+            if (keywordList.size() >= 10){
+                break;
+            }
         }
         System.out.println("키워드 리스트 = "+keywordList);
 
