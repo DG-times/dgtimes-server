@@ -16,7 +16,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface VolumeRepository extends JpaRepository<Volume, String> {
+public interface VolumeRepository extends JpaRepository<Volume, Long> {
 
 /*
     내가 확인 할 점. 매달 첫날 ~ 끝날까지 timestamp log 를 가져온다.

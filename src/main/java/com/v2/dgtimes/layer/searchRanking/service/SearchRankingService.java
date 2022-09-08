@@ -55,9 +55,9 @@ public class SearchRankingService {
             if (pastRankList.contains(value)){
                 pastRank = pastRankList.indexOf(value)+1;
                 if (pastRank > presentRank){
-                    isRankingUp = "-";
-                }else if (pastRank < presentRank){
                     isRankingUp = "+";
+                }else if (pastRank < presentRank){
+                    isRankingUp = "-";
                 }
             }else if (!pastRankList.contains(value)){
                 isRankingUp = "new";
@@ -71,7 +71,7 @@ public class SearchRankingService {
         }
 
         if (variationList.size() < 10){
-            String isRankingUp = "+";
+            String isRankingUp = "-";
             for (String value : pastRankList){
                 if (!presentRankList.contains(value)){
                     variation = SearchRankingResponseDto.builder()
