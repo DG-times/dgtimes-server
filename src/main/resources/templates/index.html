@@ -16,16 +16,54 @@
         <link href="../css/styles.css" rel="stylesheet" />
     </head>
     <body>
+    <div class = "main">
+
+        <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasWithBackdrop" aria-labelledby="offcanvasWithBackdropLabel">
+            <div class="offcanvas-header">
+                <div class = "side-bar-header">
+                    <img class="header-img" src="../assets/img/logo_transparent.png">
+                    <a class="navbar-brand">DG times</a>
+                </div>
+
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <div class="side-bar-button btn btn-light" onclick="window.location.href='/'">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                    </svg>
+                    <h5 class="side-bar-text"> 검색 </h5>
+                </div>
+                <div class = "side-bar-button btn btn-light" onclick="window.location.href='/statistics'">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-clipboard-data" viewBox="0 0 16 16">
+                        <path d="M4 11a1 1 0 1 1 2 0v1a1 1 0 1 1-2 0v-1zm6-4a1 1 0 1 1 2 0v5a1 1 0 1 1-2 0V7zM7 9a1 1 0 0 1 2 0v3a1 1 0 1 1-2 0V9z"/>
+                        <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+                        <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+                    </svg>
+                    <h5 class="side-bar-text"> 분석 </h5>
+                </div>
+            </div>
+        </div>
+
+        <div>
         <nav class="navbar navbar-expand-lg bg-light">
             <div class="container-fluid">
                 <div class="container-left">
+                    <button class="btn btn-light" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBackdrop" aria-controls="offcanvasWithBackdrop">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
                     <img class="header-img" src="../assets/img/logo_transparent.png">
                     <a class="navbar-brand" href="/">DG times</a>
                 </div>
                 <div id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li><a class="btn btn-primary" href="/signin" sec:authorize="!authenticated">Sign in</a></li>
-                        <li><a class="btn btn-primary" href="/signout" sec:authorize="authenticated">Sign out</a></li>
+                        <li class="nav-item">
+                            <a class="btn btn-primary" href="/signin" sec:authorize="!authenticated">Sign in</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn-primary" href="/signout" sec:authorize="authenticated">Sign out</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -103,10 +141,10 @@
                                                         <tr scope="row" th:each="keyword, meta : ${keyword_ranking_list}">
                                                             <th scope="row" th:text="${meta.index + 1}"></th>
                                                             <td th:text="${keyword.value}"></td>
-                                                            <td th:if="${keyword.isRankingUp() == '-'}">
+                                                            <td th:if="${keyword.isRankingUp() == '+'}">
                                                                 <div class = 'up-tri'></div>
                                                             </td>
-                                                            <td th:if="${keyword.isRankingUp() == '+'}">
+                                                            <td th:if="${keyword.isRankingUp() == '-'}">
                                                                 <div class = 'down-tri'></div>
                                                             </td>
                                                             <td th:if="${keyword.isRankingUp() == 'new'}">
@@ -149,6 +187,8 @@
                 </div>
             </div>
         </div>
+        </div>
+    </div>
 
         <!-- Bootstrap core JS-->
         <!-- Core theme JS-->

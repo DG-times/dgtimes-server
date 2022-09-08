@@ -29,14 +29,14 @@ public class PageSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/assets/**", "/", "/signup", "/users/signup").permitAll()
+                .antMatchers("/assets/**", "/", "/signup", "/users/signup", "/statistics").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin(
                         login->login.loginPage("/signin")
                                 .permitAll()
                                 .defaultSuccessUrl("/", false)
-                                .failureUrl("/login-error")
+                                .failureUrl("/signin-error")
                 )
                 .logout(
                         logout->logout

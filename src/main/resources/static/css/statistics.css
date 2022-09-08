@@ -1,0 +1,9 @@
+.statistics-search-card{
+    width: 80vw;
+    margin: auto;
+}
+
+.statistics-search-card-header{
+    display: flex;
+    justify-content: space-between;
+}
