@@ -1,16 +1,15 @@
 package com.v2.dgtimes.layer.news.model;
 
-import com.v2.dgtimes.layer.category.model.Category;
-import com.v2.dgtimes.layer.keywordMapping.model.KeywordMapping;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.cfg.AvailableSettings;
+import org.hibernate.id.enhanced.SequenceStyleGenerator;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.sql.Timestamp;
 
 @Entity
 @Getter
@@ -20,28 +19,26 @@ import java.util.List;
 @Table(name = "news")
 public class News {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "test-sequence-generator")
+    @GenericGenerator(
+            name = "test-sequence-generator",
+            strategy = "sequence",
+            parameters = {
+                    @org.hibernate.annotations.Parameter(name = SequenceStyleGenerator.SEQUENCE_PARAM, value = SequenceStyleGenerator.DEF_SEQUENCE_NAME),
+                    @org.hibernate.annotations.Parameter(name = SequenceStyleGenerator.INITIAL_PARAM, value = "1"),
+                    @org.hibernate.annotations.Parameter(name = SequenceStyleGenerator.INCREMENT_PARAM, value = "1000"),
+                    @org.hibernate.annotations.Parameter(name = AvailableSettings.PREFERRED_POOLED_OPTIMIZER, value = "pooled-lo")
+            }
+    )
     private Long id;
-
     private String title;
+    @Column(columnDefinition = "TEXT")
     private String content;
     private String writer;
     private String publisher;
-    @Column(columnDefinition="TIMESTAMP")
-    private Date publishedDate;
-    @ManyToOne()
-    private Category category;
-    private String tag;
+    @Column(columnDefinition = "TIMESTAMP")
+    private Timestamp publishedDate;
+    private long category;
     private String thumbnailUrl;
-    private String newsUrl;
-
-    @OneToMany(mappedBy = "news", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<KeywordMapping> keywordMappings = new ArrayList<>();
-
-    public void addKeywordMapping(KeywordMapping keywordMapping) {
-        this.keywordMappings.add(keywordMapping);
-        // 무한 후프에 빠지지 않기 위해서 작성
-        if(keywordMapping.getNews()!=this)
-            keywordMapping.updateNews(this);
-    }
+    private String mainUrl;
 }
