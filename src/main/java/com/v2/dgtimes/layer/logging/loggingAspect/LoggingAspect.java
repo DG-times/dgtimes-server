@@ -85,13 +85,11 @@ public class LoggingAspect {
                             .getParameterMap()
                             .get("keyword")))
 
-                    .includeKeywordList(Arrays
-                            .toString(request
+                    .includeKeywordList(Arrays.toString(request
                                     .getParameterMap()
                                     .get("includeKeywordList")))
 
-                    .excludeKeywordList(Arrays
-                            .toString(request
+                    .excludeKeywordList(Arrays.toString(request
                                     .getParameterMap()
                                     .get("excludeKeywordList")))
 

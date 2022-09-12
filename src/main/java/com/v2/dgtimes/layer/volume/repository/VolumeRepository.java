@@ -26,7 +26,7 @@ public interface VolumeRepository extends JpaRepository<Volume, Long> {
     @Query (value = "select * " +
             "from search_log " +
             "where timestamp >= date_add"
-            + "(now(), INTERVAL -1 MONTH)", nativeQuery = true)
+            + "(now(), INTERVAL -1 DAY)", nativeQuery = true)
 
 
     List<Volume> findAllByKeywordAndDat();
