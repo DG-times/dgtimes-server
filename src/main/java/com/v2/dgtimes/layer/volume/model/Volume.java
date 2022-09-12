@@ -1,17 +1,13 @@
 package com.v2.dgtimes.layer.volume.model;
 
-/*
-설명 : Volume 작성
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-작성일 : 2022.09.07
-
-마지막 수정한 사람 : 공상욱
-
-*/
-
-import lombok.*;
-
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Date;
 
 @Entity
@@ -19,17 +15,12 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "Volume")
+@Table(name = "volume")
 public class Volume {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String keyword;
 
     private Date date;
 
     private String count;
-
-
-
 }
