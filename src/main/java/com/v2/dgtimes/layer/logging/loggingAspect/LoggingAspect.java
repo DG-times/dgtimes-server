@@ -77,24 +77,28 @@ public class LoggingAspect {
                 user_id = userDetail.getUserId();
             }
 
+            String match = "[^\uAC00-\uD7A30-9a-zA-Z\\s]";
+            String keyword = Arrays.toString(request
+                    .getParameterMap()
+                    .get("keyword"));
+            String includeKeywordList = Arrays.toString(request
+                    .getParameterMap()
+                    .get("includeKeywordList"));
+            String excludeKeywordList = Arrays.toString(request
+                    .getParameterMap()
+                    .get("excludeKeywordList"));
+
+            keyword = keyword.replaceAll(match, "");
+            includeKeywordList = includeKeywordList.replaceAll(match,"");
+            excludeKeywordList = excludeKeywordList.replaceAll(match, "");
+
             // log MySQL 저장
             SearchLog searchLog = SearchLog.builder()
                     .user_id(user_id)
-
-                    .keyword(Arrays.toString(request
-                            .getParameterMap()
-                            .get("keyword")))
-
-                    .includeKeywordList(Arrays.toString(request
-                                    .getParameterMap()
-                                    .get("includeKeywordList")))
-
-                    .excludeKeywordList(Arrays.toString(request
-                                    .getParameterMap()
-                                    .get("excludeKeywordList")))
-
+                    .keyword(keyword)
+                    .includeKeywordList(includeKeywordList)
+                    .excludeKeywordList(excludeKeywordList)
                     .build();
-
 
             if (request.getParameterMap()
                     .get("keyword") != null)
