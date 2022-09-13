@@ -84,7 +84,7 @@
                         <input class="form-control form-control-lg" id="keyword" type="text" placeholder="키워드를 입력하세요"/>
                     </div>
                     <div class="col-auto">
-                        <button class="btn btn-primary btn-lg" id="submitButton">
+                        <button class="btn btn-primary btn-lg" id="submitButton" onclick="search()">
                             <img class="search-icon" src="../assets/img/search-icon.png">
                         </button>
                     </div>
@@ -105,7 +105,7 @@
                     </svg>
                 </div>
                 <div class="card-body">
-                    <canvas id="line-chart" style="width:100%; height:100%;"></canvas>
+                    <canvas id="line-chart" style="width:100%; height:auto;"></canvas>
                 </div>
             </div>
 
@@ -133,7 +133,7 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="chart-area">
-                                        <div id="container" style="width:100%; height:100%;"></div>
+                                        <div id="container1" style="width:100%; height:100%;"></div>
                                     </div>
                                 </div>
                             </div>
@@ -183,19 +183,170 @@
     var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
         return new bootstrap.Tooltip(tooltipTriggerEl)
     })
+    let label_volume_mention = []
+    let label_search_mention = []
+    let data_volume_mention = []
+    let data_search_mention = []
+    let data_mention_relation = []
+    let data_search_relation = []
 
-    $(document).ready(function () {
+    function requestMentionVolume(){
+
+        return new Promise(function(resolve, reject){ // promise 정의
+
+            keyword = $('#keyword').val()
+
+            $.ajax({
+                type: "GET" ,
+                url: "/api/keyword/volume/mention/" + keyword,
+                contentType: "application/json",
+                timeout: 5000,
+
+                error: function (response, status, error) {
+                    console.log(response)
+                    alert(response["responseJSON"]["msg"])
+                },
+
+                success: function (response, status, request) {
+                    label_volume_mention=[]
+                    data_volume_mention=[]
+                    for(let i=0; i < response.length ; i++){
+                        label_volume_mention.push(response[i]["date"])
+                        data_volume_mention.push(response[i]["count"])
+                    }
+                    resolve("{state = T}");
+                },
+
+                complete:function(data,textStatus) {
+                }
+            });
+        });
+    }
+
+    function requestSearchVolume(){
+
+        return new Promise(function(resolve, reject){ // promise 정의
+
+            keyword = $('#keyword').val()
+
+            $.ajax({
+                type: "GET" ,
+                url: "/api/keyword/volume/search/" + keyword,
+                contentType: "application/json",
+                timeout: 5000,
+
+                error: function (response, status, error) {
+                    console.log(response)
+                    alert(response["responseJSON"]["msg"])
+                },
+
+                success: function (response, status, request) {
+                    label_search_mention = []
+                    data_search_mention = []
+                    for(let i=0; i < response.length ; i++){
+                        label_search_mention.push(response[i]["date"])
+                        data_search_mention.push(response[i]["count"])
+                    }
+                    resolve("{state = T}");
+                },
+
+                complete:function(data,textStatus) {
+                }
+            });
+        });
+    }
+
+    function requestSearchRelation(){
+
+        return new Promise(function(resolve, reject){ // promise 정의
+
+            keyword = $('#keyword').val()
+
+            $.ajax({
+                type: "GET" ,
+                url: "/api/keyword/relation/search?keyword=" + keyword,
+                contentType: "application/json",
+                timeout: 5000,
+
+                error: function (response, status, error) {
+                    console.log(response)
+                    alert(response["responseJSON"]["msg"])
+                },
+
+                success: function (response, status, request) {
+
+                    data_search_relation = []
+                    for(let i=0; i < response.length ; i++){
+                        let result = {
+                            "x" : response[i]["keyword"],
+                            "value" : response[i]["value"]
+                        }
+                        data_search_relation.push(result)
+                    }
+                    resolve("{state = T}");
+                },
+
+                complete:function(data,textStatus) {
+                }
+            });
+        });
+    }
+
+    function requestMentionRelation(){
+
+        return new Promise(function(resolve, reject){ // promise 정의
+
+            keyword = $('#keyword').val()
+
+            $.ajax({
+                type: "GET" ,
+                url: "/api/keyword/relation/mention?keyword=" + keyword,
+                contentType: "application/json",
+                timeout: 5000,
+
+                error: function (response, status, error) {
+                    console.log(response)
+                    alert(response["responseJSON"]["msg"])
+                },
+
+                success: function (response, status, request) {
+
+                    data_mention_relation = []
+                    for(let i=0; i < response.length ; i++){
+                        let result = {
+                            "x" : response[i]["keyword"],
+                            "value" : response[i]["value"]
+                        }
+                        data_mention_relation.push(result)
+                    }
+                    resolve("{state = T}");
+                },
+
+                complete:function(data,textStatus) {
+                }
+            });
+        });
+    }
+
+
+    async function search() {
+
+        var result = await requestMentionVolume();
+        var result2 = await requestSearchVolume();
+        var result3 = await requestSearchRelation();
+        var result4 = await requestMentionRelation();
+
         new Chart(document.getElementById("line-chart"), {
             type: 'line',
             data: {
-                labels: ["7일 전","6일 전","5일 전","4일 전","3일 전","2일 전","1일 전"],
+                labels: label_volume_mention,
                 datasets: [{
-                    data: [860,514,506,506,507,611,333],
+                    data: data_volume_mention,
                     label: "언급량",
                     borderColor: "#3e95cd",
                     fill: false
                 }, {
-                    data: [282,350,411,502,635,809,947],
+                    data: data_search_mention,
                     label: "검색량",
                     borderColor: "#8e5ea2",
                     fill: false
@@ -208,51 +359,23 @@
                     text: '키워드 언급량 & 검색량'
                 }
             }
-        });
+        })
 
-        var data = [
-            {
-                "x": "IT",
-                "value": 590000000,
-                category: "Sino-Tibetan"
-            },
-            {
-                "x": "Python",
-                "value": 283000000,
-                category: "Indo-European"
-            },
-            {
-                "x": "소프트웨어",
-                "value": 544000000,
-                category: "Indo-European"
-            },
-            {
-                "x": "JAVA",
-                "value": 527000000,
-                category: "Indo-European"
-            }, {
-                "x": "C++",
-                "value": 422000000,
-                category: "Afro-Asiatic"
-            }, {
-                "x": "HTML",
-                "value": 620000000,
-                category: "Afro-Asiatic"
-            }
-        ];
-        var chart = anychart.tagCloud(data);
+
+        var chart = anychart.tagCloud(data_mention_relation);
+        chart.clear();
         chart.angles([0]);
-        chart.container("container");
+        chart.container("container1");
         //chart.getCredits().setEnabled(false);
         chart.draw();
 
-
-        var chart2 = anychart.tagCloud(data);
+        var chart2 = anychart.tagCloud(data_search_relation);
+        chart2.clear();
         chart2.angles([0]);
         chart2.container("container2");
         //chart.getCredits().setEnabled(false);
         chart2.draw();
-    });
+    };
 </script>
 
 </body>

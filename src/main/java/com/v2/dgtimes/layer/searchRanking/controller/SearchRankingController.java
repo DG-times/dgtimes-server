@@ -37,9 +37,4 @@ public class SearchRankingController {
         return new ResponseEntity(variation, HttpStatus.OK );
     }
 
-    @PostMapping("/api/ranking")
-    public ResponseEntity getRealTimeSearchRanking(){
-        SearchRanking rankingList = searchRankingService.SearchRanking();
-        return new ResponseEntity(rankingList, HttpStatus.OK );
-    }
 }

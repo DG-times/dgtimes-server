@@ -89,41 +89,4 @@ public class SearchRankingService {
         return variationList;
     }
 
-    @Transactional
-    @Scheduled(fixedRate = 1, timeUnit = TimeUnit.HOURS)
-    public SearchRanking SearchRanking(){
-
-        HashMap<String, Integer> check = new HashMap<>();
-        List<SearchLog> searchLogList = searchLogRepository.findAllById();
-
-        if (searchLogList == null){
-            SearchRanking ranking = repository.findTopByOrderByDateDesc();
-            repository.save(ranking);
-            return ranking;
-        } // 만약 로그 기록이 없으면 제일 최신에 있던 랭킹 불러와 저장
-
-        for (SearchLog log : searchLogList){
-            check.put(log.getKeyword(), check.getOrDefault(log.getKeyword(), 1) +1);
-        }
-
-        List<Map.Entry<String, Integer>> entryList = new LinkedList<>(check.entrySet());
-
-        entryList.sort((((o1, o2) -> check.get(o2.getKey())- check.get(o1.getKey()))));
-
-        List<String> keywordList = new ArrayList<>();
-        LocalDateTime date = searchLogList.get(searchLogList.size()-1).getTimestamp();
-
-        for (Map.Entry<String, Integer> entry : entryList){
-            keywordList.add(entry.getKey());
-            if (keywordList.size() >= 10){
-                break;
-            }
-        }
-        System.out.println("키워드 리스트 = "+keywordList);
-
-        SearchRanking ranking = new SearchRanking(date, keywordList);
-        repository.save(ranking);
-
-        return ranking;
-    }
 }

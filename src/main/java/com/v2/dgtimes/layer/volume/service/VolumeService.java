@@ -28,7 +28,7 @@ public class VolumeService {
 
     @Cacheable(value = "List<VolumeDto>", key = "#s.concat(#keyword)", cacheManager = "cacheManager")
     @Transactional(readOnly = true)
-    public List<VolumeDto> getNewsVolume(String keyword, String s) {
+    public List<VolumeDto> getMentionVolume(String keyword, String s) {
 
         return volumeRepository.findAllByNewsKeyword(keyword).stream()
                 .map(VolumeDto::new)
@@ -36,10 +36,12 @@ public class VolumeService {
 
     }
 
-    @Cacheable(value = "List<Volume>", key = "#s.concat(#keyword)", cacheManager = "cacheManager")
+    @Cacheable(value = "List<VolumeDto>", key = "#s.concat(#keyword)", cacheManager = "cacheManager")
     @Transactional(readOnly = true)
-    public List<Volume> getLogVolume(String keyword, String s) {
+    public List<VolumeDto> getSearchVolume(String keyword, String s) {
 
-        return volumeRepository.findAllByLogKeyword(keyword);
+        return volumeRepository.findAllByLogKeyword(keyword).stream()
+                .map(VolumeDto::new)
+                .collect(Collectors.toList());
     }
 }

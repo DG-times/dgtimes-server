@@ -21,7 +21,7 @@ public class Bookmark {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "include_keyword_list")
-    private String includeKeywordList;
+    private String includeKeywordList; // 힐러리, 트럼프, 정치 <- 제 1 정규화를 위배
     @Column(name = "exclude_keyword_list")
     private String excludeKeywordList;
 
