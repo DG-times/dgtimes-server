@@ -190,6 +190,16 @@
     let data_mention_relation = []
     let data_search_relation = []
 
+    var chart2 = anychart.tagCloud(data_search_relation);
+    var chart = anychart.tagCloud(data_mention_relation);
+    chart.angles([0]);
+    chart.container("container1");
+    chart.draw();
+
+    chart2.angles([0]);
+    chart2.container("container2");
+    chart2.draw();
+
     function requestMentionVolume(){
 
         return new Promise(function(resolve, reject){ // promise 정의
@@ -360,22 +370,26 @@
                 }
             }
         })
+        chart.dispose();
 
-
-        var chart = anychart.tagCloud(data_mention_relation);
-        chart.clear();
+        chart = anychart.tagCloud(data_mention_relation);
         chart.angles([0]);
         chart.container("container1");
-        //chart.getCredits().setEnabled(false);
         chart.draw();
 
-        var chart2 = anychart.tagCloud(data_search_relation);
-        chart2.clear();
+        chart2.dispose();
+        chart2 = anychart.tagCloud(data_search_relation);
         chart2.angles([0]);
         chart2.container("container2");
-        //chart.getCredits().setEnabled(false);
+        chart2.draw();
+        chart.draw();
         chart2.draw();
     };
+
+    $(document).ready(function () {
+
+
+    });
 </script>
 
 </body>
