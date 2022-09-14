@@ -36,7 +36,6 @@ public class SearchRankingService {
     private final SearchLogRepository searchLogRepository;
 
     @Transactional
-    @Cacheable(value = "List<SearchRankingVariation>", key = "1", cacheManager = "cacheManager")
     @Timer
     public List<SearchRankingResponseDto> SearchRankingVariation(){
 

@@ -1,6 +1,7 @@
 package com.v2.dgtimes.layer.user.model.dto.request;
 
 import com.v2.dgtimes.config.security.PasswordEncoder;
+import com.v2.dgtimes.layer.bookmark.model.Bookmark;
 import com.v2.dgtimes.layer.user.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -41,6 +42,7 @@ public class SignupRequestDto {
                 .id(this.id)
                 .pw(this.pw)
                 .username(this.username)
+                .bookmark(new Bookmark(null,"",""))
                 .build();
     }
     public void passwordEncoding(PasswordEncoder passwordEncoder){
