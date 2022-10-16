@@ -11437,3 +11437,80 @@ footer.footer {
 #news-img{
   width: 20vw;
 }
+
+.main-toggle-button{
+  width: 100%;
+  font-size: 15px;
+  color: white;
+  display: flex;
+  justify-content: center;
+}
+
+.toggle-title{
+  color: black;
+}
+
+.like-list{
+  margin-top: 1vh;
+  margin-bottom: 3vh;
+}
+
+.dislike-list{
+  margin-top: 1vh;
+  margin-bottom: 3vh;
+}
+
+
+.up-tri{
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-bottom: 10px solid red;
+  border-top: 10px solid transparent;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+}
+
+.down-tri{
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-bottom: 10px solid transparent;
+  border-top: 10px solid blue;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+}
+
+.side-bar-header{
+  display: flex;
+}
+
+.side-bar-button{
+  display: flex;
+  margin-bottom: 5vh;
+}
+
+.side-bar-text{
+  text-align: center;
+  margin-left: 5vw;
+  margin-bottom: 0;
+}
+
+.tooltip.bs-tooltip-top .tooltip-arrow::before {
+  border-top-color: #2f4fff !important;
+}
+
+.tooltip-max-width{
+  width: 500px;
+}
+
+.tooltip-inner {
+  color: black;
+  background-color: white;
+  box-shadow: 0px 0px 4px black;
+  opacity: 1 !important;
+}
+
+.main{
+  display: flex;
+}

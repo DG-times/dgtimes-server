@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Main page</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="../assets/favicon.ico" />
+    <!-- Bootstrap icons-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="../css/styles.css" rel="stylesheet" />
+    <link href="../css/statistics.css" rel="stylesheet" />
+</head>
+<body>
+
+
+
+<div class = "main">
+
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasWithBackdrop" aria-labelledby="offcanvasWithBackdropLabel">
+        <div class="offcanvas-header">
+            <div class = "side-bar-header">
+                <img class="header-img" src="../assets/img/logo_transparent.png">
+                <a class="navbar-brand">DG times</a>
+            </div>
+
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="side-bar-button btn btn-light" onclick="window.location.href='/'">
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                </svg>
+                <h5 class="side-bar-text"> 검색 </h5>
+            </div>
+            <div class = "side-bar-button btn btn-light" onclick="window.location.href='/statistics'">
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-clipboard-data" viewBox="0 0 16 16">
+                    <path d="M4 11a1 1 0 1 1 2 0v1a1 1 0 1 1-2 0v-1zm6-4a1 1 0 1 1 2 0v5a1 1 0 1 1-2 0V7zM7 9a1 1 0 0 1 2 0v3a1 1 0 1 1-2 0V9z"/>
+                    <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+                    <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+                </svg>
+                <h5 class="side-bar-text"> 분석 </h5>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <nav class="navbar navbar-expand-lg bg-light">
+            <div class="container-fluid">
+                <div class="container-left">
+                    <button class="btn btn-light" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBackdrop" aria-controls="offcanvasWithBackdrop">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <img class="header-img" src="../assets/img/logo_transparent.png">
+                    <a class="navbar-brand" href="/">DG times</a>
+                </div>
+                <div id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="btn btn-primary" href="/signin" sec:authorize="!authenticated">Sign in</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn-primary" href="/signout" sec:authorize="authenticated">Sign out</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <br/>
+        <!-- Masthead-->
+        <div class="card statistics-search-card">
+            <div class="card-body">
+                <h5 class="card-title">뉴스 키워드 분석</h5>
+                <h6 class="card-subtitle mb-2 text-muted">DG times가 제공하는 뉴스 분석 서비스 페이지입니다.</h6>
+                <p class="card-text">분석을 원하는 키워드를 입력해주세요!!</p>
+                <div class="row">
+                    <div class="col">
+                        <input class="form-control form-control-lg" id="keyword" type="text" placeholder="키워드를 입력하세요"/>
+                    </div>
+                    <div class="col-auto">
+                        <button class="btn btn-primary btn-lg" id="submitButton" onclick="search()">
+                            <img class="search-icon" src="../assets/img/search-icon.png">
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br/>
+        <hr>
+        <br/>
+
+        <section class="showcase">
+            <div class="card statistics-search-card">
+                <div class="card-header statistics-search-card-header">
+                    키워드 언급량 & 검색량 변화 추이
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-question-circle" viewBox="0 0 16 16" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" title="언급량 : 해당 기간 동안 키워드가 포함된 뉴스 개수입니다.<br><br>  검색량 : 해당 기간 동안 해당 키워드로 검색한 횟수 입니다.">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                        <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z"/>
+                    </svg>
+                </div>
+                <div class="card-body">
+                    <canvas id="line-chart" style="width:100%; height:auto;"></canvas>
+                </div>
+            </div>
+
+            <br/>
+            <br/>
+
+            <div class="card statistics-search-card">
+                <div class="card-header statistics-search-card-header">
+                    연관 키워드
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-question-circle" viewBox="0 0 16 16" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" title="입력한 키워드와 연관성 있는 키워드를 보여줍니다.">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                        <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z"/>
+                    </svg>
+                </div>
+                <div class="card-body">
+                    <div class="row row-cols-1 row-cols-md-2 g-2">
+                        <div class="col">
+                            <div class="card">
+                                <div class="card-header statistics-search-card-header">
+                                    뉴스 언급 기준
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-question-circle" viewBox="0 0 16 16" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" title="뉴스에 같이 언급된 횟수가 많은 키워드들 입니다.">
+                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                        <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z"/>
+                                    </svg>
+                                </div>
+                                <div class="card-body">
+                                    <div class="chart-area">
+                                        <div id="container1" style="width:100%; height:100%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card">
+                                <div class="card-header statistics-search-card-header">
+                                    뉴스 검색 기준
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-question-circle" viewBox="0 0 16 16" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" title="뉴스 검색에 포함/제외 키워드에 많이 포함된 키워드들 입니다.">
+                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                        <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z"/>
+                                    </svg>
+
+                                </div>
+                                <div class="card-body">
+                                    <div class="chart-area">
+                                        <div id="container2" style="width:100%; height:100%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+
+<!-- Masthead-->
+<!-- Bootstrap core JS-->
+<!-- Core theme JS-->
+<script src="../js/scripts.js"></script>
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+<!-- * *                               SB Forms JS                               * *-->
+<!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+<script src="https://cdn.anychart.com/releases/v8/js/anychart-base.min.js"></script>
+<script src="https://cdn.anychart.com/releases/v8/js/anychart-tag-cloud.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+    let label_volume_mention = []
+    let label_search_mention = []
+    let data_volume_mention = []
+    let data_search_mention = []
+    let data_mention_relation = []
+    let data_search_relation = []
+
+    var chart2 = anychart.tagCloud(data_search_relation);
+    var chart = anychart.tagCloud(data_mention_relation);
+    chart.angles([0]);
+    chart.container("container1");
+    chart.draw();
+
+    chart2.angles([0]);
+    chart2.container("container2");
+    chart2.draw();
+
+    function requestMentionVolume(){
+
+        return new Promise(function(resolve, reject){ // promise 정의
+
+            keyword = $('#keyword').val()
+
+            $.ajax({
+                type: "GET" ,
+                url: "/api/keyword/volume/mention/" + keyword,
+                contentType: "application/json",
+                timeout: 5000,
+
+                error: function (response, status, error) {
+                    console.log(response)
+                    alert(response["responseJSON"]["msg"])
+                },
+
+                success: function (response, status, request) {
+                    label_volume_mention=[]
+                    data_volume_mention=[]
+                    for(let i=0; i < response.length ; i++){
+                        label_volume_mention.push(response[i]["date"])
+                        data_volume_mention.push(response[i]["count"])
+                    }
+                    resolve("{state = T}");
+                },
+
+                complete:function(data,textStatus) {
+                }
+            });
+        });
+    }
+
+    function requestSearchVolume(){
+
+        return new Promise(function(resolve, reject){ // promise 정의
+
+            keyword = $('#keyword').val()
+
+            $.ajax({
+                type: "GET" ,
+                url: "/api/keyword/volume/search/" + keyword,
+                contentType: "application/json",
+                timeout: 5000,
+
+                error: function (response, status, error) {
+                    console.log(response)
+                    alert(response["responseJSON"]["msg"])
+                },
+
+                success: function (response, status, request) {
+                    label_search_mention = []
+                    data_search_mention = []
+                    for(let i=0; i < response.length ; i++){
+                        label_search_mention.push(response[i]["date"])
+                        data_search_mention.push(response[i]["count"])
+                    }
+                    resolve("{state = T}");
+                },
+
+                complete:function(data,textStatus) {
+                }
+            });
+        });
+    }
+
+    function requestSearchRelation(){
+
+        return new Promise(function(resolve, reject){ // promise 정의
+
+            keyword = $('#keyword').val()
+
+            $.ajax({
+                type: "GET" ,
+                url: "/api/keyword/relation/search?keyword=" + keyword,
+                contentType: "application/json",
+                timeout: 5000,
+
+                error: function (response, status, error) {
+                    console.log(response)
+                    alert(response["responseJSON"]["msg"])
+                },
+
+                success: function (response, status, request) {
+
+                    data_search_relation = []
+                    for(let i=0; i < response.length ; i++){
+                        let result = {
+                            "x" : response[i]["keyword"],
+                            "value" : response[i]["value"]
+                        }
+                        data_search_relation.push(result)
+                    }
+                    resolve("{state = T}");
+                },
+
+                complete:function(data,textStatus) {
+                }
+            });
+        });
+    }
+
+    function requestMentionRelation(){
+
+        return new Promise(function(resolve, reject){ // promise 정의
+
+            keyword = $('#keyword').val()
+
+            $.ajax({
+                type: "GET" ,
+                url: "/api/keyword/relation/mention?keyword=" + keyword,
+                contentType: "application/json",
+                timeout: 5000,
+
+                error: function (response, status, error) {
+                    console.log(response)
+                    alert(response["responseJSON"]["msg"])
+                },
+
+                success: function (response, status, request) {
+
+                    data_mention_relation = []
+                    for(let i=0; i < response.length ; i++){
+                        let result = {
+                            "x" : response[i]["keyword"],
+                            "value" : response[i]["value"]
+                        }
+                        data_mention_relation.push(result)
+                    }
+                    resolve("{state = T}");
+                },
+
+                complete:function(data,textStatus) {
+                }
+            });
+        });
+    }
+
+
+    async function search() {
+
+        var result = await requestMentionVolume();
+        var result2 = await requestSearchVolume();
+        var result3 = await requestSearchRelation();
+        var result4 = await requestMentionRelation();
+
+        new Chart(document.getElementById("line-chart"), {
+            type: 'line',
+            data: {
+                labels: label_volume_mention,
+                datasets: [{
+                    data: data_volume_mention,
+                    label: "언급량",
+                    borderColor: "#3e95cd",
+                    fill: false
+                }, {
+                    data: data_search_mention,
+                    label: "검색량",
+                    borderColor: "#8e5ea2",
+                    fill: false
+                }
+                ]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: '키워드 언급량 & 검색량'
+                }
+            }
+        })
+        chart.dispose();
+
+        chart = anychart.tagCloud(data_mention_relation);
+        chart.angles([0]);
+        chart.container("container1");
+        chart.draw();
+
+        chart2.dispose();
+        chart2 = anychart.tagCloud(data_search_relation);
+        chart2.angles([0]);
+        chart2.container("container2");
+        chart2.draw();
+        chart.draw();
+        chart2.draw();
+    };
+
+    $(document).ready(function () {
+
+
+    });
+</script>
+
+</body>
+</html>

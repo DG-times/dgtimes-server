@@ -1,72 +1,123 @@
-# server
-
-### 시스템 구조도
-
-<img width="821" alt="Untitled" src="https://user-images.githubusercontent.com/66009926/185722322-7894e8c9-1e14-406a-a45f-7ea8782c7472.png">
-
-### 프로젝트 목표
-
-- 카테고리나 신문사 별로 뉴스를 보는것이 아닌, 사용자가 궁금해할만한 키워드로 검색을 해서, 해당 뉴스 구독, 모아보기를 할 수 있는 사이트를 만들려고 한다.
-
-- 게시글 검색을 할 때, LIKE "%keyword%"를 많이 사용하게 되는데, 이 LIKE "%keyword%" 는성능이 좋지 못하다. 따라서 우리는 키워드 추출 및 매핑 테이블 전략으로 검색 속도를 향상시켜, 서비스를 제공해주는게, 서비스 목표이다.
-
-### UI / UI
-
-#### 메인
-<img width="1440" alt="image" src="https://user-images.githubusercontent.com/66009926/185722667-c2681671-db4a-463c-999e-c623c103ffb2.png">
-
-#### 로그인
-<img width="1440" alt="image" src="https://user-images.githubusercontent.com/66009926/185722672-ac519b88-376c-486d-ba5b-283a61d2cbff.png">
-
-#### 회원가입
-<img width="1440" alt="image" src="https://user-images.githubusercontent.com/66009926/185722679-adcec99b-6cfd-4847-9b83-b42ca1802cda.png">
-
-#### 검색 결과
-<img width="1440" alt="image" src="https://user-images.githubusercontent.com/66009926/185722686-79f8bd89-4351-43f1-ab72-539524af09bc.png">
+![facebook_cover_photo_2](https://user-images.githubusercontent.com/66009926/188244542-493a39d8-99c2-45b0-845d-9f3545e7d9e2.png)
 
 
-### 기술적 이슈
+<h2 align="center"> "키워드 검색 기반의 빠르고 간편한 뉴스 검색 및 분석 서비스" DG times 입니다. </h2>
 
-Exception 설계 및 구축하기
+<br/>
 
-https://elderly-gruyere-ed2.notion.site/Exception-f6c84e77998e4eaca9b10fb1cc7cc8ac
+### 🐨 프로젝트 소개 영상
 
-MySQL Visual  Explain을 이용한 Query 성능 테스트
+---
 
-https://elderly-gruyere-ed2.notion.site/MySQL-Visual-Explain-Query-93d529c44a9d467da5912ddaf5df9935
+<p align="center">
 
-Logging 정의와 동작원리
+<a href="https://youtu.be/vOECZVPOfe0">
+  <img src="http://img.youtube.com/vi/vOECZVPOfe0/0.jpg" alt="Deploy">
+</a>
 
-https://elderly-gruyere-ed2.notion.site/Logging-1-a1d74ec218fa42a7a5a41410778678a0
+</p>
 
-Logging System 구축하기
+<br/>
 
-https://elderly-gruyere-ed2.notion.site/Logging-System-2-089871a42cfb4b03a1ac3bf27e319f02
+### 🐨 빠르고 간편한 뉴스 검색이 왜 필요할까요?
 
-뉴스 데이터 수집 및 가공하기
+---
 
-https://elderly-gruyere-ed2.notion.site/9dc4b6c2da6e4cc284bbdd703ad83feb
+#### 현재 인터넷 상에는 수많은 정보와 데이터들이 모여 빅데이터를 이루고 있습니다. 사람들은 아날로그 대신 온라인 상의 공개된 전자도서, 인터넷뉴스로부터 빠르게 정보를 습득 할 수 있게 되었습니다. 
 
-단위 테스트 도입기
+특히 뉴스 분야에서는 스마트기기와 컴퓨터를 통해 과거와는 비교 할 수 없을 만큼 편리하게 정보를 제공 및 접근 할 수 있게 되었지만, 데이터가 너무 많아 원하는 정보를 쉽고 빠르게 찾을 수 없습니다. 
 
-https://elderly-gruyere-ed2.notion.site/5afc6adc51d74add9b3f26f6de43520b
+따라서, 인터넷 상의 뉴스 정보들을 분석하고 사용자가 검색 키워드를 입력하면 빠르게 근접한 정보들을 제공하여 사용자가 쉽고 빠르게 정확한 데이터를 찾을 수 있도록 기여할 수 있습니다.
 
-부하테스트 설계
+<br/>
 
-https://elderly-gruyere-ed2.notion.site/8a84be3e62904fd5bec8ba33c2d9bd23
+### 🐨 DG times는 어떤 기능을 제공하나요?
 
-### ERD
+---
+**📌 Full Text Index를 활용하여 빠른 키워드 검색 구현**
 
-![Untitled](https://user-images.githubusercontent.com/66009926/185722355-ba566b09-14b8-4540-874a-ab26d8e8acf3.png)
+- LIKE %keyword% 방식의 키워드 검색은 Index를 타지 않아 느림
 
-### Commit 컨벤션
+- Full Text Index를 도입하여 검색 성능 향상(18s → 0.8ms)
+
+<br/>
+
+**📌 Redis를 활용한 캐싱으로 분석 결과 응답 구현**
+
+- 뉴스 분석은 초, 분 단위의 변화로 결과 값에 영향을 주지 않고 반복되는 계산은 서버에 부하 발생
+
+- Redis에 캐싱하여 응답 속도 향상(4s → 0.43ms) 및 부하 해소
+
+<br/>
+
+**📌 Main - Replica 구조를 활용하여 Database 부하 분산**
+
+- 특정 시간대(오전 11시 ~ 오후 1시) 뉴스 조회 요청과 뉴스 주입 요청이 몰려 트래픽 부하가 심함
+
+- DB를 Main - Replica 구조로 이분화하여 DB 부하를 분산시켜 성능 향상
+
+<br/>
+
+**📌 Word2Vec을 활용하여 빠르고 정확하게 연관 키워드 분석**
+
+- 연관 키워드 분석을 위해 키워드 간의 유사도 분석이 필요
+
+- Word2vec 모델을 사용하여 뉴스 내의 키워드 간의 유사도 분석 진행
+
+<br/>
+
+**📌 Rabbitmq & Scheduled를 활용하여 배치 처리 방식으로 뉴스 데이터 수집 성능 향상**
+
+- Full Text Index 매핑으로 데이터 개별 삽입은 많은 시간이 소요되며 일괄로 처리하는 것이 성능이 더 좋음
+
+- Rabbitmq로 뉴스 데이터를 모아 Scheduled를 사용하여 일정 시간마다 배치로 일괄 처리
+
+<br/>
+
+**📌 ALB를 활용하여 오토스케일링 방식으로 유동적인 트래픽에 효율적으로 대응**
+
+- 한국언론진흥재단에 따르면 하루 뉴스 조회 요청 최대 최소 트래픽 차이가 약 5배 차이가 난다고 함
+
+- 효율적인 인프라 관리를 위해 ALB의 오토스케일링 기능 도입
+
+<br/>
+
+### 🐨  시스템 구조도
+
+---
+
+<img width="600" alt="image" src="https://user-images.githubusercontent.com/66009926/190565188-a83a947d-0d10-4baa-b2e9-929b41dc07f6.jpg">
+
+
+<br/>
+
+### 🐨 ER Diagram
+
+---
+
+<img width="600" alt="image" src="https://user-images.githubusercontent.com/66009926/190562540-3073a6c3-58a7-4cee-86d9-d3c322bdd133.png">
+
+<br/>
+
+### 🐨 API 기술 문서
+
+---
+
+
+https://elderly-gruyere-ed2.notion.site/DGtimes-API-e1742d25040c4bebb70499673b4ec6af
+
+<br/>
+
+
+
+### 🐨 Commit 컨벤션
 ```
 feat : 새로운 기능에 대한 커밋 
 fix : 수정에 대한 커밋 
 build : 빌드 관련 파일 수정에 대한 커밋
 ```
 
-### Github flow
+### 🐨 Github flow
 ```
 #Branch naming rules
 main
